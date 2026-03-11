@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Order Confirmed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; --green: #3bb54a; }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); }
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+
+    /* SUCCESS HERO */
+    .success-hero { background: var(--black); color: var(--white); text-align: center; padding: 72px 40px 48px; position: relative; overflow: hidden; }
+    .success-hero::before { content: '✓'; font-family: 'Bebas Neue', sans-serif; font-size: 500px; color: #111; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-55%); line-height: 1; pointer-events: none; }
+    .confetti { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; font-size: 28px; animation: bounce 1s ease both; }
+    @keyframes bounce { 0% { transform: translateY(-20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+    .success-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 96px; letter-spacing: 3px; line-height: 0.9; position: relative; animation: fadeUp 0.6s ease 0.2s both; }
+    .success-hero h1 span { color: var(--accent); }
+    .success-hero p { font-size: 16px; color: #888; margin-top: 16px; position: relative; animation: fadeUp 0.6s ease 0.3s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .order-id-display { display: inline-block; background: var(--accent); color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 4px; padding: 12px 32px; margin: 20px 0 0; position: relative; animation: fadeUp 0.6s ease 0.4s both; }
+
+    /* CONTENT */
+    .success-content { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+
+    /* STEPS */
+    .next-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1.5px solid var(--black); margin-bottom: 40px; }
+    .next-step { padding: 28px; border-right: 1.5px solid var(--black); text-align: center; }
+    .next-step:last-child { border-right: none; }
+    .step-icon { font-size: 36px; margin-bottom: 12px; }
+    .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .step-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+
+    /* ORDER DETAILS */
+    .order-card { border: 1.5px solid var(--black); margin-bottom: 24px; }
+    .order-card-header { background: var(--black); color: var(--white); padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; display: flex; justify-content: space-between; align-items: center; }
+    .order-card-body { padding: 24px; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .detail-item label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); display: block; margin-bottom: 4px; }
+    .detail-item span { font-size: 15px; font-weight: 600; }
+
+    .order-items { margin-top: 20px; border-top: 1.5px solid var(--light-gray); padding-top: 20px; }
+    .order-item { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+    .order-item:last-child { margin-bottom: 0; }
+    .item-img { width: 56px; height: 56px; background: var(--card-bg); border: 1.5px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .item-name { font-weight: 700; font-size: 14px; text-transform: uppercase; flex: 1; }
+    .item-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+    .item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+
+    /* PRICE SUMMARY */
+    .price-summary { border-top: 1.5px solid var(--black); padding-top: 20px; margin-top: 20px; }
+    .price-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; }
+    .price-row .label { color: var(--gray); }
+    .price-row .value { font-weight: 700; }
+    .price-row.discount .value { color: var(--green); }
+    .price-row.tax { font-size: 12px; }
+    .price-row.tax .label { color: #aaa; padding-left: 12px; }
+    .price-divider { height: 1.5px; background: var(--black); margin: 12px 0; }
+    .price-total { display: flex; justify-content: space-between; align-items: baseline; }
+    .price-total .label { font-weight: 900; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .price-total .value { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; }
+
+    /* ACTION BUTTONS */
+    .action-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .btn-primary { padding: 14px 36px; background: var(--black); color: var(--white); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .btn-outline { padding: 14px 36px; background: transparent; color: var(--black); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+
+    /* INVOICE PREVIEW */
+    .invoice-section { border: 1.5px solid var(--black); margin-top: 40px; }
+    .invoice-header-bar { background: var(--card-bg); padding: 16px 24px; border-bottom: 1.5px solid var(--black); display: flex; justify-content: space-between; align-items: center; }
+    .invoice-preview { padding: 32px; }
+    .invoice-top { display: flex; justify-content: space-between; margin-bottom: 32px; border-bottom: 1.5px solid var(--black); padding-bottom: 24px; }
+    .invoice-brand .logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; }
+    .invoice-brand .logo-text span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    .invoice-brand p { font-size: 12px; color: var(--gray); margin-top: 6px; line-height: 1.6; }
+    .invoice-meta { text-align: right; }
+    .invoice-meta h2 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 3px; }
+    .invoice-meta p { font-size: 13px; color: var(--gray); margin-top: 4px; }
+    .invoice-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .invoice-party h4 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 8px; }
+    .invoice-party p { font-size: 14px; line-height: 1.7; }
+    .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .invoice-table th { background: var(--black); color: var(--white); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+    .invoice-table td { padding: 12px 14px; border-bottom: 1px solid var(--light-gray); font-size: 13px; }
+    .invoice-table tr:last-child td { border-bottom: none; }
+    .invoice-totals { max-width: 300px; margin-left: auto; }
+    .inv-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+    .inv-row.total { font-weight: 900; font-size: 16px; border-top: 1.5px solid var(--black); padding-top: 10px; margin-top: 4px; }
+    .invoice-footer { border-top: 1.5px solid var(--light-gray); padding-top: 16px; font-size: 12px; color: var(--gray); text-align: center; line-height: 1.7; margin-top: 24px; }
+
+    @media (max-width: 768px) { .header-inner { padding: 0 20px; } .success-hero { padding: 48px 20px 32px; } .success-hero h1 { font-size: 56px; } .success-content { padding: 32px 20px 48px; } .next-steps { grid-template-columns: 1fr; } .next-step { border-right: none; border-bottom: 1.5px solid var(--black); } .next-step:last-child { border-bottom: none; } .detail-grid { grid-template-columns: 1fr; } .invoice-parties { grid-template-columns: 1fr; } .invoice-top { flex-direction: column; gap: 16px; } .invoice-meta { text-align: left; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <div style="font-size:13px;font-weight:700;color:var(--gray);">🔒 Order Confirmed</div>
+  </div>
+</header>
+
+<!-- SUCCESS HERO -->
+<div class="success-hero">
+  <div class="confetti">🎉 🎨 ✨ 📦 🎉</div>
+  <h1>ORDER<br/><span>CONFIRMED!</span></h1>
+  <p>Thank you, Arjun! Your custom print is on its way to production.</p>
+  <div class="order-id-display">#DD-2025-0049</div>
+</div>
+
+<div class="success-content">
+
+  <!-- NEXT STEPS -->
+  <div class="next-steps">
+    <div class="next-step">
+      <div class="step-icon">📧</div>
+      <div class="step-title">Check Your Email</div>
+      <div class="step-desc">We've sent a confirmation to arjun@email.com with your order details and invoice.</div>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">🎨</div>
+      <div class="step-title">We're Printing</div>
+      <div class="step-desc">Your custom design is being printed. This takes 2–3 business days.</div>
+    </div>
+    <div class="next-step">
+      <div class="step-icon">🚚</div>
+      <div class="step-title">We'll Notify You</div>
+      <div class="step-desc">You'll get an email with courier name + tracking number once dispatched.</div>
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-row">
+    <button class="btn-primary" onclick="document.getElementById('invoice-section').scrollIntoView({behavior:'smooth'})">⬇ View Invoice</button>
+    <a href="track.html" class="btn-outline">📍 Track Order</a>
+    <a href="account.html" class="btn-outline">📦 My Orders</a>
+    <a href="index.html" class="btn-outline">🛒 Continue Shopping</a>
+  </div>
+
+  <!-- ORDER DETAILS -->
+  <div class="order-card">
+    <div class="order-card-header">
+      ORDER DETAILS
+      <span style="font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:#888;">9 March 2025</span>
+    </div>
+    <div class="order-card-body">
+      <div class="detail-grid">
+        <div class="detail-item"><label>Order ID</label><span>#DD-2025-0049</span></div>
+        <div class="detail-item"><label>Payment Status</label><span style="color:var(--green);">✅ Paid via Razorpay</span></div>
+        <div class="detail-item"><label>Delivery Address</label><span>42, 3rd Cross, Indiranagar<br/>Bengaluru, Karnataka — 560038</span></div>
+        <div class="detail-item"><label>Expected Delivery</label><span>12–16 March 2025</span></div>
+      </div>
+
+      <div class="order-items">
+        <div class="order-item">
+          <div class="item-img">🧥</div>
+          <div style="flex:1;">
+            <div class="item-name">Oversized Drop Tee</div>
+            <div class="item-meta">Black · Size L · Custom Design Upload · Qty: 1</div>
+          </div>
+          <div class="item-price">₹699</div>
+        </div>
+        <div class="order-item">
+          <div class="item-img">🔑</div>
+          <div style="flex:1;">
+            <div class="item-name">Keychain — Double Print</div>
+            <div class="item-meta">Silver · Pre-made Design · Qty: 2</div>
+          </div>
+          <div class="item-price">₹398</div>
+        </div>
+      </div>
+
+      <div class="price-summary">
+        <div class="price-row"><span class="label">Subtotal</span><span class="value">₹1,097</span></div>
+        <div class="price-row"><span class="label">Shipping</span><span class="value">₹80</span></div>
+        <div class="price-row discount"><span class="label">Coupon FIRST10</span><span class="value">− ₹109.70</span></div>
+        <div class="price-divider"></div>
+        <div class="price-row tax"><span class="label">CGST @ 9%</span><span class="value">₹96.93</span></div>
+        <div class="price-row tax"><span class="label">SGST @ 9%</span><span class="value">₹96.93</span></div>
+        <div class="price-divider"></div>
+        <div class="price-total"><span class="label">Total Paid</span><span class="value">₹1,261</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVOICE PREVIEW -->
+  <div class="invoice-section" id="invoice-section">
+    <div class="invoice-header-bar">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;">GST TAX INVOICE</div>
+      <button class="btn-primary" onclick="window.print()" style="padding:10px 24px;font-size:12px;">⬇ Download PDF</button>
+    </div>
+    <div class="invoice-preview">
+      <div class="invoice-top">
+        <div class="invoice-brand">
+          <div class="logo-text">DUO<span>DESIGNS</span></div>
+          <p>Bengaluru, Karnataka — 560038<br/>GSTIN: 29XXXXXX000X1Z5<br/>support@duodesigns.in</p>
+        </div>
+        <div class="invoice-meta">
+          <h2>INVOICE</h2>
+          <p>Invoice No: INV-2025-0049<br/>Date: 9 March 2025<br/>Order: #DD-2025-0049</p>
+        </div>
+      </div>
+
+      <div class="invoice-parties">
+        <div class="invoice-party">
+          <h4>Bill To</h4>
+          <p><strong>Arjun Kumar</strong><br/>42, 3rd Cross, Indiranagar<br/>Bengaluru, Karnataka — 560038<br/>📞 +91 98765 43210<br/>arjun@email.com</p>
+        </div>
+        <div class="invoice-party">
+          <h4>Ship To</h4>
+          <p><strong>Arjun Kumar</strong><br/>42, 3rd Cross, Indiranagar<br/>Bengaluru, Karnataka — 560038<br/>Place of Supply: Karnataka (29)</p>
+        </div>
+      </div>
+
+      <table class="invoice-table">
+        <thead><tr><th>#</th><th>Description</th><th>HSN</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Oversized Drop Tee</strong><br/><span style="font-size:12px;color:var(--gray);">Black · Size L · Custom Design</span></td><td>6109</td><td>1</td><td>₹699</td><td>₹699</td></tr>
+          <tr><td>2</td><td><strong>Keychain — Double Print</strong><br/><span style="font-size:12px;color:var(--gray);">Silver · Pre-made Design</span></td><td>8308</td><td>2</td><td>₹199</td><td>₹398</td></tr>
+          <tr><td>3</td><td>Shipping Charges</td><td>9965</td><td>1</td><td>₹80</td><td>₹80</td></tr>
+          <tr><td>4</td><td>Discount — Coupon FIRST10</td><td>—</td><td>—</td><td>—</td><td style="color:var(--green);">− ₹109.70</td></tr>
+        </tbody>
+      </table>
+
+      <div class="invoice-totals">
+        <div class="inv-row"><span>Taxable Amount</span><span>₹1,067.30</span></div>
+        <div class="inv-row"><span>CGST @ 9%</span><span>₹96.06</span></div>
+        <div class="inv-row"><span>SGST @ 9%</span><span>₹96.06</span></div>
+        <div class="inv-row total"><span>Total</span><span>₹1,259.42</span></div>
+      </div>
+
+      <div class="invoice-footer">
+        This is a computer-generated invoice. No signature required.<br/>
+        Duo Designs · GSTIN: 29XXXXXX000X1Z5 · support@duodesigns.in · Bengaluru, Karnataka<br/>
+        Thank you for shopping with Duo Designs! 🎨
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

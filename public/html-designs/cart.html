@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Cart & Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; --error: #e05050; --success: #3bb54a; }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); }
+
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    nav { display: flex; gap: 32px; }
+    nav a { text-decoration: none; color: var(--black); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* STEP INDICATOR */
+    .steps { max-width: 1400px; margin: 0 auto; padding: 24px 40px; display: flex; align-items: center; gap: 0; border-bottom: 1.5px solid var(--black); }
+    .step { display: flex; align-items: center; gap: 10px; padding: 0 24px; cursor: pointer; }
+    .step:first-child { padding-left: 0; }
+    .step-circle { width: 32px; height: 32px; border: 2px solid var(--light-gray); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; transition: all 0.2s; flex-shrink: 0; }
+    .step-circle.active { background: var(--black); color: var(--white); border-color: var(--black); }
+    .step-circle.done { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .step-label { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); }
+    .step-label.active { color: var(--black); }
+    .step-divider { flex: 1; height: 1.5px; background: var(--light-gray); max-width: 60px; }
+    .step-divider.done { background: var(--black); }
+
+    /* LAYOUT */
+    .page-layout { max-width: 1400px; margin: 0 auto; padding: 40px 40px; display: grid; grid-template-columns: 1fr 400px; gap: 48px; align-items: start; }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .panel-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; margin-bottom: 4px; }
+    .panel-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+
+    /* CART ITEMS */
+    .cart-item { display: grid; grid-template-columns: 80px 1fr auto; gap: 20px; padding: 24px 0; border-bottom: 1.5px solid var(--light-gray); align-items: start; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-img { width: 80px; height: 80px; background: var(--card-bg); border: 1.5px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+    .cart-item-name { font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .cart-item-meta { font-size: 13px; color: var(--gray); margin-bottom: 8px; }
+    .cart-design-thumb { display: inline-flex; align-items: center; gap: 6px; background: var(--card-bg); padding: 4px 10px; font-size: 12px; font-weight: 600; margin-bottom: 12px; border: 1px solid var(--light-gray); }
+    .cart-qty { display: flex; align-items: center; border: 1.5px solid var(--black); width: fit-content; }
+    .cart-qty-btn { width: 32px; height: 32px; background: none; border: none; font-size: 16px; cursor: pointer; font-weight: 700; }
+    .cart-qty-btn:hover { background: var(--card-bg); }
+    .cart-qty-num { width: 36px; text-align: center; font-weight: 700; font-size: 14px; border-left: 1.5px solid var(--black); border-right: 1.5px solid var(--black); line-height: 32px; }
+    .cart-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-align: right; }
+    .remove-btn { background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--error); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; padding: 0; display: block; }
+
+    /* COUPON */
+    .coupon-row { display: flex; gap: 0; border: 1.5px solid var(--black); margin: 24px 0; }
+    .coupon-input { flex: 1; padding: 12px 16px; border: none; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; outline: none; background: var(--white); }
+    .coupon-btn { padding: 12px 24px; background: var(--black); color: var(--white); border: none; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+    .coupon-btn:hover { background: var(--accent); color: var(--black); }
+    .coupon-msg { font-size: 13px; font-weight: 700; margin-top: -16px; margin-bottom: 16px; }
+    .coupon-ok { color: var(--success); }
+    .coupon-fail { color: var(--error); }
+
+    /* ORDER SUMMARY CARD */
+    .summary-card { border: 1.5px solid var(--black); position: sticky; top: 80px; }
+    .summary-header { background: var(--black); color: var(--white); padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; }
+    .summary-body { padding: 24px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 14px; }
+    .summary-row .label { color: var(--gray); }
+    .summary-row .value { font-weight: 700; }
+    .summary-row.discount .value { color: var(--success); }
+    .summary-row.tax { font-size: 12px; }
+    .summary-row.tax .label { color: #aaa; padding-left: 12px; }
+    .summary-divider { height: 1.5px; background: var(--light-gray); margin: 16px 0; }
+    .summary-total { display: flex; justify-content: space-between; align-items: baseline; }
+    .summary-total .label { font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; }
+    .summary-total .value { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; }
+    .summary-note { font-size: 12px; color: var(--gray); margin-top: 8px; margin-bottom: 20px; }
+    .btn-proceed { width: 100%; padding: 16px; background: var(--black); color: var(--white); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-bottom: 12px; }
+    .btn-proceed:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .secure-note { text-align: center; font-size: 12px; color: var(--gray); display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .summary-items { margin-bottom: 20px; }
+    .summary-item { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+    .summary-item-img { width: 48px; height: 48px; background: var(--card-bg); border: 1px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .summary-item-info { flex: 1; }
+    .summary-item-name { font-size: 13px; font-weight: 700; text-transform: uppercase; }
+    .summary-item-meta { font-size: 11px; color: var(--gray); }
+    .summary-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; }
+
+    /* CHECKOUT FORM */
+    .form-section { margin-bottom: 32px; }
+    .form-section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 12px; border-bottom: 1.5px solid var(--black); margin-bottom: 20px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 0; }
+    .form-group.full { grid-column: span 2; }
+    .form-label { display: block; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--black); background: var(--white); font-family: 'Barlow', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--accent); background: #fffff8; }
+    .form-input.error { border-color: var(--error); }
+    select.form-input { cursor: pointer; }
+
+    .saved-address { border: 1.5px solid var(--light-gray); padding: 16px 20px; margin-bottom: 12px; cursor: pointer; display: flex; align-items: flex-start; gap: 12px; transition: border-color 0.2s; }
+    .saved-address:hover, .saved-address.selected { border-color: var(--black); border-width: 2px; }
+    .saved-address.selected { background: var(--card-bg); }
+    .saved-address input[type="radio"] { margin-top: 3px; accent-color: var(--black); }
+    .saved-address-name { font-weight: 800; font-size: 14px; text-transform: uppercase; }
+    .saved-address-text { font-size: 13px; color: #444; line-height: 1.6; }
+
+    /* ORDER SUCCESS */
+    .success-page { text-align: center; padding: 60px 40px; }
+    .success-icon { font-size: 72px; margin-bottom: 20px; }
+    .success-title { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 2px; margin-bottom: 8px; }
+    .success-subtitle { font-size: 16px; color: var(--gray); margin-bottom: 8px; }
+    .order-id-box { display: inline-block; background: var(--card-bg); border: 1.5px solid var(--black); padding: 12px 28px; font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; margin: 16px 0 32px; }
+    .success-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { padding: 14px 36px; background: var(--black); color: var(--white); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-primary:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .btn-outline { padding: 14px 36px; background: transparent; color: var(--black); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+
+    @media (max-width: 1024px) { .page-layout { grid-template-columns: 1fr; } .summary-card { position: static; } }
+    @media (max-width: 768px) { .header-inner { padding: 0 20px; } nav { display: none; } .page-layout { padding: 24px 20px; } .steps { padding: 16px 20px; } .step-label { display: none; } .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: span 1; } .cart-item { grid-template-columns: 64px 1fr; } .cart-item-price { display: none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <nav><a href="index.html">← Continue Shopping</a></nav>
+    <div style="font-size:13px;font-weight:700;color:var(--gray);">🔒 Secure Checkout</div>
+  </div>
+</header>
+
+<!-- STEP INDICATOR -->
+<div class="steps">
+  <div class="step" onclick="goStep(1)">
+    <div class="step-circle done" id="step1-circle">✓</div>
+    <span class="step-label active" id="step1-label">Cart</span>
+  </div>
+  <div class="step-divider done" id="div1"></div>
+  <div class="step" onclick="goStep(2)">
+    <div class="step-circle active" id="step2-circle">2</div>
+    <span class="step-label active" id="step2-label">Delivery</span>
+  </div>
+  <div class="step-divider" id="div2"></div>
+  <div class="step">
+    <div class="step-circle" id="step3-circle">3</div>
+    <span class="step-label" id="step3-label">Payment</span>
+  </div>
+  <div class="step-divider" id="div3"></div>
+  <div class="step">
+    <div class="step-circle" id="step4-circle">✓</div>
+    <span class="step-label" id="step4-label">Confirm</span>
+  </div>
+</div>
+
+<div class="page-layout">
+  <div>
+
+    <!-- ── CART PANEL ── -->
+    <div class="panel" id="panel-cart">
+      <div class="panel-title">YOUR CART</div>
+      <div class="panel-subtitle">3 items · Review before checkout</div>
+
+      <div class="cart-item">
+        <div class="cart-img">🧥</div>
+        <div>
+          <div class="cart-item-name">Oversized Drop Tee</div>
+          <div class="cart-item-meta">Black · Size L · Custom Design</div>
+          <div class="cart-design-thumb">🖼️ my-design.png</div>
+          <div class="cart-qty">
+            <button class="cart-qty-btn" onclick="changeCart(this,-1)">−</button>
+            <div class="cart-qty-num">1</div>
+            <button class="cart-qty-btn" onclick="changeCart(this,1)">+</button>
+          </div>
+          <button class="remove-btn">✕ Remove</button>
+        </div>
+        <div>
+          <div class="cart-item-price">₹699</div>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <div class="cart-img">🔑</div>
+        <div>
+          <div class="cart-item-name">Keychain — Double Print</div>
+          <div class="cart-item-meta">Silver · Pre-made Design ⚡</div>
+          <div class="cart-design-thumb">⚡ Lightning design</div>
+          <div class="cart-qty">
+            <button class="cart-qty-btn" onclick="changeCart(this,-1)">−</button>
+            <div class="cart-qty-num">2</div>
+            <button class="cart-qty-btn" onclick="changeCart(this,1)">+</button>
+          </div>
+          <button class="remove-btn">✕ Remove</button>
+        </div>
+        <div>
+          <div class="cart-item-price">₹398</div>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <div class="cart-img">☕</div>
+        <div>
+          <div class="cart-item-name">Custom Print Mug</div>
+          <div class="cart-item-meta">White · No design added</div>
+          <div class="cart-qty">
+            <button class="cart-qty-btn" onclick="changeCart(this,-1)">−</button>
+            <div class="cart-qty-num">1</div>
+            <button class="cart-qty-btn" onclick="changeCart(this,1)">+</button>
+          </div>
+          <button class="remove-btn">✕ Remove</button>
+        </div>
+        <div>
+          <div class="cart-item-price">₹349</div>
+        </div>
+      </div>
+
+      <!-- COUPON -->
+      <div style="margin-top:24px;">
+        <div style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🏷️ Have a Coupon?</div>
+        <div class="coupon-row">
+          <input type="text" class="coupon-input" placeholder="ENTER CODE" id="coupon-input"/>
+          <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="coupon-msg coupon-ok" id="coupon-ok" style="display:none;">✅ FIRST10 applied — ₹144 saved!</div>
+        <div class="coupon-msg coupon-fail" id="coupon-fail" style="display:none;">❌ Invalid or expired coupon code</div>
+      </div>
+
+      <button class="btn-proceed" style="margin-top:24px;" onclick="goStep(2)">Proceed to Delivery →</button>
+    </div>
+
+    <!-- ── DELIVERY PANEL ── -->
+    <div class="panel active" id="panel-delivery">
+      <div class="panel-title">DELIVERY</div>
+      <div class="panel-subtitle">Where should we send your order?</div>
+
+      <div class="form-section">
+        <div class="form-section-title">Saved Addresses</div>
+        <div class="saved-address selected" onclick="selectAddr(this)">
+          <input type="radio" name="address" checked/>
+          <div>
+            <div class="saved-address-name">Arjun Kumar · Home</div>
+            <div class="saved-address-text">42, 3rd Cross, Indiranagar, Bengaluru, Karnataka — 560038</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:4px;">📞 +91 98765 43210</div>
+          </div>
+        </div>
+        <div class="saved-address" onclick="selectAddr(this)">
+          <input type="radio" name="address"/>
+          <div>
+            <div class="saved-address-name">Arjun Kumar · Office</div>
+            <div class="saved-address-text">10, Whitefield Main Road, Bengaluru, Karnataka — 560066</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:4px;">📞 +91 98765 43210</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">+ Add New Address</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" placeholder="Full name"/></div>
+          <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 XXXXX XXXXX"/></div>
+          <div class="form-group full"><label class="form-label">Address Line 1</label><input type="text" class="form-input" placeholder="House / Flat / Block No."/></div>
+          <div class="form-group full"><label class="form-label">Address Line 2</label><input type="text" class="form-input" placeholder="Street, Area, Landmark"/></div>
+          <div class="form-group"><label class="form-label">City</label><input type="text" class="form-input" placeholder="City"/></div>
+          <div class="form-group"><label class="form-label">Pincode</label><input type="text" class="form-input" placeholder="6-digit pincode" maxlength="6"/></div>
+          <div class="form-group full"><label class="form-label">State</label>
+            <select class="form-input">
+              <option>Karnataka</option><option>Tamil Nadu</option><option>Maharashtra</option><option>Delhi</option><option>Telangana</option><option>Kerala</option><option>Andhra Pradesh</option><option>Gujarat</option><option>Rajasthan</option><option>West Bengal</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-proceed" onclick="goStep(3)">Proceed to Payment →</button>
+    </div>
+
+    <!-- ── PAYMENT PANEL ── -->
+    <div class="panel" id="panel-payment">
+      <div class="panel-title">PAYMENT</div>
+      <div class="panel-subtitle">100% secure · Powered by Razorpay · Prepaid only</div>
+
+      <div class="form-section">
+        <div class="form-section-title">Delivering To</div>
+        <div style="background:var(--card-bg);padding:16px 20px;border:1.5px solid var(--black);margin-bottom:0;font-size:14px;line-height:1.7;">
+          <strong>Arjun Kumar</strong> · +91 98765 43210<br/>
+          42, 3rd Cross, Indiranagar, Bengaluru, Karnataka — 560038
+          <button onclick="goStep(2)" style="background:none;border:none;cursor:pointer;font-size:12px;font-weight:700;color:var(--black);border-bottom:1.5px solid var(--accent);margin-left:12px;padding:0;">Change</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Order Summary</div>
+        <div style="border:1.5px solid var(--light-gray);padding:20px;">
+          <div class="summary-row"><span class="label">3 Items Subtotal</span><span class="value">₹1,446</span></div>
+          <div class="summary-row"><span class="label">Shipping Charge</span><span class="value">₹80</span></div>
+          <div class="summary-row discount"><span class="label">Coupon FIRST10</span><span class="value">− ₹144</span></div>
+          <div style="height:1px;background:var(--light-gray);margin:12px 0;"></div>
+          <div class="summary-row"><span class="label">Taxable Amount</span><span class="value">₹1,382</span></div>
+          <div class="summary-row tax"><span class="label">CGST @ 9%</span><span class="value">₹124.38</span></div>
+          <div class="summary-row tax"><span class="label">SGST @ 9%</span><span class="value">₹124.38</span></div>
+          <div style="height:1.5px;background:var(--black);margin:16px 0;"></div>
+          <div class="summary-total"><span class="label">Total Payable</span><span class="value" style="font-family:'Bebas Neue',sans-serif;font-size:32px;">₹1,630</span></div>
+        </div>
+      </div>
+
+      <div style="background:var(--card-bg);border:1.5px solid var(--black);padding:20px;margin-bottom:24px;">
+        <div style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">🔒 No COD · Prepaid Only</div>
+        <div style="font-size:14px;color:#444;line-height:1.6;">We accept UPI, Credit/Debit Cards, Net Banking and Wallets via Razorpay. Your payment is 100% secure and encrypted.</div>
+        <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+          <span style="background:#fff;border:1px solid #ddd;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:1px;">UPI</span>
+          <span style="background:#fff;border:1px solid #ddd;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:1px;">VISA</span>
+          <span style="background:#fff;border:1px solid #ddd;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:1px;">MASTERCARD</span>
+          <span style="background:#fff;border:1px solid #ddd;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:1px;">NET BANKING</span>
+          <span style="background:#fff;border:1px solid #ddd;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:1px;">WALLET</span>
+        </div>
+      </div>
+
+      <button class="btn-proceed" onclick="goStep(4)">Pay ₹1,630 via Razorpay →</button>
+      <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--gray);">🔒 256-bit SSL Encryption · GST Invoice included</div>
+    </div>
+
+    <!-- ── SUCCESS PANEL ── -->
+    <div class="panel" id="panel-success">
+      <div class="success-page">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">ORDER PLACED!</div>
+        <div class="success-subtitle">Thank you, Arjun! Your order has been confirmed.</div>
+        <div style="font-size:14px;color:var(--gray);margin-bottom:8px;">A confirmation email has been sent to arjun@email.com</div>
+        <div class="order-id-box">#DD-2025-0049</div>
+        <div style="background:var(--card-bg);border:1.5px solid var(--black);padding:16px 24px;max-width:400px;margin:0 auto 32px;font-size:14px;line-height:1.8;">
+          <strong>What's next?</strong><br/>
+          We'll prepare your custom print in 1–2 days.<br/>
+          You'll get an email with tracking info once dispatched.
+        </div>
+        <div class="success-btns">
+          <a href="#" class="btn-primary" onclick="alert('Downloading invoice...')">⬇ Download Invoice</a>
+          <a href="account.html" class="btn-outline">View My Orders</a>
+          <a href="index.html" class="btn-outline">Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ORDER SUMMARY SIDEBAR -->
+  <div class="summary-card" id="summary-sidebar">
+    <div class="summary-header">ORDER SUMMARY</div>
+    <div class="summary-body">
+      <div class="summary-items">
+        <div class="summary-item">
+          <div class="summary-item-img">🧥</div>
+          <div class="summary-item-info">
+            <div class="summary-item-name">Oversized Drop Tee</div>
+            <div class="summary-item-meta">Black · L · Qty 1</div>
+          </div>
+          <div class="summary-item-price">₹699</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-img">🔑</div>
+          <div class="summary-item-info">
+            <div class="summary-item-name">Keychain Double</div>
+            <div class="summary-item-meta">Silver · Qty 2</div>
+          </div>
+          <div class="summary-item-price">₹398</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-item-img">☕</div>
+          <div class="summary-item-info">
+            <div class="summary-item-name">Custom Mug</div>
+            <div class="summary-item-meta">White · Qty 1</div>
+          </div>
+          <div class="summary-item-price">₹349</div>
+        </div>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row"><span class="label">Subtotal</span><span class="value">₹1,446</span></div>
+      <div class="summary-row"><span class="label">Shipping</span><span class="value">₹80</span></div>
+      <div class="summary-row discount"><span class="label">Discount (FIRST10)</span><span class="value">− ₹144</span></div>
+      <div class="summary-divider"></div>
+      <div class="summary-row tax"><span class="label">CGST (9%)</span><span class="value">₹124.38</span></div>
+      <div class="summary-row tax"><span class="label">SGST (9%)</span><span class="value">₹124.38</span></div>
+      <div class="summary-divider"></div>
+      <div class="summary-total"><span class="label">Total</span><span class="value">₹1,630</span></div>
+      <div class="summary-note">Incl. all taxes · GST Invoice included</div>
+      <div class="secure-note">🔒 Secure payment via Razorpay</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 2;
+  function goStep(step) {
+    currentStep = step;
+    const panels = ['cart','delivery','payment','success'];
+    panels.forEach((p,i) => {
+      document.getElementById('panel-'+p).classList.toggle('active', i+1===step);
+    });
+    for (let i = 1; i <= 4; i++) {
+      const c = document.getElementById('step'+i+'-circle');
+      const l = document.getElementById('step'+i+'-label');
+      if (!c) continue;
+      if (i < step) { c.classList.add('done'); c.classList.remove('active'); c.textContent = '✓'; }
+      else if (i === step) { c.classList.add('active'); c.classList.remove('done'); c.textContent = i; }
+      else { c.classList.remove('active','done'); c.textContent = i; }
+      if (l) l.classList.toggle('active', i <= step);
+    }
+    for (let i = 1; i <= 3; i++) {
+      const d = document.getElementById('div'+i);
+      if (d) d.classList.toggle('done', i < step);
+    }
+    if (step === 4) document.getElementById('summary-sidebar').style.display = 'none';
+    window.scrollTo(0,0);
+  }
+  function applyCoupon() {
+    const code = document.getElementById('coupon-input').value.toUpperCase();
+    document.getElementById('coupon-ok').style.display = 'none';
+    document.getElementById('coupon-fail').style.display = 'none';
+    if (code === 'FIRST10' || code === 'SAVE100') {
+      document.getElementById('coupon-ok').style.display = 'block';
+    } else {
+      document.getElementById('coupon-fail').style.display = 'block';
+    }
+  }
+  function changeCart(btn, d) {
+    const numEl = btn.parentElement.querySelector('.cart-qty-num');
+    let v = parseInt(numEl.textContent) + d;
+    numEl.textContent = Math.max(1, Math.min(10, v));
+  }
+  function selectAddr(el) {
+    document.querySelectorAll('.saved-address').forEach(a => a.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type="radio"]').checked = true;
+  }
+</script>
+</body>
+</html>

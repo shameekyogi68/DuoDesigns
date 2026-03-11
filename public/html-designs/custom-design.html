@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Design | Duo Designs</title>
+    <meta name="description" content="Upload your design and get it printed on premium products. DTF printing on t-shirts, mugs, keychains and more." />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --black: #0a0a0a; --white: #f8f8f4; --accent: #c8ff00; --gray: #666; --light-gray: #e8e8e4; --card-bg: #f3f3ef; }
+        body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); }
+        a { text-decoration: none; color: inherit; }
+
+        /* Header */
+        .announce { background: var(--black); color: var(--white); text-align: center; font-size: 12px; padding: 10px 20px; font-weight: 500; letter-spacing: 0.5px; }
+        .announce span { color: var(--accent); font-weight: 800; }
+        header { background: var(--white); border-bottom: 1px solid var(--light-gray); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 72px; position: sticky; top: 0; z-index: 100; }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; }
+        .logo span { background: var(--black); color: var(--accent); padding: 2px 8px; margin-left: 2px; }
+        nav a { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin: 0 16px; padding-bottom: 4px; border-bottom: 2px solid transparent; transition: border-color 0.3s; }
+        nav a:hover, nav a.active { border-bottom-color: var(--accent); }
+        .cart-btn { background: var(--black); color: var(--white); padding: 12px 28px; font-weight: 800; font-size: 13px; letter-spacing: 2px; border: none; cursor: pointer; }
+
+        /* Hero */
+        .hero { background: var(--black); color: var(--white); position: relative; overflow: hidden; }
+        .hero::before { content: 'CREATE'; font-family: 'Bebas Neue', sans-serif; font-size: 280px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.02); white-space: nowrap; pointer-events: none; letter-spacing: 10px; }
+        .hero-inner { max-width: 1400px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; z-index: 1; }
+        .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 96px; line-height: 0.92; letter-spacing: 3px; margin-bottom: 20px; }
+        .hero h1 span { color: var(--accent); }
+        .hero-desc { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 480px; margin-bottom: 32px; }
+        .hero-visual { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 48px; text-align: center; border-radius: 8px; }
+        .hero-visual-icon { font-size: 96px; display: block; margin-bottom: 20px; }
+        .hero-visual p { color: rgba(255,255,255,0.3); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary { background: var(--accent); color: var(--black); padding: 16px 36px; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.3s; display: inline-block; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,255,0,0.3); }
+        .btn-outline-light { border: 1.5px solid rgba(255,255,255,0.2); color: var(--white); padding: 16px 36px; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; background: transparent; cursor: pointer; display: inline-block; }
+
+        /* Steps */
+        .process { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
+        .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 3px; text-align: center; margin-bottom: 64px; }
+        .section-title span { color: var(--accent); background: var(--black); padding: 0 8px; }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1.5px solid var(--black); }
+        .step { padding: 40px 28px; border-right: 1.5px solid var(--black); transition: all 0.4s ease; }
+        .step:last-child { border-right: none; }
+        .step:hover { background: var(--black); color: var(--white); }
+        .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 64px; color: var(--light-gray); line-height: 1; margin-bottom: 8px; transition: color 0.4s; }
+        .step:hover .step-num { color: var(--accent); }
+        .step-icon { font-size: 32px; margin-bottom: 12px; }
+        .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .step-desc { font-size: 13px; color: var(--gray); line-height: 1.7; transition: color 0.4s; }
+        .step:hover .step-desc { color: rgba(255,255,255,0.5); }
+
+        /* Pre-made designs */
+        .premade { background: var(--card-bg); padding: 80px 0; }
+        .premade-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .premade-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        .premade-title { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 3px; }
+        .see-all { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+        .design-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .design-card { background: var(--white); border: 1.5px solid var(--light-gray); padding: 32px 20px; text-align: center; transition: all 0.35s ease; cursor: pointer; }
+        .design-card:hover { border-color: var(--black); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+        .design-icon { font-size: 48px; margin-bottom: 12px; display: block; }
+        .design-name { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .design-cat { font-size: 12px; color: var(--gray); }
+
+        /* Specs */
+        .specs { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
+        .specs-title { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 3px; margin-bottom: 40px; }
+        .specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1.5px solid var(--black); }
+        .spec-item { padding: 28px 24px; border-right: 1px solid var(--black); border-bottom: 1px solid var(--black); }
+        .spec-item:nth-child(3n) { border-right: none; }
+        .spec-item:nth-last-child(-n+3) { border-bottom: none; }
+        .spec-label { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 600; }
+        .spec-value { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+
+        /* CTA */
+        .cta { background: var(--accent); padding: 64px 40px; text-align: center; position: relative; overflow: hidden; }
+        .cta::before { content: 'PRINT'; font-family: 'Bebas Neue', sans-serif; font-size: 200px; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); color: rgba(0,0,0,0.04); letter-spacing: 10px; pointer-events: none; }
+        .cta h2 { font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 3px; margin-bottom: 12px; position: relative; }
+        .cta p { font-size: 16px; color: rgba(0,0,0,0.6); margin-bottom: 28px; font-weight: 500; position: relative; }
+        .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+        .btn-dark { background: var(--black); color: var(--white); padding: 16px 36px; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; display: inline-block; }
+        .btn-outline-dark { border: 1.5px solid var(--black); color: var(--black); padding: 16px 36px; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; background: transparent; cursor: pointer; display: inline-block; }
+
+        /* Footer */
+        footer { background: var(--black); color: var(--white); padding: 64px 40px 32px; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; }
+        .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; margin-bottom: 16px; }
+        .footer-brand span { color: var(--accent); }
+        .footer-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+        .footer-col h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; color: rgba(255,255,255,0.3); }
+        .footer-col a { display: block; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 12px; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--accent); }
+        .footer-bottom { max-width: 1400px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: rgba(255,255,255,0.3); text-align: center; }
+
+        @media (max-width: 1024px) { .hero-inner { grid-template-columns: 1fr; } .hero-visual { display: none; } .steps { grid-template-columns: repeat(2, 1fr); } .step:nth-child(2) { border-right: none; } .design-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .hero-inner { padding: 48px 20px; } .hero h1 { font-size: 56px; } .steps { grid-template-columns: 1fr; } .step { border-right: none; border-bottom: 1.5px solid var(--black); } .step:last-child { border-bottom: none; } .specs-grid { grid-template-columns: 1fr; } .spec-item { border-right: none !important; } .cta { padding: 48px 20px; } .footer-inner { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+    <!-- Announcement -->
+    <div class="announce">🎉 First order? Use code <span>FIRST10</span> for 10% off! &nbsp;|&nbsp; Free shipping above ₹999 &nbsp;|&nbsp; 100% Prepaid · No COD</div>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+        <nav>
+            <a href="category.html">Shop</a>
+            <a href="categories.html">Categories</a>
+            <a href="custom-design.html" class="active">Custom Design</a>
+            <a href="offers.html">Offers</a>
+            <a href="track.html">Track Order</a>
+        </nav>
+        <a href="cart.html" class="cart-btn">🛒 CART</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div>
+                <h1>YOUR <span>DESIGN.</span><br>OUR PRINT.</h1>
+                <p class="hero-desc">Upload any image and we'll print it on premium products using DTF technology. Vibrant colors, lasting quality — your creativity, our craft.</p>
+                <div class="btn-group">
+                    <a href="category.html" class="btn-primary">Start Designing →</a>
+                    <a href="#how-it-works" class="btn-outline-light">How It Works ↓</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <span class="hero-visual-icon">🎨</span>
+                <p>Upload · Customize · Print</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="process" id="how-it-works">
+        <div class="section-title">HOW CUSTOM <span>PRINTING</span> WORKS</div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div class="step-icon">🎨</div>
+                <div class="step-title">Pick Your Product</div>
+                <div class="step-desc">Choose from our range — t-shirts, mugs, keychains, trackpants, and more.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <div class="step-icon">📤</div>
+                <div class="step-title">Upload Your Design</div>
+                <div class="step-desc">Upload a PNG or JPG file (max 10MB). Instant resolution & compatibility check.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <div class="step-icon">🖨️</div>
+                <div class="step-title">We Print It</div>
+                <div class="step-desc">Premium DTF printing for vivid, wash-resistant results. No fading, no cracking.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">04</div>
+                <div class="step-icon">📦</div>
+                <div class="step-title">Delivered to You</div>
+                <div class="step-desc">Dispatched in 2–3 business days. Track your order in real-time.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pre-made Designs -->
+    <section class="premade">
+        <div class="premade-inner">
+            <div class="premade-header">
+                <div class="premade-title">PRE-MADE DESIGNS</div>
+                <a href="category.html" class="see-all">View All →</a>
+            </div>
+            <div class="design-grid">
+                <div class="design-card"><span class="design-icon">🔥</span><div class="design-name">Fire Skull</div><div class="design-cat">Graphic</div></div>
+                <div class="design-card"><span class="design-icon">🌊</span><div class="design-name">Wave Art</div><div class="design-cat">Abstract</div></div>
+                <div class="design-card"><span class="design-icon">🐉</span><div class="design-name">Dragon Ink</div><div class="design-cat">Illustration</div></div>
+                <div class="design-card"><span class="design-icon">🌸</span><div class="design-name">Cherry Bloom</div><div class="design-cat">Floral</div></div>
+                <div class="design-card"><span class="design-icon">⚡</span><div class="design-name">Electric Bolt</div><div class="design-cat">Minimal</div></div>
+                <div class="design-card"><span class="design-icon">🎭</span><div class="design-name">Two Face</div><div class="design-cat">Graphic</div></div>
+                <div class="design-card"><span class="design-icon">🌌</span><div class="design-name">Cosmos</div><div class="design-cat">Abstract</div></div>
+                <div class="design-card"><span class="design-icon">🦁</span><div class="design-name">Lion King</div><div class="design-cat">Illustration</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Print Specs -->
+    <section class="specs">
+        <div class="specs-title">PRINT SPECIFICATIONS</div>
+        <div class="specs-grid">
+            <div class="spec-item"><div class="spec-label">Print Technology</div><div class="spec-value">DTF (Direct to Film)</div></div>
+            <div class="spec-item"><div class="spec-label">Max File Size</div><div class="spec-value">10 MB</div></div>
+            <div class="spec-item"><div class="spec-label">Supported Formats</div><div class="spec-value">PNG, JPG, JPEG</div></div>
+            <div class="spec-item"><div class="spec-label">Print Area (T-Shirts)</div><div class="spec-value">12" × 14" (Front Center)</div></div>
+            <div class="spec-item"><div class="spec-label">Color Profile</div><div class="spec-value">CMYK (Auto-converted)</div></div>
+            <div class="spec-item"><div class="spec-label">Min Resolution</div><div class="spec-value">300 DPI recommended</div></div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <h2>READY TO CREATE?</h2>
+        <p>Pick a product, upload your design, and let us handle the rest.</p>
+        <div class="cta-btns">
+            <a href="category.html" class="btn-dark">Shop Products</a>
+            <a href="help.html" class="btn-outline-dark">Need Help?</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">DUO <span>DESIGNS</span></div>
+                <p class="footer-desc">India's premium custom printing platform. Upload your design, pick your product, and wear your imagination.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="category.html">T-Shirts</a>
+                <a href="category.html">Oversized</a>
+                <a href="category.html">Trackpants</a>
+                <a href="category.html">Mugs</a>
+                <a href="category.html">Keychains</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="track.html">Track Order</a>
+                <a href="help.html">FAQ</a>
+                <a href="help.html">Contact Us</a>
+                <a href="help.html">Shipping Policy</a>
+                <a href="help.html">Refund Policy</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="help.html">Privacy Policy</a>
+                <a href="help.html">Terms & Conditions</a>
+                <a href="#">GST Info</a>
+            </div>
+        </div>
+        <div class="footer-bottom">© 2026 Duo Designs. All rights reserved. · GST Compliant · Handcrafted in India 🇮🇳</div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Page Not Found</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; }
+    body { font-family: 'Barlow', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { border-bottom: 1px solid #222; }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--white); text-decoration: none; }
+    .logo span { color: var(--accent); background: #222; padding: 0 4px; }
+
+    /* MAIN */
+    .error-main { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 60px 40px; }
+    .bg-404 { position: absolute; font-family: 'Bebas Neue', sans-serif; font-size: clamp(200px, 40vw, 500px); color: #111; line-height: 1; letter-spacing: -10px; user-select: none; pointer-events: none; animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    .error-content { position: relative; text-align: center; z-index: 1; }
+    .error-tag { display: inline-block; background: var(--accent); color: var(--black); font-weight: 800; font-size: 11px; padding: 6px 14px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+    .error-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(56px, 10vw, 120px); letter-spacing: 2px; line-height: 0.9; margin-bottom: 20px; }
+    .error-title span { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .error-desc { font-size: 16px; color: #888; max-width: 420px; margin: 0 auto 40px; line-height: 1.7; }
+    .error-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn-primary { padding: 14px 36px; background: var(--accent); color: var(--black); border: 2px solid var(--accent); font-family: 'Barlow', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { background: var(--white); border-color: var(--white); }
+    .btn-outline { padding: 14px 36px; background: transparent; color: var(--white); border: 2px solid #333; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-outline:hover { border-color: var(--white); }
+
+    /* QUICK LINKS */
+    .quick-links { display: flex; gap: 0; border: 1px solid #222; flex-wrap: wrap; max-width: 600px; margin: 0 auto; }
+    .quick-link { flex: 1; min-width: 120px; padding: 16px 20px; text-decoration: none; color: #888; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-right: 1px solid #222; text-align: center; transition: all 0.2s; }
+    .quick-link:last-child { border-right: none; }
+    .quick-link:hover { background: #111; color: var(--accent); }
+    .quick-link .ql-icon { font-size: 20px; display: block; margin-bottom: 6px; }
+
+    footer { border-top: 1px solid #222; padding: 20px 40px; text-align: center; font-size: 12px; color: #444; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <a href="index.html" style="font-size:13px;font-weight:700;color:var(--gray);text-decoration:none;border-bottom:2px solid #333;padding-bottom:2px;">← Back to Shop</a>
+  </div>
+</header>
+
+<div class="error-main">
+  <div class="bg-404">404</div>
+  <div class="error-content">
+    <span class="error-tag">Error 404</span>
+    <div class="error-title">PAGE<br/><span>NOT FOUND</span></div>
+    <p class="error-desc">Looks like this page went missing — just like that limited edition drop that sold out in minutes. Let's get you back on track.</p>
+    <div class="error-actions">
+      <a href="index.html" class="btn-primary">← Go to Homepage</a>
+      <a href="category.html" class="btn-outline">Browse Products</a>
+    </div>
+    <div class="quick-links">
+      <a href="category.html" class="quick-link"><span class="ql-icon">👕</span>Shop</a>
+      <a href="track.html" class="quick-link"><span class="ql-icon">📦</span>Track Order</a>
+      <a href="account.html" class="quick-link"><span class="ql-icon">👤</span>My Account</a>
+      <a href="offers.html" class="quick-link"><span class="ql-icon">🏷️</span>Offers</a>
+      <a href="help.html" class="quick-link"><span class="ql-icon">❓</span>Help</a>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 Duo Designs · Made in India 🇮🇳</footer>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — My Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); }
+
+    /* HEADER */
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    nav { display: flex; gap: 32px; }
+    nav a { text-decoration: none; color: var(--black); font-weight: 600; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .cart-btn { background: var(--black); color: var(--white); border: none; padding: 8px 20px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+
+    /* LAYOUT */
+    .account-layout { max-width: 1400px; margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 80px; height: fit-content; }
+    .user-card { background: var(--black); color: var(--white); padding: 28px; margin-bottom: 2px; }
+    .user-avatar { width: 56px; height: 56px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--black); margin-bottom: 14px; }
+    .user-name { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .user-email { font-size: 13px; color: #888; margin-top: 4px; }
+    .user-since { font-size: 11px; color: #555; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+    .sidebar-nav { border: 1.5px solid var(--black); }
+    .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 16px 20px; text-decoration: none; color: var(--black); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--light-gray); transition: all 0.2s; cursor: pointer; background: none; border-right: none; border-left: none; width: 100%; font-family: 'Barlow', sans-serif; }
+    .sidebar-link:last-child { border-bottom: none; }
+    .sidebar-link:hover { background: var(--card-bg); }
+    .sidebar-link.active { background: var(--black); color: var(--white); }
+    .sidebar-link .icon { font-size: 16px; }
+    .sidebar-link .badge { margin-left: auto; background: var(--accent); color: var(--black); font-size: 10px; font-weight: 900; padding: 2px 8px; }
+
+    /* CONTENT */
+    .content-panel { display: none; }
+    .content-panel.active { display: block; }
+    .panel-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 4px; }
+    .panel-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+
+    /* ORDERS */
+    .orders-filter { display: flex; gap: 0; margin-bottom: 28px; border: 1.5px solid var(--black); width: fit-content; }
+    .filter-btn { padding: 10px 20px; background: none; border: none; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-right: 1px solid var(--black); transition: all 0.2s; }
+    .filter-btn:last-child { border-right: none; }
+    .filter-btn.active { background: var(--black); color: var(--white); }
+
+    .order-card { border: 1.5px solid var(--black); margin-bottom: 20px; }
+    .order-header { background: var(--card-bg); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--black); flex-wrap: wrap; gap: 12px; }
+    .order-id { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; }
+    .order-date { font-size: 13px; color: var(--gray); }
+    .order-status { padding: 6px 14px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    .status-placed { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #cfe2ff; color: #084298; }
+    .status-dispatched { background: #d1ecf1; color: #0c5460; }
+    .status-delivered { background: #d4edda; color: #155724; }
+
+    .order-body { padding: 24px; }
+    .order-items { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+    .order-item { display: flex; align-items: center; gap: 16px; }
+    .order-item-img { width: 64px; height: 64px; background: var(--card-bg); border: 1.5px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+    .order-item-info { flex: 1; }
+    .order-item-name { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .order-item-meta { font-size: 12px; color: var(--gray); margin-top: 3px; }
+    .order-item-price { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+
+    .order-timeline { padding: 20px 0; border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); margin-bottom: 20px; }
+    .timeline { display: flex; align-items: center; position: relative; }
+    .timeline-step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .timeline-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--light-gray); background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 14px; z-index: 1; position: relative; }
+    .timeline-dot.done { background: var(--black); border-color: var(--black); color: var(--white); }
+    .timeline-dot.current { background: var(--accent); border-color: var(--black); }
+    .timeline-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; text-align: center; color: var(--gray); }
+    .timeline-label.done, .timeline-label.current { color: var(--black); }
+    .timeline-line { flex: 1; height: 2px; background: var(--light-gray); margin: 0 -1px; margin-bottom: 24px; }
+    .timeline-line.done { background: var(--black); }
+
+    .order-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .order-total { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; }
+    .order-total span { font-size: 13px; color: var(--gray); font-family: 'Barlow', sans-serif; font-weight: 400; margin-right: 6px; }
+    .order-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-sm { padding: 10px 18px; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border: 1.5px solid var(--black); }
+    .btn-sm-primary { background: var(--black); color: var(--white); }
+    .btn-sm-primary:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .btn-sm-outline { background: none; color: var(--black); }
+    .btn-sm-outline:hover { background: var(--black); color: var(--white); }
+
+    .tracking-info { background: var(--card-bg); padding: 14px 20px; border: 1px solid var(--light-gray); margin-bottom: 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .tracking-info .courier { font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .tracking-info .tracking-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--black); }
+    .track-link { font-size: 12px; font-weight: 700; color: var(--black); border-bottom: 2px solid var(--accent); text-decoration: none; }
+
+    /* PROFILE */
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .form-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--black); background: var(--white); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input:disabled { background: var(--card-bg); color: var(--gray); cursor: not-allowed; }
+    .btn-save { background: var(--black); color: var(--white); border: 2px solid var(--black); padding: 14px 36px; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .btn-save:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+
+    /* ADDRESSES */
+    .addresses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .address-card { border: 1.5px solid var(--black); padding: 20px; position: relative; }
+    .address-card.default { border-color: var(--accent); border-width: 2px; }
+    .address-default-badge { position: absolute; top: 12px; right: 12px; background: var(--accent); color: var(--black); font-size: 10px; font-weight: 800; padding: 3px 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .address-name { font-weight: 800; font-size: 15px; text-transform: uppercase; margin-bottom: 6px; }
+    .address-text { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 12px; }
+    .address-phone { font-size: 13px; font-weight: 600; color: var(--gray); margin-bottom: 16px; }
+    .add-address { border: 2px dashed var(--black); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: none; width: 100%; font-family: 'Barlow', sans-serif; transition: background 0.2s; }
+    .add-address:hover { background: var(--card-bg); }
+    .add-address-icon { font-size: 32px; }
+    .add-address-text { font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* STATS CARDS */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: 40px; border: 1.5px solid var(--black); }
+    .stat-card { padding: 24px; border-right: 1px solid var(--black); text-align: center; }
+    .stat-card:last-child { border-right: none; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1px; }
+    .stat-label { font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+    @media (max-width: 1024px) { .account-layout { grid-template-columns: 1fr; } .sidebar { position: static; } .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .account-layout { padding: 24px 20px; } .header-inner { padding: 0 20px; } nav { display: none; } .profile-grid { grid-template-columns: 1fr; } .addresses-grid { grid-template-columns: 1fr; } .stats-row { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <nav>
+      <a href="index.html">Shop</a>
+      <a href="#">Categories</a>
+      <a href="#">Track Order</a>
+    </nav>
+    <button class="cart-btn">🛒 Cart (3)</button>
+  </div>
+</header>
+
+<div class="account-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="user-card">
+      <div class="user-avatar">AK</div>
+      <div class="user-name">Arjun Kumar</div>
+      <div class="user-email">arjun@email.com</div>
+      <div class="user-since">Member since Jan 2025</div>
+    </div>
+    <div class="sidebar-nav">
+      <button class="sidebar-link active" onclick="showPanel('orders')"><span class="icon">📦</span> My Orders <span class="badge">4</span></button>
+      <button class="sidebar-link" onclick="showPanel('profile')"><span class="icon">👤</span> My Profile</button>
+      <button class="sidebar-link" onclick="showPanel('addresses')"><span class="icon">📍</span> Saved Addresses</button>
+      <button class="sidebar-link" onclick="showPanel('password')"><span class="icon">🔒</span> Change Password</button>
+      <button class="sidebar-link" style="color:#e05050;" onclick="alert('Logged out!')"><span class="icon">🚪</span> Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- ── ORDERS PANEL ── -->
+    <div class="content-panel active" id="panel-orders">
+      <div class="panel-title">MY ORDERS</div>
+      <div class="panel-subtitle">Track, download invoices, and manage your orders</div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Total Orders</div></div>
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">In Transit</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Delivered</div></div>
+        <div class="stat-card"><div class="stat-num">₹2,840</div><div class="stat-label">Total Spent</div></div>
+      </div>
+
+      <div class="orders-filter">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Active</button>
+        <button class="filter-btn">Delivered</button>
+      </div>
+
+      <!-- ORDER 1 — DISPATCHED -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#DD-2025-0042</div>
+            <div class="order-date">Placed on 6 March 2025</div>
+          </div>
+          <span class="order-status status-dispatched">🚚 Dispatched</span>
+        </div>
+        <div class="order-body">
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-img">👕</div>
+              <div class="order-item-info">
+                <div class="order-item-name">Oversized Drop Tee</div>
+                <div class="order-item-meta">Black · Size L · Custom Design Upload · Qty: 1</div>
+              </div>
+              <div class="order-item-price">₹699</div>
+            </div>
+            <div class="order-item">
+              <div class="order-item-img">🔑</div>
+              <div class="order-item-info">
+                <div class="order-item-name">Keychain — Double Print</div>
+                <div class="order-item-meta">Silver · Qty: 2</div>
+              </div>
+              <div class="order-item-price">₹398</div>
+            </div>
+          </div>
+
+          <div class="tracking-info">
+            <span>🚚</span>
+            <div>
+              <div class="courier">Delhivery</div>
+              <div style="font-size:12px;color:var(--gray);">Tracking Number</div>
+            </div>
+            <div class="tracking-num">DL4892736401</div>
+            <a href="#" class="track-link">Track Package →</a>
+          </div>
+
+          <div class="order-timeline">
+            <div class="timeline">
+              <div class="timeline-step">
+                <div class="timeline-dot done">✓</div>
+                <div class="timeline-label done">Placed</div>
+              </div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step">
+                <div class="timeline-dot done">✓</div>
+                <div class="timeline-label done">Confirmed</div>
+              </div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step">
+                <div class="timeline-dot current">🚚</div>
+                <div class="timeline-label current">Dispatched</div>
+              </div>
+              <div class="timeline-line"></div>
+              <div class="timeline-step">
+                <div class="timeline-dot">📦</div>
+                <div class="timeline-label">Delivered</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-footer">
+            <div class="order-total"><span>Total Paid</span>₹1,197</div>
+            <div class="order-actions">
+              <button class="btn-sm btn-sm-primary">⬇ Download Invoice</button>
+              <button class="btn-sm btn-sm-outline">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER 2 — DELIVERED -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#DD-2025-0031</div>
+            <div class="order-date">Placed on 18 February 2025</div>
+          </div>
+          <span class="order-status status-delivered">✅ Delivered</span>
+        </div>
+        <div class="order-body">
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-img">☕</div>
+              <div class="order-item-info">
+                <div class="order-item-name">Custom Print Mug</div>
+                <div class="order-item-meta">White · Custom Design Upload · Qty: 2</div>
+              </div>
+              <div class="order-item-price">₹698</div>
+            </div>
+          </div>
+          <div class="order-timeline">
+            <div class="timeline">
+              <div class="timeline-step"><div class="timeline-dot done">✓</div><div class="timeline-label done">Placed</div></div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step"><div class="timeline-dot done">✓</div><div class="timeline-label done">Confirmed</div></div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step"><div class="timeline-dot done">✓</div><div class="timeline-label done">Dispatched</div></div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step"><div class="timeline-dot done">✓</div><div class="timeline-label done">Delivered</div></div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total"><span>Total Paid</span>₹778</div>
+            <div class="order-actions">
+              <button class="btn-sm btn-sm-primary">⬇ Download Invoice</button>
+              <button class="btn-sm btn-sm-outline">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER 3 — PLACED -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#DD-2025-0048</div>
+            <div class="order-date">Placed on 8 March 2025</div>
+          </div>
+          <span class="order-status status-confirmed">✔ Confirmed</span>
+        </div>
+        <div class="order-body">
+          <div class="order-items">
+            <div class="order-item">
+              <div class="order-item-img">👕</div>
+              <div class="order-item-info">
+                <div class="order-item-name">Classic Custom Tee</div>
+                <div class="order-item-meta">White · Size M · Pre-made Design · Qty: 1</div>
+              </div>
+              <div class="order-item-price">₹499</div>
+            </div>
+          </div>
+          <div class="order-timeline">
+            <div class="timeline">
+              <div class="timeline-step"><div class="timeline-dot done">✓</div><div class="timeline-label done">Placed</div></div>
+              <div class="timeline-line done"></div>
+              <div class="timeline-step"><div class="timeline-dot current">✔</div><div class="timeline-label current">Confirmed</div></div>
+              <div class="timeline-line"></div>
+              <div class="timeline-step"><div class="timeline-dot">🚚</div><div class="timeline-label">Dispatched</div></div>
+              <div class="timeline-line"></div>
+              <div class="timeline-step"><div class="timeline-dot">📦</div><div class="timeline-label">Delivered</div></div>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total"><span>Total Paid</span>₹579</div>
+            <div class="order-actions">
+              <button class="btn-sm btn-sm-primary">⬇ Download Invoice</button>
+              <button class="btn-sm btn-sm-outline">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFILE PANEL ── -->
+    <div class="content-panel" id="panel-profile">
+      <div class="panel-title">MY PROFILE</div>
+      <div class="panel-subtitle">Manage your personal information</div>
+      <div class="profile-grid">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" value="Arjun Kumar"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" value="arjun@email.com" disabled/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" value="+91 98765 43210"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input type="date" class="form-input" value="1998-05-14"/>
+        </div>
+      </div>
+      <div class="form-group" style="max-width:50%;">
+        <label class="form-label">Gender</label>
+        <select class="form-input">
+          <option>Male</option><option>Female</option><option>Prefer not to say</option>
+        </select>
+      </div>
+      <button class="btn-save">Save Changes</button>
+    </div>
+
+    <!-- ── ADDRESSES PANEL ── -->
+    <div class="content-panel" id="panel-addresses">
+      <div class="panel-title">SAVED ADDRESSES</div>
+      <div class="panel-subtitle">Manage your delivery addresses</div>
+      <div class="addresses-grid">
+        <div class="address-card default">
+          <span class="address-default-badge">Default</span>
+          <div class="address-name">Arjun Kumar</div>
+          <div class="address-text">42, 3rd Cross, Indiranagar<br/>Bengaluru, Karnataka — 560038</div>
+          <div class="address-phone">📞 +91 98765 43210</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-sm btn-sm-outline">Edit</button>
+            <button class="btn-sm btn-sm-outline" style="color:#e05050;border-color:#e05050;">Remove</button>
+          </div>
+        </div>
+        <div class="address-card">
+          <div class="address-name">Office</div>
+          <div class="address-text">10, Whitefield Main Road<br/>Bengaluru, Karnataka — 560066</div>
+          <div class="address-phone">📞 +91 98765 43210</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-sm btn-sm-outline">Edit</button>
+            <button class="btn-sm btn-sm-primary">Set Default</button>
+            <button class="btn-sm btn-sm-outline" style="color:#e05050;border-color:#e05050;">Remove</button>
+          </div>
+        </div>
+        <button class="add-address">
+          <span class="add-address-icon">＋</span>
+          <span class="add-address-text">Add New Address</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── PASSWORD PANEL ── -->
+    <div class="content-panel" id="panel-password">
+      <div class="panel-title">CHANGE PASSWORD</div>
+      <div class="panel-subtitle">We'll send an OTP to your registered email</div>
+      <div style="max-width:440px;">
+        <div class="form-group">
+          <label class="form-label">Registered Email</label>
+          <input type="email" class="form-input" value="arjun@email.com" disabled/>
+        </div>
+        <button class="btn-save" style="margin-bottom:20px;">Send OTP to Email</button>
+        <div class="form-group">
+          <label class="form-label">Enter OTP</label>
+          <input type="text" class="form-input" placeholder="6-digit OTP" maxlength="6"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" class="form-input" placeholder="Minimum 8 characters"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" class="form-input" placeholder="Repeat new password"/>
+        </div>
+        <button class="btn-save">Update Password</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function showPanel(name) {
+    document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('panel-'+name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+</body>
+</html>

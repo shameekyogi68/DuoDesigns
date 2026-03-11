@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Login / Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --white: #f5f5f0;
+      --accent: #e8ff3b; --gray: #888;
+      --light-gray: #e8e8e2; --card-bg: #f0f0eb;
+      --error: #e05050; --success: #3bb54a;
+    }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* HEADER */
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    .back-link { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--black); text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+
+    /* MAIN LAYOUT */
+    .auth-layout { flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 64px); }
+
+    /* LEFT PANEL */
+    .auth-left {
+      background: var(--black); color: var(--white);
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 80px 60px;
+      position: relative; overflow: hidden;
+    }
+    .auth-left::before {
+      content: 'DD';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 320px; color: #111;
+      position: absolute; right: -40px; bottom: -40px;
+      line-height: 1; letter-spacing: -10px;
+      pointer-events: none;
+    }
+    .auth-left-tag { background: var(--accent); color: var(--black); display: inline-block; padding: 6px 14px; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
+    .auth-left h1 { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 0.9; letter-spacing: 2px; margin-bottom: 24px; }
+    .auth-left h1 span { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .auth-left p { font-size: 15px; color: #888; line-height: 1.7; max-width: 360px; margin-bottom: 48px; }
+    .perks { display: flex; flex-direction: column; gap: 16px; }
+    .perk { display: flex; align-items: center; gap: 14px; }
+    .perk-icon { background: var(--accent); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .perk-text { font-size: 14px; color: #ccc; font-weight: 500; }
+
+    /* RIGHT PANEL */
+    .auth-right { display: flex; align-items: center; justify-content: center; padding: 60px 40px; background: var(--white); }
+    .auth-box { width: 100%; max-width: 440px; }
+
+    /* TABS */
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--black); margin-bottom: 40px; }
+    .tab-btn { padding: 14px; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; background: none; border: none; cursor: pointer; transition: all 0.2s; color: var(--gray); }
+    .tab-btn.active { background: var(--black); color: var(--white); }
+    .tab-btn:first-child { border-right: 1.5px solid var(--black); }
+
+    /* FORMS */
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+    .form-title { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; margin-bottom: 6px; }
+    .form-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 32px; }
+
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .form-input {
+      width: 100%; padding: 14px 16px;
+      border: 1.5px solid var(--black); background: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: 15px;
+      outline: none; transition: border-color 0.2s;
+      color: var(--black);
+    }
+    .form-input:focus { border-color: var(--accent); background: #fffff8; }
+    .form-input::placeholder { color: #bbb; }
+    .form-input.error { border-color: var(--error); }
+
+    .input-hint { font-size: 11px; color: var(--gray); margin-top: 5px; }
+    .error-msg { font-size: 12px; color: var(--error); margin-top: 5px; font-weight: 600; display: none; }
+    .error-msg.show { display: block; }
+
+    /* OTP BOX */
+    .otp-section { display: none; }
+    .otp-section.show { display: block; }
+    .otp-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 12px; }
+    .otp-input {
+      aspect-ratio: 1; text-align: center;
+      border: 1.5px solid var(--black); background: var(--white);
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+      outline: none; transition: all 0.2s;
+    }
+    .otp-input:focus { border-color: var(--accent); background: #fffff8; }
+    .otp-timer { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
+    .otp-timer span { color: var(--black); font-weight: 700; }
+    .resend-btn { background: none; border: none; font-size: 12px; font-weight: 700; text-decoration: underline; cursor: pointer; color: var(--black); padding: 0; }
+    .resend-btn:disabled { color: var(--gray); cursor: not-allowed; text-decoration: none; }
+
+    .btn-submit {
+      width: 100%; padding: 16px;
+      background: var(--black); color: var(--white);
+      border: 2px solid var(--black);
+      font-family: 'Barlow', sans-serif; font-weight: 900;
+      font-size: 14px; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .btn-submit:disabled { background: #ccc; color: #888; border-color: #ccc; cursor: not-allowed; }
+
+    .divider { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1.5px; background: var(--light-gray); }
+    .divider span { font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+    .btn-google {
+      width: 100%; padding: 14px;
+      background: var(--white); color: var(--black);
+      border: 1.5px solid var(--black);
+      font-family: 'Barlow', sans-serif; font-weight: 700;
+      font-size: 14px; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-google:hover { background: var(--card-bg); }
+
+    .terms-note { font-size: 12px; color: var(--gray); text-align: center; margin-top: 20px; line-height: 1.6; }
+    .terms-note a { color: var(--black); font-weight: 700; }
+
+    /* SUCCESS STATE */
+    .success-state { display: none; text-align: center; padding: 40px 0; }
+    .success-state.show { display: block; }
+    .success-icon { font-size: 64px; margin-bottom: 16px; }
+    .success-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; margin-bottom: 8px; }
+    .success-state p { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+
+    /* PASSWORD STRENGTH */
+    .strength-bar { height: 4px; background: var(--light-gray); margin-top: 8px; }
+    .strength-fill { height: 100%; width: 0; transition: width 0.3s, background 0.3s; }
+
+    @media (max-width: 768px) {
+      .auth-layout { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+      .auth-right { padding: 40px 24px; align-items: flex-start; padding-top: 48px; }
+      .header-inner { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <a href="index.html" class="back-link">← Back to Shop</a>
+  </div>
+</header>
+
+<div class="auth-layout">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <span class="auth-left-tag">✦ Welcome to Duo Designs</span>
+    <h1>YOUR<br/><span>DESIGN</span><br/>AWAITS</h1>
+    <p>Sign in to track orders, save your designs, and get exclusive member offers.</p>
+    <div class="perks">
+      <div class="perk">
+        <div class="perk-icon">🎨</div>
+        <div class="perk-text">Save & reuse your custom designs</div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">📦</div>
+        <div class="perk-text">Track all your orders in one place</div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">🏷️</div>
+        <div class="perk-text">Exclusive member discounts & early offers</div>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">🧾</div>
+        <div class="perk-text">Download GST invoices anytime</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-box">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- ────── LOGIN PANEL ────── -->
+      <div class="form-panel active" id="panel-login">
+        <div class="form-title">SIGN IN</div>
+        <div class="form-subtitle">Enter your email to receive a one-time password</div>
+
+        <!-- Step 1: Email -->
+        <div id="login-step1">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="login-email" placeholder="you@example.com"/>
+            <div class="error-msg" id="login-email-err">Please enter a valid email</div>
+          </div>
+          <button class="btn-submit" onclick="sendLoginOTP()">Send OTP →</button>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div class="otp-section" id="login-step2">
+          <div class="form-group">
+            <label class="form-label">Enter OTP sent to your email</label>
+            <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,0,'login')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,1,'login')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,2,'login')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,3,'login')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,4,'login')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,5,'login')"/>
+            </div>
+            <div class="otp-timer">OTP expires in <span id="login-timer">10:00</span> &nbsp;·&nbsp; <button class="resend-btn" id="login-resend" disabled onclick="sendLoginOTP()">Resend OTP</button></div>
+            <div class="error-msg" id="login-otp-err">Invalid OTP. Please try again.</div>
+          </div>
+          <button class="btn-submit" onclick="verifyLoginOTP()">Verify & Sign In →</button>
+          <button style="width:100%;margin-top:10px;background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:10px;" onclick="backToEmail('login')">← Change email</button>
+        </div>
+
+        <!-- Success -->
+        <div class="success-state" id="login-success">
+          <div class="success-icon">✅</div>
+          <h3>WELCOME BACK!</h3>
+          <p>You're signed in successfully.</p>
+          <button class="btn-submit" onclick="window.location.href='account.html'">Go to My Account →</button>
+        </div>
+
+        <div class="divider"><span>or</span></div>
+        <button class="btn-google">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- ────── SIGNUP PANEL ────── -->
+      <div class="form-panel" id="panel-signup">
+        <div class="form-title">CREATE ACCOUNT</div>
+        <div class="form-subtitle">Join Duo Designs and start customizing</div>
+
+        <!-- Step 1: Details -->
+        <div id="signup-step1">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="signup-name" placeholder="Your full name"/>
+            <div class="error-msg" id="signup-name-err">Please enter your name</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="signup-email" placeholder="you@example.com"/>
+            <div class="error-msg" id="signup-email-err">Please enter a valid email</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-input" id="signup-phone" placeholder="+91 98765 43210"/>
+            <div class="input-hint">For order updates only</div>
+            <div class="error-msg" id="signup-phone-err">Please enter a valid phone number</div>
+          </div>
+          <button class="btn-submit" onclick="sendSignupOTP()">Send Verification OTP →</button>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div class="otp-section" id="signup-step2">
+          <div class="form-group">
+            <label class="form-label">Enter OTP sent to your email</label>
+            <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,0,'signup')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,1,'signup')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,2,'signup')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,3,'signup')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,4,'signup')"/>
+              <input type="text" maxlength="1" class="otp-input" oninput="otpMove(this,5,'signup')"/>
+            </div>
+            <div class="otp-timer">OTP expires in <span id="signup-timer">10:00</span> &nbsp;·&nbsp; <button class="resend-btn" id="signup-resend" disabled onclick="sendSignupOTP()">Resend OTP</button></div>
+            <div class="error-msg" id="signup-otp-err">Invalid OTP. Please try again.</div>
+          </div>
+          <button class="btn-submit" onclick="verifySignupOTP()">Verify & Create Account →</button>
+          <button style="width:100%;margin-top:10px;background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:10px;" onclick="backToEmail('signup')">← Change details</button>
+        </div>
+
+        <!-- Success -->
+        <div class="success-state" id="signup-success">
+          <div class="success-icon">🎉</div>
+          <h3>ACCOUNT CREATED!</h3>
+          <p>Welcome to Duo Designs. Start customizing!</p>
+          <button class="btn-submit" onclick="window.location.href='index.html'">Start Shopping →</button>
+        </div>
+
+        <div class="divider"><span>or</span></div>
+        <button class="btn-google">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Sign up with Google
+        </button>
+        <p class="terms-note">By signing up you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // TAB SWITCHING
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+    document.getElementById('panel-login').classList.toggle('active', tab==='login');
+    document.getElementById('panel-signup').classList.toggle('active', tab==='signup');
+  }
+
+  // OTP AUTO-MOVE
+  function otpMove(el, idx, form) {
+    el.value = el.value.replace(/[^0-9]/g,'');
+    const inputs = el.closest('.otp-inputs').querySelectorAll('.otp-input');
+    if (el.value && idx < 5) inputs[idx+1].focus();
+  }
+
+  // TIMER
+  function startTimer(id, resendId, seconds=600) {
+    clearInterval(window['timer_'+id]);
+    let s = seconds;
+    const el = document.getElementById(id);
+    const resend = document.getElementById(resendId);
+    resend.disabled = true;
+    window['timer_'+id] = setInterval(() => {
+      const m = Math.floor(s/60), sec = s%60;
+      el.textContent = `${m}:${sec.toString().padStart(2,'0')}`;
+      s--;
+      if (s < 0) { clearInterval(window['timer_'+id]); el.textContent = '0:00'; resend.disabled = false; }
+    }, 1000);
+  }
+
+  // LOGIN
+  function sendLoginOTP() {
+    const email = document.getElementById('login-email').value;
+    const err = document.getElementById('login-email-err');
+    if (!email || !/\S+@\S+\.\S+/.test(email)) { err.classList.add('show'); return; }
+    err.classList.remove('show');
+    document.getElementById('login-step1').style.display = 'none';
+    document.getElementById('login-step2').classList.add('show');
+    startTimer('login-timer','login-resend');
+  }
+  function verifyLoginOTP() {
+    const inputs = document.querySelectorAll('#login-step2 .otp-input');
+    const otp = Array.from(inputs).map(i=>i.value).join('');
+    if (otp.length < 6) { document.getElementById('login-otp-err').classList.add('show'); return; }
+    document.getElementById('login-otp-err').classList.remove('show');
+    document.getElementById('login-step2').classList.remove('show');
+    document.getElementById('login-success').classList.add('show');
+  }
+
+  // SIGNUP
+  function sendSignupOTP() {
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const phone = document.getElementById('signup-phone').value;
+    let valid = true;
+    if (!name) { document.getElementById('signup-name-err').classList.add('show'); valid=false; } else document.getElementById('signup-name-err').classList.remove('show');
+    if (!email||!/\S+@\S+\.\S+/.test(email)) { document.getElementById('signup-email-err').classList.add('show'); valid=false; } else document.getElementById('signup-email-err').classList.remove('show');
+    if (!phone||phone.length < 10) { document.getElementById('signup-phone-err').classList.add('show'); valid=false; } else document.getElementById('signup-phone-err').classList.remove('show');
+    if (!valid) return;
+    document.getElementById('signup-step1').style.display='none';
+    document.getElementById('signup-step2').classList.add('show');
+    startTimer('signup-timer','signup-resend');
+  }
+  function verifySignupOTP() {
+    const inputs = document.querySelectorAll('#signup-step2 .otp-input');
+    const otp = Array.from(inputs).map(i=>i.value).join('');
+    if (otp.length < 6) { document.getElementById('signup-otp-err').classList.add('show'); return; }
+    document.getElementById('signup-otp-err').classList.remove('show');
+    document.getElementById('signup-step2').classList.remove('show');
+    document.getElementById('signup-success').classList.add('show');
+  }
+
+  function backToEmail(form) {
+    document.getElementById(form+'-step2').classList.remove('show');
+    document.getElementById(form+'-step1').style.display='block';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Wear Your Imagination</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f5f0;
+      --accent: #e8ff3b;
+      --gray: #888;
+      --light-gray: #e8e8e2;
+      --card-bg: #f0f0eb;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ANNOUNCEMENT BAR */
+    .announce {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+    .announce span { color: var(--accent); font-weight: 700; }
+
+    /* HEADER */
+    header {
+      background: var(--white);
+      border-bottom: 1.5px solid var(--black);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 2px;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    nav { display: flex; gap: 32px; }
+    nav a {
+      text-decoration: none;
+      color: var(--black);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent);
+      transition: width 0.25s ease;
+    }
+    nav a:hover::after { width: 100%; }
+    .header-actions { display: flex; gap: 20px; align-items: center; }
+    .header-actions button {
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; color: var(--black);
+    }
+    .cart-btn {
+      background: var(--black) !important;
+      color: var(--white) !important;
+      border: none;
+      padding: 8px 20px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--accent); color: var(--black);
+      border-radius: 50%; width: 18px; height: 18px;
+      font-size: 10px; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 580px;
+      align-items: center;
+      border-bottom: 1.5px solid var(--black);
+    }
+    .hero-text { padding: 60px 0; }
+    .hero-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--black);
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 7vw, 110px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+    .hero h1 .outline {
+      -webkit-text-stroke: 2px var(--black);
+      color: transparent;
+    }
+    .hero p {
+      font-size: 16px;
+      color: #444;
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+      font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      padding: 14px 36px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 2px solid var(--black);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent); color: var(--black); }
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      padding: 14px 36px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 2px solid var(--black);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+    .hero-stats {
+      display: flex; gap: 36px; margin-top: 48px;
+      padding-top: 36px; border-top: 1.5px solid var(--black);
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px; letter-spacing: 1px;
+    }
+    .stat-label { font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .hero-image {
+      height: 100%;
+      min-height: 580px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border-left: 1.5px solid var(--black);
+    }
+    .hero-image-placeholder {
+      text-align: center;
+      color: var(--white);
+    }
+    .hero-image-placeholder .big-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      letter-spacing: 4px;
+      color: var(--accent);
+      display: block;
+    }
+    .hero-image-placeholder p { font-size: 14px; color: #888; margin-top: 8px; }
+    .hero-badge {
+      position: absolute;
+      bottom: 32px; right: 32px;
+      background: var(--accent);
+      color: var(--black);
+      padding: 16px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: var(--black);
+      padding: 14px 0;
+      overflow: hidden;
+      border-top: 1.5px solid var(--black);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 60px;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--white);
+    }
+    .marquee-track span.dot { color: var(--accent); font-size: 28px; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* CATEGORIES */
+    .section { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
+    .section-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 48px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(42px, 5vw, 72px);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .section-title .outline {
+      -webkit-text-stroke: 2px var(--black);
+      color: transparent;
+    }
+    .see-all {
+      font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--black); text-decoration: none;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 2px;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .cat-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--black);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cat-card:hover { background: var(--black); color: var(--white); transform: translateY(-4px); }
+    .cat-card:hover .cat-icon { filter: invert(1); }
+    .cat-icon { font-size: 40px; margin-bottom: 16px; display: block; transition: filter 0.2s; }
+    .cat-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .cat-count { font-size: 12px; color: var(--gray); margin-top: 4px; }
+    .cat-card:hover .cat-count { color: #aaa; }
+    .cat-card.featured { background: var(--black); color: var(--white); grid-column: span 2; }
+    .cat-card.featured .cat-icon { filter: invert(1); font-size: 56px; }
+    .cat-card.featured .cat-name { font-size: 24px; }
+    .cat-card.featured:hover { background: var(--accent); color: var(--black); }
+    .cat-card.featured:hover .cat-icon { filter: none; }
+
+    /* PRODUCTS */
+    .products-section { border-top: 1.5px solid var(--black); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .product-card {
+      border-right: 1.5px solid var(--black);
+      border-bottom: 1.5px solid var(--black);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card:nth-child(4n) { border-right: none; }
+    .product-card:hover { background: var(--card-bg); }
+    .product-img {
+      aspect-ratio: 1;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      border-bottom: 1.5px solid var(--black);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s;
+    }
+    .product-card:hover .product-img { background: #e0e0da; }
+    .product-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--accent); color: var(--black);
+      font-weight: 800; font-size: 10px;
+      padding: 4px 10px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .product-badge.new { background: var(--black); color: var(--white); }
+    .product-info { padding: 20px; }
+    .product-name {
+      font-weight: 700; font-size: 15px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .product-colors { display: flex; gap: 6px; margin-bottom: 12px; }
+    .color-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid var(--black); cursor: pointer;
+    }
+    .product-price { display: flex; align-items: center; gap: 10px; }
+    .price { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; }
+    .price-old { font-size: 14px; color: var(--gray); text-decoration: line-through; }
+    .stock-warn { font-size: 11px; color: #e05; font-weight: 700; margin-top: 6px; letter-spacing: 0.5px; }
+    .add-to-cart {
+      width: 100%; margin-top: 14px;
+      background: var(--black); color: var(--white);
+      border: none; padding: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 800; font-size: 12px;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .add-to-cart:hover { background: var(--accent); color: var(--black); }
+
+    /* HOW IT WORKS */
+    .how-section {
+      background: var(--black);
+      color: var(--white);
+      border-top: 1.5px solid var(--black);
+    }
+    .how-inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 80px 40px;
+    }
+    .how-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(42px, 5vw, 72px);
+      letter-spacing: 2px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    .how-title span { color: var(--accent); }
+    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .how-step {
+      padding: 48px 40px;
+      border-right: 1px solid #333;
+      position: relative;
+    }
+    .how-step:last-child { border-right: none; }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px; color: #222;
+      line-height: 1; margin-bottom: 16px;
+    }
+    .step-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 12px; color: var(--accent);
+    }
+    .step-desc { font-size: 14px; color: #888; line-height: 1.6; }
+
+    /* OFFER BANNER */
+    .offer-banner {
+      background: var(--accent);
+      border-top: 1.5px solid var(--black);
+      border-bottom: 1.5px solid var(--black);
+    }
+    .offer-inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 40px 40px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .offer-text h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px; letter-spacing: 2px; line-height: 1;
+      color: var(--black);
+    }
+    .offer-text p { font-size: 15px; color: #333; margin-top: 6px; font-weight: 600; }
+    .coupon-box {
+      display: flex; align-items: center;
+      border: 2.5px dashed var(--black);
+      padding: 12px 24px;
+      background: var(--white);
+      gap: 16px;
+    }
+    .coupon-code {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; letter-spacing: 3px;
+      color: var(--black);
+    }
+    .copy-btn {
+      background: var(--black); color: var(--white);
+      border: none; padding: 8px 16px;
+      font-weight: 800; font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-section { border-top: 1.5px solid var(--black); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .testimonial-card {
+      padding: 40px;
+      border-right: 1.5px solid var(--black);
+    }
+    .testimonial-card:last-child { border-right: none; }
+    .stars { font-size: 18px; margin-bottom: 16px; letter-spacing: 2px; }
+    .testimonial-text {
+      font-size: 15px; line-height: 1.7; margin-bottom: 20px;
+      font-style: italic; color: #333;
+    }
+    .testimonial-author { font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .testimonial-product { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      border-top: 1.5px solid var(--black);
+    }
+    .footer-inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 64px 40px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+    }
+    .footer-brand .logo { color: var(--white); font-size: 32px; }
+    .footer-brand p { font-size: 14px; color: #888; margin-top: 16px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: 20px; color: var(--accent);
+    }
+    .footer-col a {
+      display: block; color: #888;
+      text-decoration: none; font-size: 14px;
+      margin-bottom: 10px; transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1400px; margin: 0 auto;
+      padding: 24px 40px;
+      border-top: 1px solid #222;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 13px; color: #555; }
+    .payment-icons { display: flex; gap: 8px; }
+    .payment-icon {
+      background: #222; padding: 4px 10px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; color: #888;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .cat-card.featured { grid-column: span 1; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-card:nth-child(4n) { border-right: 1.5px solid var(--black); }
+      .product-card:nth-child(2n) { border-right: none; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      .header-inner { padding: 0 20px; }
+      nav { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { display: none; }
+      .section { padding: 48px 20px; }
+      .how-steps { grid-template-columns: 1fr; }
+      .how-step { border-right: none; border-bottom: 1px solid #333; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .testimonial-card { border-right: none; border-bottom: 1.5px solid var(--black); }
+      .offer-inner { flex-direction: column; }
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px 32px; }
+      .footer-bottom { flex-direction: column; gap: 12px; padding: 20px; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text > * { animation: fadeUp 0.6s ease both; }
+    .hero-tag { animation-delay: 0.1s; }
+    .hero h1 { animation-delay: 0.2s; }
+    .hero p { animation-delay: 0.3s; }
+    .hero-btns { animation-delay: 0.4s; }
+    .hero-stats { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce">
+  🎉 First order? Use code <span>FIRST10</span> for 10% off! &nbsp;|&nbsp; Free shipping above ₹999 &nbsp;|&nbsp; 100% Prepaid · No COD
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">DUO<span>DESIGNS</span></a>
+    <nav>
+      <a href="#">Shop</a>
+      <a href="#">Categories</a>
+      <a href="#">Custom Design</a>
+      <a href="#">Offers</a>
+      <a href="#">Track Order</a>
+    </nav>
+    <div class="header-actions">
+      <button title="Search">🔍</button>
+      <button title="Account">👤</button>
+      <button class="cart-btn" title="Cart">
+        🛒 Cart
+        <span class="cart-count">3</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">✦ Custom Printing India</span>
+      <h1>WEAR<br/><span class="outline">YOUR</span><br/>VISION</h1>
+      <p>Upload your design or pick from our collection. Custom T-shirts, mugs, keychains & more — printed and delivered to your door.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary">Design Now →</a>
+        <a href="#" class="btn-outline">Browse Products</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Orders Delivered</div>
+        </div>
+        <div>
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Product Types</div>
+        </div>
+        <div>
+          <div class="stat-num">4.9★</div>
+          <div class="stat-label">Customer Rating</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-placeholder">
+        <span class="big-text">YOUR<br/>DESIGN<br/>HERE</span>
+        <p>Upload PNG / JPG · Max 10MB</p>
+      </div>
+      <div class="hero-badge">FREE<br/>SHIPPING<br/>₹999+</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>T-SHIRTS</span><span class="dot">✦</span>
+    <span>OVERSIZED</span><span class="dot">✦</span>
+    <span>MUGS</span><span class="dot">✦</span>
+    <span>KEYCHAINS</span><span class="dot">✦</span>
+    <span>TRACKPANTS</span><span class="dot">✦</span>
+    <span>CUSTOM DESIGN</span><span class="dot">✦</span>
+    <span>PREPAID ONLY</span><span class="dot">✦</span>
+    <span>GST INVOICE</span><span class="dot">✦</span>
+    <span>T-SHIRTS</span><span class="dot">✦</span>
+    <span>OVERSIZED</span><span class="dot">✦</span>
+    <span>MUGS</span><span class="dot">✦</span>
+    <span>KEYCHAINS</span><span class="dot">✦</span>
+    <span>TRACKPANTS</span><span class="dot">✦</span>
+    <span>CUSTOM DESIGN</span><span class="dot">✦</span>
+    <span>PREPAID ONLY</span><span class="dot">✦</span>
+    <span>GST INVOICE</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">SHOP BY<br/><span class="outline">CATEGORY</span></div>
+    <a href="#" class="see-all">View All →</a>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card featured">
+      <span class="cat-icon">👕</span>
+      <div class="cat-name">Regular T-Shirts</div>
+      <div class="cat-count">12 products</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🧥</span>
+      <div class="cat-name">Oversized</div>
+      <div class="cat-count">8 products</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">👖</span>
+      <div class="cat-name">Trackpants</div>
+      <div class="cat-count">6 products</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">☕</span>
+      <div class="cat-name">Mugs</div>
+      <div class="cat-count">5 products</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🔑</span>
+      <div class="cat-name">Keychains</div>
+      <div class="cat-count">4 products</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="section" style="padding-bottom: 0;">
+    <div class="section-header">
+      <div class="section-title">BEST<br/><span class="outline">SELLERS</span></div>
+      <a href="#" class="see-all">View All →</a>
+    </div>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="product-img">
+        👕
+        <span class="product-badge">HOT</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Classic Custom Tee</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#0a0a0a;" title="Black"></div>
+          <div class="color-dot" style="background:#f5f5f0;" title="White"></div>
+          <div class="color-dot" style="background:#e8ff3b;" title="Yellow"></div>
+          <div class="color-dot" style="background:#e05050;" title="Red"></div>
+        </div>
+        <div class="product-price">
+          <span class="price">₹499</span>
+          <span class="price-old">₹699</span>
+        </div>
+        <div class="stock-warn">⚡ Only 4 left in Black/M</div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        🧥
+        <span class="product-badge new">NEW</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Oversized Drop Tee</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#0a0a0a;" title="Black"></div>
+          <div class="color-dot" style="background:#888;" title="Grey"></div>
+          <div class="color-dot" style="background:#4a7c59;" title="Green"></div>
+        </div>
+        <div class="product-price">
+          <span class="price">₹699</span>
+          <span class="price-old">₹999</span>
+        </div>
+        <div class="stock-warn">⚡ Only 2 left in Grey/L</div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">☕</div>
+      <div class="product-info">
+        <div class="product-name">Custom Print Mug</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#f5f5f0;" title="White"></div>
+          <div class="color-dot" style="background:#0a0a0a;" title="Black"></div>
+        </div>
+        <div class="product-price">
+          <span class="price">₹349</span>
+        </div>
+        <button class="add-to-cart" style="margin-top:28px;">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        🔑
+        <span class="product-badge">SALE</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Keychain — Double Print</div>
+        <div class="product-colors">
+          <div class="color-dot" style="background:#c0a060;" title="Gold"></div>
+          <div class="color-dot" style="background:#888;" title="Silver"></div>
+        </div>
+        <div class="product-price">
+          <span class="price">₹199</span>
+          <span class="price-old">₹299</span>
+        </div>
+        <div class="stock-warn">⚡ Only 6 left</div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="how-title">HOW IT <span>WORKS</span></div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <span class="step-icon">🎨</span>
+        <div class="step-title">Pick & Customize</div>
+        <p class="step-desc">Choose your product, select color and size, then upload your PNG/JPG design (max 10MB) or pick from our pre-made designs.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <span class="step-icon">💳</span>
+        <div class="step-title">Pay Securely</div>
+        <p class="step-desc">Pay safely via Razorpay — UPI, cards, netbanking all accepted. 100% prepaid. GST invoice generated instantly.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <span class="step-icon">📦</span>
+        <div class="step-title">Get Delivered</div>
+        <p class="step-desc">We print, pack and dispatch. You get email updates with courier name and tracking number every step of the way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER BANNER -->
+<div class="offer-banner">
+  <div class="offer-inner">
+    <div class="offer-text">
+      <h2>FIRST ORDER? GET 10% OFF!</h2>
+      <p>Use this code at checkout · Valid for all products · No minimum order</p>
+    </div>
+    <div class="coupon-box">
+      <span class="coupon-code">FIRST10</span>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('FIRST10'); this.textContent='COPIED!'">COPY</button>
+    </div>
+    <a href="#" class="btn-primary">Shop Now →</a>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section" style="padding-bottom: 0;">
+    <div class="section-header" style="margin-bottom: 0;">
+      <div class="section-title">WHAT CUSTOMERS<br/><span class="outline">SAY</span></div>
+    </div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Ordered a custom oversized tee with my own design — the print quality is insane. Delivered in 4 days. Will definitely order again!"</p>
+      <div class="testimonial-author">Arjun K.</div>
+      <div class="testimonial-product">Oversized T-shirt · Black · XL</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Gifted custom mugs for my team. The double-side print keychains were a bonus. The GST invoice made it easy for reimbursement too!"</p>
+      <div class="testimonial-author">Priya M.</div>
+      <div class="testimonial-product">Mugs + Keychains · Bulk Order</div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★☆</div>
+      <p class="testimonial-text">"Super easy to upload my PNG design and see a preview. The OTP login was smooth and I got my tracking number by email the same day it shipped."</p>
+      <div class="testimonial-author">Rahul S.</div>
+      <div class="testimonial-product">Regular T-shirt · White · M</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="logo">DUO<span>DESIGNS</span></a>
+      <p>India's customization platform. Upload your design, pick your product, and wear your imagination. 100% prepaid. GST invoices included.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">T-Shirts</a>
+      <a href="#">Oversized</a>
+      <a href="#">Trackpants</a>
+      <a href="#">Mugs</a>
+      <a href="#">Keychains</a>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <a href="#">Track Order</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Shipping Policy</a>
+      <a href="#">Refund Policy</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">GST Info</a>
+      <a href="#">About Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Duo Designs. All rights reserved. · GST Compliant · Made in India 🇮🇳</p>
+    <div class="payment-icons">
+      <span class="payment-icon">UPI</span>
+      <span class="payment-icon">VISA</span>
+      <span class="payment-icon">MC</span>
+      <span class="payment-icon">RAZORPAY</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

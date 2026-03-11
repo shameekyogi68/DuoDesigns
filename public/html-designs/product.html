@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Oversized Drop Tee</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; --error: #e05050; }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); }
+
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    nav { display: flex; gap: 32px; }
+    nav a { text-decoration: none; color: var(--black); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cart-btn { background: var(--black); color: var(--white); border: none; padding: 8px 20px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; position: relative; }
+    .cart-count { position: absolute; top: -6px; right: -6px; background: var(--accent); color: var(--black); border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+
+    /* BREADCRUMB */
+    .breadcrumb { max-width: 1400px; margin: 0 auto; padding: 16px 40px; font-size: 13px; color: var(--gray); display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--light-gray); }
+    .breadcrumb a { color: var(--gray); text-decoration: none; } .breadcrumb a:hover { color: var(--black); }
+    .breadcrumb span { color: var(--black); font-weight: 600; }
+
+    /* PRODUCT LAYOUT */
+    .product-layout { max-width: 1400px; margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+
+    /* IMAGE GALLERY */
+    .gallery { display: grid; grid-template-columns: 80px 1fr; gap: 12px; }
+    .thumbs { display: flex; flex-direction: column; gap: 10px; }
+    .thumb { width: 80px; height: 80px; border: 1.5px solid var(--light-gray); background: var(--card-bg); display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; transition: border-color 0.2s; flex-shrink: 0; }
+    .thumb.active { border-color: var(--black); border-width: 2px; }
+    .main-img { aspect-ratio: 1; background: var(--card-bg); border: 1.5px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 120px; position: relative; overflow: hidden; }
+    .img-badge { position: absolute; top: 16px; left: 16px; background: var(--accent); color: var(--black); font-weight: 800; font-size: 11px; padding: 5px 12px; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* PRODUCT INFO */
+    .product-info { }
+    .product-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-bottom: 12px; }
+    .product-name { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 0.95; letter-spacing: 2px; margin-bottom: 16px; }
+    .product-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .stars { font-size: 16px; letter-spacing: 1px; }
+    .rating-count { font-size: 13px; color: var(--gray); border-bottom: 1px solid var(--gray); cursor: pointer; }
+    .product-price { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .price-main { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 1px; }
+    .price-old { font-size: 20px; color: var(--gray); text-decoration: line-through; }
+    .price-save { background: var(--accent); color: var(--black); font-weight: 800; font-size: 12px; padding: 3px 10px; }
+    .price-note { font-size: 12px; color: var(--gray); margin-bottom: 24px; }
+    .price-note span { font-weight: 700; color: var(--black); }
+    .divider-line { height: 1.5px; background: var(--light-gray); margin: 24px 0; }
+
+    /* OPTIONS */
+    .option-label { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .option-label a { font-size: 11px; color: var(--black); border-bottom: 1.5px solid var(--accent); text-decoration: none; }
+
+    .color-options { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .color-swatch { width: 36px; height: 36px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; position: relative; }
+    .color-swatch.active { border-color: var(--black); }
+    .color-swatch:hover { transform: scale(1.1); }
+    .color-name-display { font-size: 13px; color: var(--gray); margin-top: -16px; margin-bottom: 20px; }
+
+    .size-options { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .size-btn { padding: 10px 18px; border: 1.5px solid var(--black); background: var(--white); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
+    .size-btn:hover { background: var(--card-bg); }
+    .size-btn.active { background: var(--black); color: var(--white); }
+    .size-btn.out { border-color: var(--light-gray); color: var(--light-gray); cursor: not-allowed; text-decoration: line-through; }
+    .stock-msg { font-size: 12px; font-weight: 700; color: var(--error); margin-bottom: 24px; }
+    .stock-good { color: #3bb54a; }
+
+    /* DESIGN UPLOAD */
+    .design-section { border: 1.5px solid var(--black); margin-bottom: 24px; }
+    .design-header { background: var(--black); color: var(--white); padding: 12px 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; justify-content: space-between; }
+    .design-toggle { background: none; border: 1px solid #555; color: var(--white); padding: 4px 12px; font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; }
+    .design-body { padding: 20px; }
+    .design-tabs { display: flex; gap: 0; border: 1.5px solid var(--black); margin-bottom: 16px; }
+    .design-tab { flex: 1; padding: 10px; background: none; border: none; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-right: 1px solid var(--black); transition: all 0.2s; }
+    .design-tab:last-child { border-right: none; }
+    .design-tab.active { background: var(--black); color: var(--white); }
+    .upload-zone { border: 2px dashed var(--black); padding: 32px 20px; text-align: center; cursor: pointer; transition: background 0.2s; }
+    .upload-zone:hover { background: var(--card-bg); }
+    .upload-zone input { display: none; }
+    .upload-icon { font-size: 36px; margin-bottom: 10px; }
+    .upload-text { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .upload-hint { font-size: 12px; color: var(--gray); }
+    .premade-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .premade-design { aspect-ratio: 1; background: var(--card-bg); border: 2px solid transparent; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; transition: all 0.2s; }
+    .premade-design:hover { border-color: var(--black); }
+    .premade-design.active { border-color: var(--accent); border-width: 3px; }
+    .design-preview { display: none; padding: 12px; background: var(--card-bg); border-top: 1px solid var(--light-gray); align-items: center; gap: 12px; }
+    .design-preview.show { display: flex; }
+    .preview-thumb { width: 48px; height: 48px; background: var(--white); border: 1px solid var(--black); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .preview-name { font-size: 13px; font-weight: 700; flex: 1; }
+    .remove-design { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--error); }
+
+    /* QUANTITY & CTA */
+    .qty-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .qty-label { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+    .qty-control { display: flex; align-items: center; border: 1.5px solid var(--black); }
+    .qty-btn { width: 40px; height: 40px; background: none; border: none; font-size: 20px; cursor: pointer; font-weight: 700; transition: background 0.2s; }
+    .qty-btn:hover { background: var(--card-bg); }
+    .qty-num { width: 48px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; border-left: 1.5px solid var(--black); border-right: 1.5px solid var(--black); line-height: 40px; }
+
+    .cta-row { display: flex; gap: 12px; margin-bottom: 20px; }
+    .btn-cart { flex: 1; padding: 16px; background: var(--black); color: var(--white); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .btn-cart:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+    .btn-buy { flex: 1; padding: 16px; background: var(--accent); color: var(--black); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .btn-buy:hover { background: var(--black); color: var(--white); }
+
+    /* PINCODE CHECK */
+    .pincode-check { border: 1.5px solid var(--light-gray); padding: 16px 20px; margin-bottom: 20px; }
+    .pincode-row { display: flex; gap: 10px; }
+    .pincode-input { flex: 1; padding: 10px 14px; border: 1.5px solid var(--black); font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; }
+    .pincode-input:focus { border-color: var(--accent); }
+    .pincode-btn { padding: 10px 18px; background: var(--black); color: var(--white); border: none; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+    .pincode-result { margin-top: 10px; font-size: 13px; font-weight: 600; display: none; }
+    .pincode-result.ok { color: #3bb54a; display: block; }
+    .pincode-result.fail { color: var(--error); display: block; }
+
+    /* TRUST BADGES */
+    .trust-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1.5px solid var(--light-gray); margin-bottom: 24px; }
+    .trust-item { padding: 14px 12px; text-align: center; border-right: 1px solid var(--light-gray); }
+    .trust-item:last-child { border-right: none; }
+    .trust-icon { font-size: 20px; margin-bottom: 4px; }
+    .trust-text { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); }
+
+    /* PRODUCT DETAILS ACCORDION */
+    .accordion { margin-bottom: 48px; }
+    .acc-item { border-bottom: 1.5px solid var(--black); }
+    .acc-header { width: 100%; padding: 18px 0; background: none; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+    .acc-icon { font-size: 20px; transition: transform 0.2s; }
+    .acc-item.open .acc-icon { transform: rotate(45deg); }
+    .acc-body { display: none; padding-bottom: 20px; font-size: 14px; color: #444; line-height: 1.8; }
+    .acc-item.open .acc-body { display: block; }
+
+    @media (max-width: 1024px) { .product-layout { grid-template-columns: 1fr; gap: 40px; } .gallery { grid-template-columns: 60px 1fr; } }
+    @media (max-width: 768px) { .header-inner { padding: 0 20px; } nav { display: none; } .product-layout { padding: 24px 20px; } .breadcrumb { padding: 12px 20px; } .gallery { grid-template-columns: 1fr; } .thumbs { flex-direction: row; } .thumb { width: 64px; height: 64px; } .premade-grid { grid-template-columns: repeat(3, 1fr); } .cta-row { flex-direction: column; } .trust-row { grid-template-columns: 1fr; } .trust-item { border-right: none; border-bottom: 1px solid var(--light-gray); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <nav><a href="index.html">Shop</a><a href="#">Categories</a><a href="#">Offers</a><a href="#">Track Order</a></nav>
+    <button class="cart-btn">🛒 Cart<span class="cart-count">3</span></button>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a> › <a href="#">T-Shirts</a> › <a href="#">Oversized</a> › <span>Oversized Drop Tee</span>
+</div>
+
+<div class="product-layout">
+
+  <!-- GALLERY -->
+  <div class="gallery">
+    <div class="thumbs">
+      <div class="thumb active" onclick="selectThumb(this)">🧥</div>
+      <div class="thumb" onclick="selectThumb(this)">👕</div>
+      <div class="thumb" onclick="selectThumb(this)">🔍</div>
+      <div class="thumb" onclick="selectThumb(this)">📐</div>
+    </div>
+    <div>
+      <div class="main-img" id="main-img">
+        🧥
+        <span class="img-badge">NEW ARRIVAL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT INFO -->
+  <div class="product-info">
+    <div class="product-category">Oversized T-Shirt</div>
+    <div class="product-name">OVERSIZED<br/>DROP TEE</div>
+    <div class="product-rating">
+      <span class="stars">★★★★★</span>
+      <span style="font-weight:700;font-size:14px;">4.9</span>
+      <a href="#" class="rating-count">24 reviews</a>
+    </div>
+
+    <div class="product-price">
+      <span class="price-main" id="display-price">₹699</span>
+      <span class="price-old">₹999</span>
+      <span class="price-save">30% OFF</span>
+    </div>
+    <div class="price-note">Incl. GST · <span>Free shipping above ₹999</span></div>
+    <div class="divider-line"></div>
+
+    <!-- COLOR -->
+    <div class="option-label">Color: <span id="selected-color-name" style="font-weight:400;color:var(--gray);text-transform:none;letter-spacing:0;">Black</span></div>
+    <div class="color-options">
+      <div class="color-swatch active" style="background:#0a0a0a;" title="Black" onclick="selectColor(this,'Black')"></div>
+      <div class="color-swatch" style="background:#f5f5f0;border:1.5px solid #ccc;" title="White" onclick="selectColor(this,'White')"></div>
+      <div class="color-swatch" style="background:#888;" title="Grey" onclick="selectColor(this,'Grey')"></div>
+      <div class="color-swatch" style="background:#4a7c59;" title="Olive Green" onclick="selectColor(this,'Olive Green')"></div>
+      <div class="color-swatch" style="background:#3a5fa0;" title="Navy Blue" onclick="selectColor(this,'Navy Blue')"></div>
+    </div>
+
+    <!-- SIZE -->
+    <div class="option-label">Size <a href="#" onclick="toggleSizeChart()">Size Chart</a></div>
+    <div class="size-options">
+      <button class="size-btn" onclick="selectSize(this,'S','+₹0')">S</button>
+      <button class="size-btn active" onclick="selectSize(this,'M','+₹0')">M</button>
+      <button class="size-btn" onclick="selectSize(this,'L','+₹0')">L</button>
+      <button class="size-btn" onclick="selectSize(this,'XL','+₹50')">XL</button>
+      <button class="size-btn" onclick="selectSize(this,'XXL','+₹50')">XXL</button>
+      <button class="size-btn out" disabled>XXXL</button>
+    </div>
+    <div class="stock-msg" id="stock-msg">⚡ Only 2 left in Grey / L</div>
+
+    <div class="divider-line"></div>
+
+    <!-- DESIGN UPLOAD -->
+    <div class="design-section">
+      <div class="design-header">
+        🎨 Custom Design
+        <button class="design-toggle" onclick="toggleDesign()">Optional</button>
+      </div>
+      <div class="design-body" id="design-body">
+        <div class="design-tabs">
+          <button class="design-tab active" onclick="switchDesignTab('upload',this)">Upload My Design</button>
+          <button class="design-tab" onclick="switchDesignTab('premade',this)">Pick Pre-made</button>
+        </div>
+
+        <div id="design-upload-panel">
+          <div class="upload-zone" onclick="document.getElementById('file-input').click()">
+            <input type="file" id="file-input" accept=".png,.jpg,.jpeg" onchange="handleUpload(this)"/>
+            <div class="upload-icon">⬆️</div>
+            <div class="upload-text">Click to Upload Your Design</div>
+            <div class="upload-hint">PNG or JPG only · Maximum 10MB</div>
+          </div>
+        </div>
+
+        <div id="design-premade-panel" style="display:none;">
+          <div class="premade-grid">
+            <div class="premade-design" onclick="selectPremade(this)">🌟</div>
+            <div class="premade-design" onclick="selectPremade(this)">🔥</div>
+            <div class="premade-design" onclick="selectPremade(this)">💀</div>
+            <div class="premade-design" onclick="selectPremade(this)">🌊</div>
+            <div class="premade-design" onclick="selectPremade(this)">🏔️</div>
+            <div class="premade-design" onclick="selectPremade(this)">⚡</div>
+            <div class="premade-design" onclick="selectPremade(this)">🎭</div>
+            <div class="premade-design" onclick="selectPremade(this)">🌈</div>
+          </div>
+        </div>
+
+        <div class="design-preview" id="design-preview">
+          <div class="preview-thumb" id="preview-thumb">🌟</div>
+          <div class="preview-name" id="preview-name">Design selected</div>
+          <button class="remove-design" onclick="removeDesign()">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUANTITY -->
+    <div class="qty-row">
+      <div class="qty-label">Quantity</div>
+      <div class="qty-control">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <div class="qty-num" id="qty">1</div>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <div style="font-size:13px;color:var(--gray);">Max 10 per order</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-row">
+      <button class="btn-cart">🛒 Add to Cart</button>
+      <button class="btn-buy">⚡ Buy Now</button>
+    </div>
+
+    <!-- PINCODE -->
+    <div class="pincode-check">
+      <div style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">📍 Check Delivery</div>
+      <div class="pincode-row">
+        <input type="text" class="pincode-input" placeholder="Enter pincode" maxlength="6" id="pincode-input" oninput="this.value=this.value.replace(/\D/g,'')"/>
+        <button class="pincode-btn" onclick="checkPincode()">Check</button>
+      </div>
+      <div class="pincode-result ok" id="pincode-ok">✅ Delivery available · Shipping: ₹80 · Est. 3–5 days</div>
+      <div class="pincode-result fail" id="pincode-fail">❌ Sorry, we don't deliver to this pincode yet</div>
+    </div>
+
+    <!-- TRUST BADGES -->
+    <div class="trust-row">
+      <div class="trust-item"><div class="trust-icon">🔒</div><div class="trust-text">Secure Payment</div></div>
+      <div class="trust-item"><div class="trust-icon">🧾</div><div class="trust-text">GST Invoice</div></div>
+      <div class="trust-item"><div class="trust-icon">📦</div><div class="trust-text">Prepaid Only</div></div>
+    </div>
+
+    <!-- ACCORDION -->
+    <div class="accordion">
+      <div class="acc-item open">
+        <button class="acc-header" onclick="toggleAcc(this)">Product Details <span class="acc-icon">+</span></button>
+        <div class="acc-body">
+          Premium 240 GSM cotton blend · Oversized drop-shoulder fit · Ribbed crew neck · Double-stitched hem · Pre-shrunk fabric · Machine washable cold. Available in sizes S to XXL. XXXL currently out of stock.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">Sizing Guide <span class="acc-icon">+</span></button>
+        <div class="acc-body">
+          S: Chest 40" · M: Chest 42" · L: Chest 44" · XL: Chest 46" (+₹50) · XXL: Chest 48" (+₹50). Our oversized fit runs 2 sizes larger — we recommend going by your usual size for the drop-shoulder look.
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">Design & Print Info <span class="acc-icon">+</span></button>
+        <div class="acc-body">
+          We use DTF (Direct to Film) printing for vibrant, long-lasting colours. Upload PNG or JPG (max 10MB). We'll print on the front-center by default. Need a specific placement? Add a note during checkout. Print area: 12" × 14".
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-header" onclick="toggleAcc(this)">Shipping & Returns <span class="acc-icon">+</span></button>
+        <div class="acc-body">
+          Orders dispatched within 2–3 business days. Delivery in 3–7 business days depending on location. Shipping charges calculated at checkout by pincode. Since all products are custom-printed, we do not accept returns unless there is a print defect or damage. Raise a request within 48 hours of delivery.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let qty = 1;
+  const basePrice = 699;
+
+  function selectThumb(el) { document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+  function selectColor(el, name) { document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active')); el.classList.add('active'); document.getElementById('selected-color-name').textContent = name; }
+  function selectSize(el, size, extra) {
+    document.querySelectorAll('.size-btn:not(.out)').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    const add = extra === '+₹0' ? 0 : 50;
+    document.getElementById('display-price').textContent = '₹' + (basePrice + add);
+  }
+  function changeQty(d) {
+    qty = Math.max(1, Math.min(10, qty + d));
+    document.getElementById('qty').textContent = qty;
+  }
+  function toggleDesign() {
+    const b = document.getElementById('design-body');
+    b.style.display = b.style.display === 'none' ? 'block' : 'none';
+  }
+  function switchDesignTab(tab, el) {
+    document.querySelectorAll('.design-tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+    document.getElementById('design-upload-panel').style.display = tab === 'upload' ? 'block' : 'none';
+    document.getElementById('design-premade-panel').style.display = tab === 'premade' ? 'block' : 'none';
+  }
+  function handleUpload(input) {
+    if (input.files && input.files[0]) {
+      const f = input.files[0];
+      if (f.size > 10 * 1024 * 1024) { alert('File too large! Maximum size is 10MB.'); return; }
+      const prev = document.getElementById('design-preview');
+      document.getElementById('preview-name').textContent = f.name;
+      document.getElementById('preview-thumb').textContent = '🖼️';
+      prev.classList.add('show');
+    }
+  }
+  function selectPremade(el) {
+    document.querySelectorAll('.premade-design').forEach(d => d.classList.remove('active')); el.classList.add('active');
+    const prev = document.getElementById('design-preview');
+    document.getElementById('preview-thumb').textContent = el.textContent;
+    document.getElementById('preview-name').textContent = 'Pre-made design selected';
+    prev.classList.add('show');
+  }
+  function removeDesign() { document.getElementById('design-preview').classList.remove('show'); document.querySelectorAll('.premade-design').forEach(d => d.classList.remove('active')); document.getElementById('file-input').value = ''; }
+  function checkPincode() {
+    const p = document.getElementById('pincode-input').value;
+    document.getElementById('pincode-ok').style.display = 'none';
+    document.getElementById('pincode-fail').style.display = 'none';
+    if (p.length === 6) {
+      if (p.startsWith('56') || p.startsWith('60') || p.startsWith('40')) { document.getElementById('pincode-ok').style.display = 'block'; }
+      else { document.getElementById('pincode-fail').style.display = 'block'; }
+    }
+  }
+  function toggleAcc(btn) { const item = btn.closest('.acc-item'); item.classList.toggle('open'); }
+  function toggleSizeChart() { alert('Size Chart:\nS: Chest 40"\nM: Chest 42"\nL: Chest 44"\nXL: Chest 46" (+₹50)\nXXL: Chest 48" (+₹50)'); }
+</script>
+</body>
+</html>

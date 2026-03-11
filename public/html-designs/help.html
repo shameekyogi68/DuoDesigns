@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUO DESIGNS — Help & Policies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f0; --accent: #e8ff3b; --gray: #888; --light-gray: #e8e8e2; --card-bg: #f0f0eb; }
+    body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--black); }
+    header { background: var(--white); border-bottom: 1.5px solid var(--black); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--black); text-decoration: none; }
+    .logo span { color: var(--accent); background: var(--black); padding: 0 4px; }
+    nav a { text-decoration: none; color: var(--black); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 32px; }
+    .cart-btn { background: var(--black); color: var(--white); border: none; padding: 8px 20px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; }
+
+    /* PAGE TABS */
+    .page-tabs-wrap { border-bottom: 1.5px solid var(--black); position: sticky; top: 64px; z-index: 99; background: var(--white); }
+    .page-tabs { max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; overflow-x: auto; }
+    .page-tab { padding: 16px 28px; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; color: var(--gray); white-space: nowrap; transition: all 0.2s; }
+    .page-tab:hover { color: var(--black); }
+    .page-tab.active { color: var(--black); border-bottom-color: var(--accent); }
+
+    /* HERO */
+    .page-hero { background: var(--black); color: var(--white); padding: 48px 40px; }
+    .page-hero-inner { max-width: 1400px; margin: 0 auto; }
+    .page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: 80px; letter-spacing: 2px; line-height: 0.9; }
+    .page-hero h1 span { color: var(--accent); }
+    .page-hero p { font-size: 15px; color: #888; margin-top: 12px; max-width: 500px; }
+
+    /* CONTENT */
+    .content-wrap { max-width: 1400px; margin: 0 auto; padding: 60px 40px 80px; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* FAQ */
+    .faq-cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+    .faq-cat { padding: 8px 20px; border: 1.5px solid var(--black); background: none; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; }
+    .faq-cat.active { background: var(--black); color: var(--white); }
+    .faq-search { display: flex; border: 1.5px solid var(--black); margin-bottom: 40px; }
+    .faq-search input { flex: 1; padding: 14px 20px; border: none; font-family: 'Barlow', sans-serif; font-size: 15px; outline: none; background: var(--white); }
+    .faq-search button { padding: 14px 24px; background: var(--black); color: var(--white); border: none; font-weight: 800; font-size: 14px; cursor: pointer; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .faq-item { border: 1.5px solid var(--black); border-right: none; border-top: none; }
+    .faq-item:nth-child(even) { border-right: 1.5px solid var(--black); }
+    .faq-item:nth-child(1), .faq-item:nth-child(2) { border-top: 1.5px solid var(--black); }
+    .faq-q { width: 100%; padding: 20px 24px; background: none; border: none; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; cursor: pointer; font-family: 'Barlow', sans-serif; font-weight: 800; font-size: 14px; text-align: left; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+    .faq-icon { font-size: 20px; transition: transform 0.2s; flex-shrink: 0; margin-top: 1px; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a { display: none; padding: 0 24px 20px; font-size: 14px; color: #444; line-height: 1.8; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* POLICIES */
+    .policy-layout { display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: start; }
+    .policy-nav { position: sticky; top: 130px; }
+    .policy-nav a { display: block; padding: 12px 16px; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none; color: var(--gray); border-left: 3px solid transparent; transition: all 0.2s; }
+    .policy-nav a:hover, .policy-nav a.active { color: var(--black); border-left-color: var(--accent); background: var(--card-bg); }
+    .policy-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1.5px solid var(--black); }
+    .policy-content h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 32px 0 12px; }
+    .policy-content p { font-size: 15px; color: #333; line-height: 1.8; margin-bottom: 16px; }
+    .policy-content ul { margin: 0 0 16px 20px; }
+    .policy-content li { font-size: 15px; color: #333; line-height: 1.8; margin-bottom: 6px; }
+    .policy-highlight { background: var(--accent); color: var(--black); padding: 16px 20px; margin: 20px 0; border-left: 4px solid var(--black); font-weight: 700; font-size: 14px; }
+
+    /* CONTACT */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: 56px; letter-spacing: 2px; margin-bottom: 16px; }
+    .contact-info p { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 32px; }
+    .contact-cards { display: flex; flex-direction: column; gap: 0; }
+    .contact-card { display: flex; align-items: center; gap: 20px; padding: 20px; border: 1.5px solid var(--black); border-bottom: none; }
+    .contact-card:last-child { border-bottom: 1.5px solid var(--black); }
+    .contact-icon { font-size: 28px; width: 52px; height: 52px; background: var(--card-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-card-title { font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+    .contact-card-val { font-size: 14px; color: var(--gray); }
+    .contact-form h2 { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; margin-bottom: 28px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--black); background: var(--white); font-family: 'Barlow', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--accent); }
+    textarea.form-input { min-height: 140px; resize: vertical; }
+    .btn-submit { padding: 14px 40px; background: var(--black); color: var(--white); border: 2px solid var(--black); font-family: 'Barlow', sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+    .btn-submit:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+
+    @media (max-width: 1024px) { .faq-grid { grid-template-columns: 1fr; } .faq-item:nth-child(even) { border-right: none; } .faq-item:nth-child(2) { border-top: none; } .policy-layout { grid-template-columns: 1fr; } .policy-nav { position: static; display: flex; flex-wrap: wrap; gap: 4px; } .contact-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .header-inner { padding: 0 20px; } nav { display: none; } .content-wrap { padding: 40px 20px; } .page-hero { padding: 40px 20px; } .page-hero h1 { font-size: 52px; } .page-tabs { padding: 0 20px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">DUO<span>DESIGNS</span></a>
+    <nav>
+      <a href="index.html">Shop</a>
+      <a href="track.html">Track Order</a>
+    </nav>
+    <button class="cart-btn">🛒 Cart</button>
+  </div>
+</header>
+
+<div class="page-tabs-wrap">
+  <div class="page-tabs">
+    <button class="page-tab active" onclick="switchPage('faq',this)">❓ FAQ</button>
+    <button class="page-tab" onclick="switchPage('shipping',this)">🚚 Shipping Policy</button>
+    <button class="page-tab" onclick="switchPage('refund',this)">↩ Refund Policy</button>
+    <button class="page-tab" onclick="switchPage('privacy',this)">🔒 Privacy Policy</button>
+    <button class="page-tab" onclick="switchPage('terms',this)">📄 Terms & Conditions</button>
+    <button class="page-tab" onclick="switchPage('contact',this)">📞 Contact Us</button>
+  </div>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <h1 id="hero-title">FREQUENTLY ASKED<br/><span>QUESTIONS</span></h1>
+    <p id="hero-subtitle">Everything you need to know about Duo Designs</p>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- FAQ -->
+  <div class="panel active" id="panel-faq">
+    <div class="faq-search">
+      <input type="text" placeholder="Search your question..."/>
+      <button>🔍</button>
+    </div>
+    <div class="faq-cats">
+      <button class="faq-cat active">All</button>
+      <button class="faq-cat">Orders</button>
+      <button class="faq-cat">Shipping</button>
+      <button class="faq-cat">Design Upload</button>
+      <button class="faq-cat">Payment</button>
+      <button class="faq-cat">Returns</button>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I upload my custom design? <span class="faq-icon">+</span></button><div class="faq-a">On any product page, scroll to the "Custom Design" section and click "Upload My Design." We accept PNG and JPG files up to 10MB. Once uploaded you'll see a preview before adding to cart.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What file formats do you accept? <span class="faq-icon">+</span></button><div class="faq-a">We accept PNG and JPG/JPEG files only. Maximum file size is 10MB. For best print quality, use high-resolution files (minimum 300 DPI). PNG files with transparent backgrounds are ideal.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How long does delivery take? <span class="faq-icon">+</span></button><div class="faq-a">Orders are dispatched within 2–3 business days after printing. Delivery typically takes 3–7 business days depending on your location. You'll receive a tracking number via email once dispatched.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do you offer Cash on Delivery? <span class="faq-icon">+</span></button><div class="faq-a">No, we do not offer COD. We accept prepaid payments only — UPI, Credit/Debit Cards, Net Banking, and Wallets — all via Razorpay, which is fully secure.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I check if delivery is available to my pincode? <span class="faq-icon">+</span></button><div class="faq-a">On any product page, enter your pincode in the "Check Delivery" section. If your pincode is serviceable, it will show the estimated delivery date and shipping charge.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I return or exchange my order? <span class="faq-icon">+</span></button><div class="faq-a">Since all products are custom-printed to order, we do not accept returns or exchanges unless there is a manufacturing defect or print error. Raise a request within 48 hours of delivery with photos.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Will I get a GST invoice? <span class="faq-icon">+</span></button><div class="faq-a">Yes! A GST-compliant invoice is generated automatically for every order. You can download it from your Order Confirmation page or from My Account → My Orders.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I apply a coupon code? <span class="faq-icon">+</span></button><div class="faq-a">In your cart, look for the "Have a Coupon?" section and enter your code. Valid codes will instantly show the discount amount. One coupon per order.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is the print area on T-shirts? <span class="faq-icon">+</span></button><div class="faq-a">Our standard print area is 12" × 14" on the front center. If you need a specific placement (back, sleeve, etc.), mention it in the order notes during checkout and we'll do our best.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What print method do you use? <span class="faq-icon">+</span></button><div class="faq-a">We use DTF (Direct to Film) printing which produces vibrant, long-lasting prints that are wash-resistant. All products are printed to order — no pre-printed stock.</div></div>
+    </div>
+  </div>
+
+  <!-- SHIPPING POLICY -->
+  <div class="panel" id="panel-shipping">
+    <div class="policy-layout">
+      <nav class="policy-nav">
+        <a href="#" class="active">Processing Time</a>
+        <a href="#">Delivery Time</a>
+        <a href="#">Shipping Charges</a>
+        <a href="#">Tracking</a>
+        <a href="#">Delays</a>
+      </nav>
+      <div class="policy-content">
+        <h2>SHIPPING POLICY</h2>
+        <div class="policy-highlight">All orders are prepaid only. We do not offer Cash on Delivery.</div>
+        <h3>Processing Time</h3>
+        <p>All products at Duo Designs are custom-printed on demand. Once your order is placed and payment confirmed, your order enters our print queue within 1–2 hours.</p>
+        <p>Printing and packing typically takes <strong>2–3 business days</strong> (Monday–Saturday, excluding public holidays).</p>
+        <h3>Delivery Time</h3>
+        <p>After dispatch, expected delivery times are:</p>
+        <ul>
+          <li>Bengaluru city: 1–2 business days</li>
+          <li>Karnataka (other cities): 2–4 business days</li>
+          <li>South India: 3–5 business days</li>
+          <li>Rest of India: 4–7 business days</li>
+        </ul>
+        <h3>Shipping Charges</h3>
+        <p>Shipping charges are based on your delivery pincode and are displayed at checkout before payment.</p>
+        <p><strong>Free shipping</strong> on all orders above ₹999 (automatically applied).</p>
+        <h3>Order Tracking</h3>
+        <p>Once your order is dispatched, you will receive an email with the courier partner name and tracking number. Use our <a href="track.html" style="color:var(--black);font-weight:700;border-bottom:2px solid var(--accent);">Track Order</a> page to check status anytime.</p>
+        <h3>Delivery Delays</h3>
+        <p>Delivery timelines may be affected during peak seasons, national holidays, or adverse weather conditions. We are not liable for courier delays once the shipment is handed over to the delivery partner.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFUND POLICY -->
+  <div class="panel" id="panel-refund">
+    <div class="policy-content" style="max-width:800px;">
+      <h2>REFUND & RETURN POLICY</h2>
+      <div class="policy-highlight">⚠️ Since all products are custom-printed to order, we have a strict no-return policy except for defective or damaged items.</div>
+      <h3>When Can You Claim a Refund?</h3>
+      <p>We accept refund/replacement requests only in the following cases:</p>
+      <ul>
+        <li>Wrong product delivered (different from what was ordered)</li>
+        <li>Manufacturing defect in the product</li>
+        <li>Print error — significantly different from approved design</li>
+        <li>Product damaged during shipping</li>
+      </ul>
+      <h3>How to Raise a Claim</h3>
+      <p>Raise a request within <strong>48 hours</strong> of delivery by emailing us at support@duodesigns.in with:</p>
+      <ul>
+        <li>Your Order ID</li>
+        <li>Clear photos of the defective/damaged item</li>
+        <li>Brief description of the issue</li>
+      </ul>
+      <h3>Resolution</h3>
+      <p>We will review your request within 2–3 business days and offer either a <strong>replacement</strong> or a <strong>full refund</strong> to your original payment method. Refunds typically reflect within 5–7 business days.</p>
+      <h3>Non-Returnable Cases</h3>
+      <ul>
+        <li>Change of mind after order placement</li>
+        <li>Incorrect size chosen by customer (please use our size chart)</li>
+        <li>Slight colour variation due to screen differences</li>
+        <li>Claims raised after 48 hours of delivery</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="panel" id="panel-privacy">
+    <div class="policy-content" style="max-width:800px;">
+      <h2>PRIVACY POLICY</h2>
+      <p>Duo Designs ("we", "us", "our") is committed to protecting your personal information. This policy explains what we collect, how we use it, and your rights.</p>
+      <h3>Information We Collect</h3>
+      <ul>
+        <li>Name, email address, and phone number (during signup/checkout)</li>
+        <li>Delivery address and pincode</li>
+        <li>Order and payment history</li>
+        <li>Design files you upload (stored securely, used only for your order)</li>
+        <li>Device and browser info for analytics</li>
+      </ul>
+      <h3>How We Use Your Information</h3>
+      <ul>
+        <li>To process and fulfil your orders</li>
+        <li>To send order confirmations, invoices, and shipping updates</li>
+        <li>To send promotional offers (only if you opt in)</li>
+        <li>To improve our website and services</li>
+      </ul>
+      <h3>Data Security</h3>
+      <p>All data is stored securely. Payment information is handled entirely by Razorpay and we never store your card or UPI details. Your uploaded design files are stored on Cloudinary with restricted access.</p>
+      <h3>Your Rights</h3>
+      <p>You can request to view, edit, or delete your account data at any time by emailing us at support@duodesigns.in.</p>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div class="panel" id="panel-terms">
+    <div class="policy-content" style="max-width:800px;">
+      <h2>TERMS & CONDITIONS</h2>
+      <p>By using the Duo Designs website and placing an order, you agree to the following terms.</p>
+      <h3>Orders & Payment</h3>
+      <ul>
+        <li>All orders are prepaid — no COD available</li>
+        <li>Prices include GST as displayed at checkout</li>
+        <li>Orders cannot be cancelled after payment is made</li>
+        <li>We reserve the right to cancel orders at our discretion with a full refund</li>
+      </ul>
+      <h3>Custom Designs</h3>
+      <ul>
+        <li>You are solely responsible for the content of designs you upload</li>
+        <li>We do not print offensive, illegal, or copyrighted designs</li>
+        <li>By uploading, you confirm you own or have the right to use the design</li>
+        <li>We reserve the right to reject any design at our discretion</li>
+      </ul>
+      <h3>Intellectual Property</h3>
+      <p>All original content on this website — brand name, logo, pre-made designs — belong to Duo Designs. You may not reproduce or use them without permission.</p>
+      <h3>Limitation of Liability</h3>
+      <p>Duo Designs is not liable for delays caused by courier partners, force majeure events, or incorrect delivery addresses provided by customers.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="panel" id="panel-contact">
+    <div class="contact-layout">
+      <div class="contact-info">
+        <h2>GET IN TOUCH</h2>
+        <p>Have a question, issue, or just want to say hello? We're here to help — typically respond within 24 hours.</p>
+        <div class="contact-cards">
+          <div class="contact-card"><div class="contact-icon">📧</div><div><div class="contact-card-title">Email Us</div><div class="contact-card-val">support@duodesigns.in</div></div></div>
+          <div class="contact-card"><div class="contact-icon">📞</div><div><div class="contact-card-title">Call / WhatsApp</div><div class="contact-card-val">+91 98765 43210</div></div></div>
+          <div class="contact-card"><div class="contact-icon">⏰</div><div><div class="contact-card-title">Working Hours</div><div class="contact-card-val">Mon–Sat · 10 AM – 6 PM IST</div></div></div>
+          <div class="contact-card"><div class="contact-icon">📍</div><div><div class="contact-card-title">Based In</div><div class="contact-card-val">Bengaluru, Karnataka, India</div></div></div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h2>SEND A MESSAGE</h2>
+        <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" placeholder="Your name"/></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com"/></div>
+        <div class="form-group"><label class="form-label">Order ID (optional)</label><input type="text" class="form-input" placeholder="#DD-2025-XXXX"/></div>
+        <div class="form-group"><label class="form-label">Subject</label>
+          <select class="form-input">
+            <option>Order Issue</option>
+            <option>Design Help</option>
+            <option>Shipping Query</option>
+            <option>Refund Request</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" placeholder="Describe your issue or question..."></textarea></div>
+        <button class="btn-submit" onclick="this.textContent='Sent! ✓';this.style.background='#3bb54a';this.style.borderColor='#3bb54a';">Send Message</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const heroTitles = {
+    faq: ['FREQUENTLY ASKED<br/><span>QUESTIONS</span>', 'Everything you need to know about Duo Designs'],
+    shipping: ['SHIPPING<br/><span>POLICY</span>', 'How we pack, print and deliver your orders'],
+    refund: ['REFUND &<br/><span>RETURN POLICY</span>', 'Our commitment to quality and your satisfaction'],
+    privacy: ['PRIVACY<br/><span>POLICY</span>', 'How we handle and protect your data'],
+    terms: ['TERMS &<br/><span>CONDITIONS</span>', 'Rules and guidelines for using Duo Designs'],
+    contact: ['GET IN<br/><span>TOUCH</span>', 'We\'re here to help you with any questions']
+  };
+  function switchPage(name, el) {
+    document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-'+name).classList.add('active');
+    document.getElementById('hero-title').innerHTML = heroTitles[name][0];
+    document.getElementById('hero-subtitle').textContent = heroTitles[name][1];
+    window.scrollTo(0,0);
+  }
+  function toggleFaq(btn) { btn.closest('.faq-item').classList.toggle('open'); }
+</script>
+</body>
+</html>
