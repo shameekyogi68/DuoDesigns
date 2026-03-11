@@ -4,29 +4,29 @@ import { ROUTES } from '../constants/routes';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
 
 export default function Cart() {
     const navigate = useNavigate();
-    const {
-        items,
-        removeItem,
-        updateQuantity,
-        subtotal,
-        taxableAmount,
-        cgst,
-        sgst,
-        total,
-        shippingCharge,
-        coupon,
-        applyCoupon,
-        removeCoupon
-    } = useCartStore();
+    const items = useCartStore(s => s.items);
+    const removeItem = useCartStore(s => s.removeItem);
+    const updateQty = useCartStore(s => s.updateQty);
+    const appliedCoupon = useCartStore(s => s.appliedCoupon);
+    const storeCouponApply = useCartStore(s => s.applyCoupon);
+    const removeCoupon = useCartStore(s => s.removeCoupon);
+    const getSummary = useCartStore(s => s.getSummary);
+
+    const summary = getSummary();
+    const subtotal = summary.subtotal;
+    const shippingCharge = summary.shippingCharge;
+    const cgst = summary.gstBreakdown?.cgst || 0;
+    const sgst = summary.gstBreakdown?.sgst || 0;
+    const igst = summary.gstBreakdown?.igst || 0;
+    const taxableAmount = subtotal + shippingCharge - summary.discount;
+    const total = summary.finalTotal;
+    const coupon = appliedCoupon;
 
     const [currentStep, setCurrentStep] = useState(1);
     const [couponInput, setCouponInput] = useState('');
-
-    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const [selectedAddress, setSelectedAddress] = useState(null);
 
@@ -40,7 +40,7 @@ export default function Cart() {
         const isMockValid = couponInput.toUpperCase() === 'FIRST10' || couponInput.toUpperCase() === 'SAVE100';
 
         if (isMockValid) {
-            applyCoupon({ code: couponInput.toUpperCase(), discountAmount: 144, label: 'New User Discount' });
+            storeCouponApply({ code: couponInput.toUpperCase(), type: 'fixed', value: 144, discountAmount: 144, label: 'New User Discount' });
             toast.success('Coupon applied!');
         } else {
             toast.error('Invalid or expired coupon code');
@@ -224,11 +224,11 @@ export default function Cart() {
                                                     </div>
                                                 )}
                                                 <div className="cart-qty">
-                                                    <button className="cart-qty-btn" onClick={() => updateQuantity(item.variant.id, -1)}>−</button>
+                                                    <button className="cart-qty-btn" onClick={() => updateQty(item.product.id, item.variant.id, item.qty - 1)}>−</button>
                                                     <div className="cart-qty-num">{item.qty}</div>
-                                                    <button className="cart-qty-btn" onClick={() => updateQuantity(item.variant.id, 1)}>+</button>
+                                                    <button className="cart-qty-btn" onClick={() => updateQty(item.product.id, item.variant.id, item.qty + 1)}>+</button>
                                                 </div>
-                                                <button className="remove-btn" onClick={() => removeItem(item.variant.id)}>✕ Remove</button>
+                                                <button className="remove-btn" onClick={() => removeItem(item.product.id, item.variant.id)}>✕ Remove</button>
                                             </div>
                                             <div>
                                                 <div className="cart-item-price">₹{item.product.price}</div>
