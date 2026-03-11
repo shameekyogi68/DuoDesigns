@@ -117,7 +117,7 @@ export default function Category() {
     .page-btn:hover, .page-btn.active { background: var(--black); color: var(--white); }
     @media (max-width: 1100px) { .products-grid { grid-template-columns: repeat(2, 1fr); } .product-card:nth-child(3n) { border-right: 1.5px solid var(--black); } .product-card:nth-child(2n) { border-right: none; } }
     @media (max-width: 900px) { .shop-layout { grid-template-columns: 1fr; } .filters { position: static; display: none; } .filters.open { display: block; } }
-    @media (max-width: 768px) { .cat-tabs { padding: 0 20px; } .shop-hero-inner { padding: 32px 20px; flex-direction: column; align-items: flex-start; } .shop-hero h1 { font-size: 48px; } .result-count { font-size: 32px; } }
+    @media (max-width: 768px) { .cat-tabs { padding: 0 20px; } .shop-hero-inner { padding: 32px 20px; flex-direction: column; align-items: flex-start; } .shop-hero h1 { font-size: 48px; } .result-count { font-size: 32px; } .products-grid { grid-template-columns: 1fr; } .product-card:nth-child(even), .product-card:nth-child(odd) { border-right: none; } .results-bar { flex-direction: column; align-items: flex-start; } .sort-wrap { width: 100%; justify-content: space-between; } }
       `}</style>
 
             {/* CATEGORY TABS */}

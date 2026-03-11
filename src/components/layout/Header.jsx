@@ -65,16 +65,16 @@ export default function Header() {
                     </nav>
 
                     <div className="header-actions">
-                        <button title="Search" aria-label="Search products">
+                        <button className="hide-mobile" title="Search" aria-label="Search products">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         </button>
-                        <Link to={ROUTES.ACCOUNT} title="Account" aria-label="My Account">
+                        <Link to={ROUTES.ACCOUNT} className="hide-mobile" title="Account" aria-label="My Account">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         </Link>
                         <Link to={ROUTES.CART} aria-label="Shopping Cart">
                             <button className="cart-btn" title="Cart">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                                Cart
+                                <span className="hide-mobile">Cart</span>
                                 {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
                             </button>
                         </Link>

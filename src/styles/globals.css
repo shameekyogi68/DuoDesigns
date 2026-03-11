@@ -1466,6 +1466,15 @@ footer::before {
     display: none;
   }
 
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .cart-btn {
+    padding: 8px !important;
+    gap: 0 !important;
+  }
+
   .mobile-menu-btn {
     display: flex !important;
   }
