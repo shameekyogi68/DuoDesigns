@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { useCartStore } from '../../store/cartStore';
 import { useWishlistStore } from '../../store/wishlistStore';
+import { DUO_PRODUCTS } from '../../data/products';
 
 export default function Header() {
     const items = useCartStore((state) => state.addItem ? state.items : []); // safety check
