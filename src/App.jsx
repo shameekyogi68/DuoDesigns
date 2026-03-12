@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import ScrollToTop from './components/common/ScrollToTop';
 import PageLoader from './components/common/PageLoader';
@@ -27,6 +27,8 @@ const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
+    const location = useLocation();
+
     React.useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -47,7 +49,7 @@ function App() {
             observer.disconnect();
             clearTimeout(timeout);
         };
-    }, []);
+    }, [location.pathname]);
 
     return (
         <>
