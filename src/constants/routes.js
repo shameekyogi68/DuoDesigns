@@ -15,6 +15,7 @@ export const ROUTES = {
     TRACK_ORDER: '/track',
     OFFERS: '/offers',
     HELP: '/help',
+    WISHLIST: '/wishlist',
     ORDER_SUCCESS: '/order-success/:id',
     NOT_FOUND: '*'
 };

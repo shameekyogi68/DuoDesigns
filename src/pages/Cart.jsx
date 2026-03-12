@@ -4,6 +4,7 @@ import { ROUTES } from '../constants/routes';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
+import EmptyState from '../components/common/EmptyState';
 
 export default function Cart() {
     const navigate = useNavigate();
@@ -203,12 +204,11 @@ export default function Cart() {
                             <div className="panel-subtitle">{items.length} items · Review before checkout</div>
 
                             {items.length === 0 ? (
-                                <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-                                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛒</div>
-                                    <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '32px' }}>YOUR CART IS EMPTY</h3>
-                                    <p style={{ color: 'var(--gray)', marginBottom: '24px' }}>Looks like you haven't added anything yet.</p>
-                                    <Link to={ROUTES.SHOP} className="btn-proceed" style={{ display: 'inline-block', width: 'auto', padding: '12px 32px', textDecoration: 'none' }}>Start Shopping</Link>
-                                </div>
+                                <EmptyState 
+                                    icon="🛒"
+                                    title="YOUR CART IS EMPTY"
+                                    subtitle="Looks like you haven't added anything to your cart yet. Explore our best sellers and custom designs to get started!"
+                                />
                             ) : (
                                 <>
                                     {items.map(item => (

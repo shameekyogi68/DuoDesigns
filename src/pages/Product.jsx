@@ -1,42 +1,19 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import DesignUpload from '../components/ui/DesignUpload';
 import { useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
+import { DUO_PRODUCTS } from '../data/products';
 import toast from 'react-hot-toast';
 
 export default function Product() {
+    const { id } = useParams();
     const navigate = useNavigate();
     const addItem = useCartStore((state) => state.addItem);
+    const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlistStore();
 
-    // Hardcoded product for demonstration mapped exactly from HTML
-    const product = {
-        id: 'oversized-tee-1',
-        name: "OVERSIZED DROP TEE",
-        category: "Oversized T-Shirt",
-        basePrice: 699,
-        oldPrice: 999,
-        discount: "30% OFF",
-        badge: "NEW ARRIVAL",
-        rating: 4.9,
-        reviews: 24,
-        colors: [
-            { id: 'c1', name: 'Black', hex: '#0a0a0a' },
-            { id: 'c2', name: 'White', hex: '#f5f5f0', border: true },
-            { id: 'c3', name: 'Grey', hex: '#888' },
-            { id: 'c4', name: 'Olive Green', hex: '#4a7c59' },
-            { id: 'c5', name: 'Navy Blue', hex: '#3a5fa0' }
-        ],
-        sizes: [
-            { id: 's1', name: 'S', extra: 0, available: true },
-            { id: 's2', name: 'M', extra: 0, available: true },
-            { id: 's3', name: 'L', extra: 0, available: true },
-            { id: 's4', name: 'XL', extra: 50, available: true },
-            { id: 's5', name: 'XXL', extra: 50, available: true },
-            { id: 's6', name: 'XXXL', extra: 50, available: false }
-        ],
-        gallery: ['🧥', '👕', '🔍', '📐']
-    };
+    const product = DUO_PRODUCTS.find(p => p.id === id) || DUO_PRODUCTS[0];
 
     // State mapping
     const [activeThumb, setActiveThumb] = useState(product.gallery[0]);
@@ -48,7 +25,17 @@ export default function Product() {
     const [accoState, setAccoState] = useState({ details: true, sizing: false, design: false, shipping: false });
     const [customDesign, setCustomDesign] = useState(null);
 
-    const currentPrice = product.basePrice + (selectedSize?.extra || 0);
+    // Update state if product changes (for transitions between product pages)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        setActiveThumb(product.gallery[0]);
+        setSelectedColor(product.colors[0]);
+        setSelectedSize(product.sizes[1]);
+        setQuantity(1);
+        setCustomDesign(null);
+    }, [id, product]);
+
+    const currentPrice = (product.price || product.basePrice) + (selectedSize?.extra || 0);
 
     const changeQty = (d) => {
         setQuantity(q => Math.max(1, Math.min(10, q + d)));
@@ -197,6 +184,15 @@ export default function Product() {
                         <span className="stars">★★★★★</span>
                         <span style={{ fontWeight: '700', fontSize: '14px' }}>{product.rating}</span>
                         <span className="rating-count">{product.reviews} reviews</span>
+                        <button 
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', marginLeft: 'auto', color: wishlistItems.includes(product.id) ? 'var(--error)' : '#ccc' }}
+                            onClick={() => {
+                                toggleWishlist(product.id);
+                                toast.success(wishlistItems.includes(product.id) ? 'Removed from Wishlist' : 'Added to Wishlist');
+                            }}
+                        >
+                            {wishlistItems.includes(product.id) ? '♥' : '♡'}
+                        </button>
                     </div>
 
                     <div className="product-price">
@@ -293,7 +289,7 @@ export default function Product() {
                         <div className={`acc-item ${accoState.details ? 'open' : ''}`}>
                             <button className="acc-header" onClick={() => toggleAcc('details')}>Product Details <span className="acc-icon">+</span></button>
                             <div className="acc-body">
-                                Premium 240 GSM cotton blend · Oversized drop-shoulder fit · Ribbed crew neck · Double-stitched hem · Pre-shrunk fabric · Machine washable cold. Available in sizes S to XXL. XXXL currently out of stock.
+                                {product.desc || 'Premium 240 GSM cotton blend · Oversized drop-shoulder fit · Ribbed crew neck · Double-stitched hem · Pre-shrunk fabric · Machine washable cold. Available in sizes S to XXL. XXXL currently out of stock.'}
                             </div>
                         </div>
                         <div className={`acc-item ${accoState.sizing ? 'open' : ''}`}>

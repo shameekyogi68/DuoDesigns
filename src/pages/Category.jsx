@@ -1,27 +1,22 @@
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
+import { DUO_PRODUCTS } from '../data/products';
+import { useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
+import toast from 'react-hot-toast';
 
 export default function Category() {
     const { category } = useParams();
     const navigate = useNavigate();
+    const addItem = useCartStore((state) => state.addItem);
+    const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlistStore();
 
     const [activeTab, setActiveTab] = useState(category || 'all');
     const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
     const [filtersOpen, setFiltersOpen] = useState(false);
 
-    // Dummy products just to illustrate filtering UI
-    const dummyProducts = [
-        { id: 1, cat: 'tshirt', name: 'Classic Custom Tee', price: 499, oldPrice: 699, save: '28% OFF', badge: 'HOT', icon: '👕', stock: 'Only 4 left in Black/M', colors: ['#0a0a0a', '#f5f5f0', '#e8ff3b', '#e05050'] },
-        { id: 2, cat: 'oversized', name: 'Oversized Drop Tee', price: 699, oldPrice: 999, save: '30% OFF', badge: 'NEW', icon: '🧥', stock: 'Only 2 left in Grey/L', colors: ['#0a0a0a', '#888', '#4a7c59'] },
-        { id: 3, cat: 'mugs', name: 'Custom Print Mug', price: 349, oldPrice: null, save: null, badge: null, icon: '☕', stock: null, colors: ['#f5f5f0', '#0a0a0a'] },
-        { id: 4, cat: 'keychains', name: 'Keychain — Double Print', price: 199, oldPrice: 299, save: '33% OFF', badge: 'SALE', icon: '🔑', stock: 'Only 6 left', colors: ['#c0a060', '#888'] },
-        { id: 5, cat: 'trackpants', name: 'Custom Trackpants', price: 899, oldPrice: 1199, save: '25% OFF', badge: 'NEW', icon: '👖', stock: null, colors: ['#0a0a0a', '#888', '#3a5fa0'] },
-        { id: 6, cat: 'keychains', name: 'Keychain — Single Print', price: 149, oldPrice: 199, save: null, badge: null, icon: '🗝️', stock: null, colors: ['#c0a060', '#888'] },
-        { id: 7, cat: 'tshirt', name: 'Polo Custom Tee', price: 599, oldPrice: null, save: null, badge: null, icon: '👕', stock: null, colors: ['#0a0a0a', '#f5f5f0', '#3a5fa0'] },
-        { id: 8, cat: 'oversized', name: 'Boxy Crop Tee', price: 749, oldPrice: null, save: null, badge: 'OUT OF STOCK', icon: '🧥', stock: 'out', colors: ['#0a0a0a', '#888'] },
-        { id: 9, cat: 'mugs', name: 'Magic Colour Mug', price: 449, oldPrice: 599, save: '25% OFF', badge: 'NEW', icon: '☕', stock: 'Only 8 left', colors: ['#0a0a0a'] },
-    ];
+    const dummyProducts = DUO_PRODUCTS;
 
     const handleTabChange = (cat) => {
         setActiveTab(cat);
@@ -249,14 +244,24 @@ export default function Category() {
                                                 {p.badge}
                                             </span>
                                         )}
-                                        <button className="wishlist-btn" onClick={(e) => { e.preventDefault(); }}>♡</button>
+                                        <button 
+                                            className="wishlist-btn" 
+                                            style={{ color: wishlistItems.includes(p.id) ? 'var(--error)' : 'inherit' }}
+                                            onClick={(e) => { 
+                                                e.preventDefault(); 
+                                                toggleWishlist(p.id);
+                                                toast.success(wishlistItems.includes(p.id) ? 'Removed from Wishlist' : 'Added to Wishlist');
+                                            }}
+                                        >
+                                            {wishlistItems.includes(p.id) ? '♥' : '♡'}
+                                        </button>
                                     </div>
                                     <div className="product-info">
                                         <div className="product-cat">{p.cat}</div>
                                         <div className="product-name">{p.name}</div>
                                         <div className="product-colors">
                                             {p.colors.map((c, i) => (
-                                                <div key={i} className="color-dot" style={{ background: c, borderColor: c === '#f5f5f0' || c === '#e8ff3b' ? '#ccc' : 'transparent' }}></div>
+                                                <div key={i} className="color-dot" style={{ background: c.hex || c, borderColor: (c.hex || c) === '#f5f5f0' || (c.hex || c) === '#e8ff3b' ? '#ccc' : 'transparent' }}></div>
                                             ))}
                                         </div>
                                         <div className="product-price">
@@ -269,7 +274,19 @@ export default function Category() {
                                                 {p.stock === 'out' ? 'Currently out of stock' : p.stock}
                                             </div>
                                         )}
-                                        <button className="add-cart" disabled={p.stock === 'out'} onClick={(e) => { e.preventDefault(); }}>
+                                        <button 
+                                            className="add-cart" 
+                                            disabled={p.stock === 'out'} 
+                                            onClick={(e) => { 
+                                                e.preventDefault(); 
+                                                addItem({
+                                                    product: { id: p.id, name: p.name, price: p.price, image: p.icon },
+                                                    variant: { id: `${p.colors[0]?.id || 'def'}-${p.sizes?.[0]?.id || 'def'}`, color: p.colors[0]?.name || 'Standard', size: p.sizes?.[0]?.name || 'Standard' },
+                                                    qty: 1
+                                                });
+                                                toast.success('Added to Cart');
+                                            }}
+                                        >
                                             {p.stock === 'out' ? 'Out of Stock' : 'Add to Cart'}
                                         </button>
                                     </div>

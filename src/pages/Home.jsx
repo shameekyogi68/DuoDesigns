@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
+import { DUO_PRODUCTS } from '../data/products';
+import { useCartStore } from '../store/cartStore';
 import toast from 'react-hot-toast';
 
 // Animated counter hook
@@ -40,6 +42,7 @@ export default function Home() {
     const [customersCount, customersRef] = useCounter(5000, 2000);
     const [designsCount, designsRef] = useCounter(10000, 2500);
     const [ratingsCount, ratingsRef] = useCounter(4, 1500);
+    const addItem = useCartStore((state) => state.addItem);
 
     const copyCode = (code) => {
         navigator.clipboard.writeText(code);
@@ -54,12 +57,20 @@ export default function Home() {
         { name: 'Keychains', icon: '🔑', count: '6 Products', featured: false },
     ];
 
-    const bestSellers = [
-        { id: 1, name: 'Classic Custom Tee', price: 499, oldPrice: 699, icon: '👕', badge: 'Best Seller', colors: ['#0a0a0a', '#f5f5f0', '#c8ff00'] },
-        { id: 2, name: 'Oversized Drop Tee', price: 699, oldPrice: 999, icon: '🧥', badge: 'New', colors: ['#0a0a0a', '#888', '#4a7c59'] },
-        { id: 3, name: 'Custom Print Mug', price: 349, oldPrice: null, icon: '☕', badge: null, colors: ['#f5f5f0', '#0a0a0a'] },
-        { id: 4, name: 'Custom Trackpants', price: 899, oldPrice: 1199, icon: '👖', badge: 'Trending', colors: ['#0a0a0a', '#3a5fa0'] },
-    ];
+    const bestSellers = DUO_PRODUCTS.slice(0, 4);
+
+    const handleAddToCart = (p) => {
+        addItem({
+            product: { id: p.id, name: p.name, price: p.price, image: p.icon },
+            variant: { 
+                id: `${p.colors[0]?.id || 'def'}-${p.sizes?.[0]?.id || 'def'}`, 
+                color: p.colors[0]?.name || 'Standard', 
+                size: p.sizes?.[0]?.name || 'Standard' 
+            },
+            qty: 1
+        });
+        toast.success('Added to Cart');
+    };
 
     const testimonials = [
         { name: 'Arjun Mehta', product: 'Custom Oversized Tee', text: "The quality blew me away. The DTF print is razor-sharp and the fabric feels premium. Already ordered 3 more for my friends!", rating: 5 },
@@ -193,7 +204,10 @@ export default function Home() {
                                     <span className="price">₹{p.price}</span>
                                     {p.oldPrice && <span className="price-old">₹{p.oldPrice}</span>}
                                 </div>
-                                <button className="add-to-cart" onClick={(e) => e.preventDefault()}>
+                                <button className="add-to-cart" onClick={(e) => {
+                                    e.preventDefault();
+                                    handleAddToCart(p);
+                                }}>
                                     Add to Cart
                                 </button>
                             </div>
