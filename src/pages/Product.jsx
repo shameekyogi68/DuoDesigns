@@ -169,7 +169,7 @@ export default function Product() {
 
                 {/* PRODUCT INFO */}
                 <div className="product-info">
-                    <div className="product-category">{product.category}</div>
+                    <div className="product-category">{product.cat}</div>
                     <div className="product-name">
                         {product.name.split(' ').map((word, i) => (
                             <React.Fragment key={i}>
