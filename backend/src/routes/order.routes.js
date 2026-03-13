@@ -25,5 +25,6 @@ router.get('/',             auth, admin, ctrl.getAllOrders);
 router.put('/:id/confirm',  auth, admin, ctrl.confirmOrder);
 router.put('/:id/dispatch', auth, admin, dispatchRules, validate, ctrl.dispatchOrder);
 router.put('/:id/deliver',  auth, admin, ctrl.deliverOrder);
+router.put('/:id/cancel',   auth, ctrl.cancelOrder);
 
 module.exports = router;

@@ -8,6 +8,8 @@
 const router = require('express').Router();
 const ctrl = require('../controllers/auth.controller');
 const auth = require('../middleware/auth.middleware');
+const admin = require('../middleware/admin.middleware');
+const twoFactorCtrl = require('../controllers/twoFactor.controller');
 const validate = require('../middleware/validate.middleware');
 const { authLimiter } = require('../middleware/rateLimit.middleware');
 const { sendOTPRules, verifyOTPRules, updateProfileRules, addAddressRules } = require('../validators/auth.validator');
@@ -24,5 +26,10 @@ router.put('/profile',       auth, updateProfileRules, validate, ctrl.updateProf
 router.post('/address',      auth, addAddressRules, validate, ctrl.addAddress);
 router.put('/address/:id',   auth, addAddressRules, validate, ctrl.updateAddress);
 router.delete('/address/:id', auth, ctrl.deleteAddress);
+
+// 2FA (Admin Only)
+router.post('/2fa/setup',   auth, admin, twoFactorCtrl.setup2FA);
+router.post('/2fa/verify',  auth, admin, twoFactorCtrl.verifyAndEnable2FA);
+router.post('/2fa/disable', auth, admin, twoFactorCtrl.disable2FA);
 
 module.exports = router;

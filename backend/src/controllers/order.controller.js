@@ -15,6 +15,8 @@ const generateOrderId = require('../utils/generateOrderId');
 const { calculateGST } = require('../services/gst.service');
 const { generateInvoice } = require('../services/invoice.service');
 const { sendOrderConfirmation, sendDispatchEmail, sendDeliveryEmail } = require('../services/email.service');
+const { initiateRefund } = require('../services/refund.service');
+const whatsapp = require('../services/whatsapp.service');
 
 /** POST /api/orders — Place order (protected) */
 exports.placeOrder = asyncHandler(async (req, res) => {
@@ -148,4 +150,51 @@ exports.deliverOrder = asyncHandler(async (req, res) => {
     sendDeliveryEmail(user.email, order).catch(console.error);
 
     sendSuccess(res, 200, 'Order delivered', order);
+});
+
+/** 
+ * @desc    PUT /api/orders/:id/cancel — Cancel order + initiate refund
+ * @access  Private (Owner or Admin)
+ */
+exports.cancelOrder = asyncHandler(async (req, res) => {
+    const { reason } = req.body;
+    const order = await Order.findById(req.params.id);
+
+    if (!order) return sendError(res, 404, 'Order not found');
+
+    // 1. Check if allowed to cancel
+    if (order.status === 'dispatched' || order.status === 'delivered') {
+        return sendError(res, 400, 'Cannot cancel an order that is already dispatched or delivered');
+    }
+
+    // 2. Auth check: Customer can only cancel 'placed' orders. Admin can cancel any valid order.
+    if (req.user.role !== 'admin' && order.status !== 'placed') {
+        return sendError(res, 403, 'You can only cancel orders that are not yet confirmed');
+    }
+
+    if (req.user.role !== 'admin' && order.user.toString() !== req.user.id) {
+        return sendError(res, 403, 'Unauthorized');
+    }
+
+    // 3. Initiate Refund if paid
+    if (order.payment.status === 'paid' && order.payment.razorpayPaymentId) {
+        try {
+            const refund = await initiateRefund(order.payment.razorpayPaymentId, order.pricing.total, reason);
+            order.cancellation.refundId = refund.id;
+        } catch (error) {
+            return sendError(res, 500, 'Success: Order canceled locally, but Razorpay refund failed. Contact support.');
+        }
+    }
+
+    // 4. Update status and stock restoration (Optional)
+    order.status = 'cancelled';
+    order.cancellation.reason = reason || 'Customer request';
+    order.cancellation.cancelledAt = new Date();
+    await order.save();
+
+    // 5. Notifications
+    const user = await User.findById(order.user);
+    // whatsapp.sendOrderCancelled(user.phone, order.orderNumber); 
+
+    sendSuccess(res, 200, 'Order cancelled and refund initiated', order);
 });

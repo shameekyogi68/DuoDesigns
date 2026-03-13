@@ -45,6 +45,11 @@ const userSchema = new mongoose.Schema({
         attempts:  { type: Number, default: 0 },
     },
     refreshTokens: [{ type: String }],
+    wishlist:      [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    twoFactor: {
+        secret:  { type: String, default: null },
+        enabled: { type: Boolean, default: false },
+    },
 }, {
     timestamps: true,
 });

@@ -1,0 +1,100 @@
+/**
+ * @file         NotificationBell.css
+ * @description  Styles for the Notification Bell and Dropdown.
+ * @module       styles/components/ui/NotificationBell
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-13
+ */
+
+.notification-wrapper {
+  position: relative;
+}
+
+.bell-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--color-black);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.unread-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: var(--color-accent); /* Lime */
+  color: var(--color-black);
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-size: 0.65rem;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-black);
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 320px;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-black);
+  z-index: 1000;
+  box-shadow: 8px 8px 0px var(--color-black);
+}
+
+.dropdown-header {
+  padding: 12px;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: 'Bebas Neue', var(--font-primary);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.notification-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background-color: var(--color-card-fill);
+}
+
+.item-text {
+  font-family: var(--font-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.item-time {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.dropdown-footer {
+  padding: 10px;
+  text-align: center;
+  font-family: 'Bebas Neue', var(--font-primary);
+  font-size: 0.9rem;
+  color: var(--color-black);
+  cursor: pointer;
+  border-top: 1px solid var(--color-black);
+}
+
+.dropdown-footer:hover {
+  background-color: var(--color-accent);
+}

@@ -75,8 +75,13 @@ const orderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['placed', 'confirmed', 'dispatched', 'delivered'],
+        enum: ['placed', 'confirmed', 'dispatched', 'delivered', 'cancelled'],
         default: 'placed',
+    },
+    cancellation: {
+        reason:    { type: String, default: null },
+        cancelledAt: { type: Date, default: null },
+        refundId:  { type: String, default: null },
     },
     dispatch: {
         courier:        { type: String, default: null },

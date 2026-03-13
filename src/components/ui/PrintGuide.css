@@ -1,0 +1,75 @@
+/**
+ * @file         PrintGuide.css
+ * @description  Styles for the PrintGuide component.
+ * @module       styles/components/ui/PrintGuide
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-13
+ */
+
+.print-guide-card {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 20px;
+  border: 1px solid var(--color-accent); /* Lime border */
+  margin-top: 15px;
+}
+
+.guide-title {
+  font-family: 'Bebas Neue', var(--font-primary);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  color: var(--color-accent);
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.spec-value {
+  font-family: 'Bebas Neue', var(--font-primary);
+  font-size: 1rem;
+}
+
+.guide-tips {
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  margin-bottom: 15px;
+}
+
+.tip-text {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-bottom: 5px;
+  color: #ccc;
+}
+
+.quality-warning {
+  background-color: #333;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.warning-icon {
+  color: var(--color-accent);
+}

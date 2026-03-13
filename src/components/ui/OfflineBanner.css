@@ -1,0 +1,45 @@
+/**
+ * @file         OfflineBanner.css
+ * @description  Styles for the OfflineBanner.
+ * @module       styles/components/ui/OfflineBanner
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-13
+ */
+
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-accent); /* Accent Lime */
+  color: var(--color-black);
+  z-index: 9999;
+  padding: 10px 0;
+  border-bottom: 2px solid var(--color-black);
+  animation: slide-down 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.offline-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+.offline-text {
+  font-family: 'Bebas Neue', var(--font-primary);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.offline-icon {
+  font-size: 1.4rem;
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
