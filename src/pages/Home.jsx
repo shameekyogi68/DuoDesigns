@@ -79,6 +79,7 @@ function useCounter(end, duration = 2000) {
  * @returns {JSX.Element} Full homepage layout
  */
 export default function Home() {
+    useDocumentTitle('Premium Custom Prints');
     const [customersCount, customersRef] = useCounter(5000, 2000);
     const [designsCount, designsRef] = useCounter(10000, 2500);
     const [ratingsCount, ratingsRef] = useCounter(4, 1500);
@@ -215,43 +216,7 @@ export default function Home() {
                 </div>
                 <div className="products-grid">
                     {bestSellers.map((p) => (
-                        <Link
-                            to={`${ROUTES.PRODUCT.replace(':id', p.id)}`}
-                            key={p.id}
-                            className="product-card"
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                            <div className="product-img">
-                                {p.icon}
-                                {p.badge && (
-                                    <span className={`product-badge ${p.badge === 'New' ? 'new' : ''}`}>
-                                        {p.badge}
-                                    </span>
-                                )}
-                            </div>
-                            <div className="product-info">
-                                <div className="product-name">{p.name}</div>
-                                <div className="product-colors">
-                                    {p.colors.map((c, i) => (
-                                        <div
-                                            key={i}
-                                            className="color-dot"
-                                            style={{ background: c }}
-                                        />
-                                    ))}
-                                </div>
-                                <div className="product-price">
-                                    <span className="price">₹{p.price}</span>
-                                    {p.oldPrice && <span className="price-old">₹{p.oldPrice}</span>}
-                                </div>
-                                <button className="add-to-cart" onClick={(e) => {
-                                    e.preventDefault();
-                                    handleAddToCart(p);
-                                }}>
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </Link>
+                        <ProductCard key={p.id} product={p} />
                     ))}
                 </div>
             </section>

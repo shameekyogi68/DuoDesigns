@@ -1,6 +1,35 @@
+/**
+ * @file         Help.jsx
+ * @description  Support and help center for Duo Designs.
+ *               Provides FAQs, shipping policies, refund terms, 
+ *               privacy & terms, and a contact form for customer support.
+ *
+ * @module       pages/Help
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Includes tabbed navigation for different support sections.
+ *   - Implements a functional localized contact form.
+ */
+
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Help
+ * @description Page component for customer support and policies.
+ *
+ * @returns {JSX.Element} Support center layout with tabbed sections
+ *
+ * @example
+ *   <Help />
+ */
 export default function Help() {
     const [activeSection, setActiveSection] = useState('faq');
     const [openFaq, setOpenFaq] = useState(null);

@@ -1,8 +1,39 @@
+/**
+ * @file         Track.jsx
+ * @description  Order tracking page for Duo Designs.
+ *               Allows users to search for their order status using an Order ID.
+ *               Displays a detailed timeline of the order's journey.
+ *
+ * @module       pages/Track
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Uses a mock order data ('ORD-2025-00042') for demonstration.
+ *   - Features a visual timeline with status badges.
+ */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Track
+ * @description Page component for order tracking.
+ *
+ * @returns {JSX.Element} Order tracking interface with status timeline
+ *
+ * @example
+ *   <Track />
+ */
 export default function Track() {
     const [orderId, setOrderId] = useState('');
     const [orderData, setOrderData] = useState(null);

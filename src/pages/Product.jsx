@@ -1,39 +1,102 @@
+/**
+ * @file         Product.jsx
+ * @description  Single product detail page for Duo Designs.
+ *               Handles image gallery, color/size selection, quantity management,
+ *               pincode delivery check, and custom design uploads.
+ *
+ * @module       pages/Product
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState, useEffect)
+ *   - react-router-dom (Link, useNavigate, useParams)
+ *   - components/ui/DesignUpload
+ *   - constants/routes (ROUTES)
+ *   - data/products (DUO_PRODUCTS)
+ *   - store/cartStore (useCartStore)
+ *   - store/wishlistStore (useWishlistStore)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Prices are calculated dynamically based on size addons (XL/XXL).
+ *   - Pincode check follows prefix-based logic for availability.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import DesignUpload from '../components/ui/DesignUpload';
+import { 
+    useProducts, 
+    usePincode, 
+    useDesignUpload, 
+    useDocumentTitle, 
+    useScrollToTop 
+} from '../hooks';
+import { 
+    ProductDetailSkeleton, 
+    ProductNotFound, 
+    APIError 
+} from '../components/ui';
 import { useCartStore } from '../store/cartStore';
 import { useWishlistStore } from '../store/wishlistStore';
-import { DUO_PRODUCTS } from '../data/products';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Product
+ * @description Page component for displaying individual product details and managing selections.
+ *
+ * @returns {JSX.Element} Product detail view with gallery and purchase controls
+ *
+ * @example
+ *   <Product />
+ */
 export default function Product() {
     const { id } = useParams();
     const navigate = useNavigate();
+    useScrollToTop();
+    
     const addItem = useCartStore((state) => state.addItem);
     const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlistStore();
 
-    const product = DUO_PRODUCTS.find(p => p.id === id) || DUO_PRODUCTS[0];
+    const { data: products, isLoading, isError, refetch } = useProducts();
+    const product = products?.find(p => p.id === id);
+    
+    useDocumentTitle(product ? product.name : 'Product');
 
-    // State mapping
-    const [activeThumb, setActiveThumb] = useState(product.gallery[0]);
-    const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-    const [selectedSize, setSelectedSize] = useState(product.sizes[1]);
+    const [activeThumb, setActiveThumb] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const [pincode, setPincode] = useState('');
-    const [pincodeResult, setPincodeResult] = useState(null); // 'ok' | 'fail' | null
-    const [accoState, setAccoState] = useState({ details: true, sizing: false, design: false, shipping: false });
-    const [customDesign, setCustomDesign] = useState(null);
+    
+    const { 
+        pincode, 
+        setPincode, 
+        result: pincodeResult, 
+        checkPincode 
+    } = usePincode();
 
-    // Update state if product changes (for transitions between product pages)
+    const { 
+        preview, 
+        handleFileChange, 
+        removeDesign, 
+        uploading 
+    } = useDesignUpload();
+
+    const [accoState, setAccoState] = useState({ details: true, sizing: false, design: false, shipping: false });
+
     useEffect(() => {
-        window.scrollTo(0, 0);
-        setActiveThumb(product.gallery[0]);
-        setSelectedColor(product.colors[0]);
-        setSelectedSize(product.sizes[1]);
-        setQuantity(1);
-        setCustomDesign(null);
+        if (product) {
+            setActiveThumb(product.gallery?.[0] || product.icon);
+            setSelectedColor(product.colors?.[0]);
+            setSelectedSize(product.sizes?.[1] || product.sizes?.[0]);
+        }
     }, [id, product]);
+
+    if (isLoading) return <ProductDetailSkeleton />;
+    if (isError) return <APIError onRetry={refetch} />;
+    if (!product && !isLoading) return <ProductNotFound />;
 
     const currentPrice = (product.price || product.basePrice) + (selectedSize?.extra || 0);
 
@@ -41,24 +104,18 @@ export default function Product() {
         setQuantity(q => Math.max(1, Math.min(10, q + d)));
     };
 
-    const handlePincodeCheck = () => {
-        if (pincode.length === 6) {
-            if (['56', '60', '40'].some(prefix => pincode.startsWith(prefix))) {
-                setPincodeResult('ok');
-            } else {
-                setPincodeResult('fail');
-            }
-        }
-    };
-
     const toggleAcc = (key) => setAccoState(prev => ({ ...prev, [key]: !prev[key] }));
 
     const handleAddToCart = () => {
         addItem({
             product: { id: product.id, name: product.name, price: currentPrice, image: activeThumb },
-            variant: { id: `${selectedColor.id}-${selectedSize.id}`, color: selectedColor.name, size: selectedSize.name },
+            variant: { 
+                id: `${selectedColor?.id || 'def'}-${selectedSize?.id || 'def'}`, 
+                color: selectedColor?.name || 'Standard', 
+                size: selectedSize?.name || 'Standard' 
+            },
             qty: quantity,
-            design: customDesign
+            design: preview
         });
         toast.success('Added to Cart');
     };
@@ -204,13 +261,13 @@ export default function Product() {
                     <div className="divider-line"></div>
 
                     {/* COLOR */}
-                    <div className="option-label">Color: <span style={{ fontWeight: 400, color: 'var(--gray)', textTransform: 'none', letterSpacing: 0, borderBottom: 'none' }}>{selectedColor.name}</span></div>
+                    <div className="option-label">Color: <span style={{ fontWeight: 400, color: 'var(--gray)', textTransform: 'none', letterSpacing: 0, borderBottom: 'none' }}>{selectedColor?.name || ''}</span></div>
                     <div className="color-options">
-                        {product.colors.map(color => (
+                        {product.colors?.map(color => (
                             <div
                                 key={color.id}
-                                className={`color-swatch ${selectedColor.id === color.id ? 'active' : ''}`}
-                                style={{ background: color.hex, border: color.border && selectedColor.id !== color.id ? '1.5px solid #ccc' : '' }}
+                                className={`color-swatch ${(selectedColor?.id === color.id) ? 'active' : ''}`}
+                                style={{ background: color.hex, border: (color.border && selectedColor?.id !== color.id) ? '1.5px solid #ccc' : '' }}
                                 title={color.name}
                                 onClick={() => setSelectedColor(color)}
                             ></div>
@@ -220,10 +277,10 @@ export default function Product() {
                     {/* SIZE */}
                     <div className="option-label">Size <button onClick={() => alert('Size Chart:\nS: Chest 40"\nM: Chest 42"\nL: Chest 44"\nXL: Chest 46" (+₹50)\nXXL: Chest 48" (+₹50)')}>Size Chart</button></div>
                     <div className="size-options">
-                        {product.sizes.map(size => (
+                        {product.sizes?.map(size => (
                             <button
                                 key={size.id}
-                                className={`size-btn ${selectedSize.id === size.id ? 'active' : ''} ${!size.available ? 'out' : ''}`}
+                                className={`size-btn ${(selectedSize?.id === size.id) ? 'active' : ''} ${!size.available ? 'out' : ''}`}
                                 disabled={!size.available}
                                 onClick={() => setSelectedSize(size)}
                             >
@@ -231,12 +288,26 @@ export default function Product() {
                             </button>
                         ))}
                     </div>
-                    <div className="stock-msg">⚡ Only 2 left in {selectedColor.name} / {selectedSize.name}</div>
+                    <div className="stock-msg">⚡ Only 2 left in {selectedColor?.name || ''} / {selectedSize?.name || ''}</div>
 
                     <div className="divider-line"></div>
-
-                    {/* DESIGN UPLOAD */}
-                    <DesignUpload onDesignSelected={setCustomDesign} />
+                    <div style={{ padding: '20px', border: '1.5px dashed var(--black)', marginBottom: '24px' }}>
+                        <div className="option-label">Custom Design {uploading && <span style={{ color: 'var(--accent)' }}>Updating...</span>}</div>
+                        {!preview ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                <input type="file" id="design-file" hidden onChange={handleFileChange} accept="image/*" />
+                                <label htmlFor="design-file" className="btn-sm btn-sm-outline" style={{ textAlign: 'center', display: 'block' }}>Choose Image</label>
+                                <p style={{ fontSize: '11px', color: 'var(--gray)' }}>Max size 10MB. PNG/JPG preferred.</p>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                <div style={{ width: '60px', height: '60px', border: '1px solid #ddd', background: '#f9f9f9', display: 'flex', alignItems: 'center', justify_content: 'center', overflow: 'hidden' }}>
+                                    <img src={preview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                </div>
+                                <button onClick={removeDesign} style={{ color: 'var(--error)', background: 'none', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '12px' }}>Remove Design</button>
+                            </div>
+                        )}
+                    </div>
 
                     {/* QUANTITY */}
                     <div className="qty-row">
@@ -265,16 +336,20 @@ export default function Product() {
                                 placeholder="Enter pincode"
                                 maxLength="6"
                                 value={pincode}
-                                onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                                onChange={(e) => setPincode(e.target.value)}
                             />
-                            <button className="pincode-btn" onClick={handlePincodeCheck}>Check</button>
+                            <button className="pincode-btn" onClick={checkPincode}>Check</button>
                         </div>
-                        <div className={`pincode-result ok ${pincodeResult === 'ok' ? 'ok' : ''}`} style={{ display: pincodeResult === 'ok' ? 'block' : 'none' }}>
-                            ✅ Delivery available · Shipping: ₹80 · Est. 3–5 days
-                        </div>
-                        <div className={`pincode-result fail ${pincodeResult === 'fail' ? 'fail' : ''}`} style={{ display: pincodeResult === 'fail' ? 'block' : 'none' }}>
-                            ❌ Sorry, we don't deliver to this pincode yet
-                        </div>
+                        {pincodeResult === 'ok' && (
+                            <div className="pincode-result ok">
+                                ✅ Delivery available · Shipping: ₹80 · Est. {pincode.startsWith('560') ? '1-2' : '3-5'} days
+                            </div>
+                        )}
+                        {pincodeResult === 'fail' && (
+                            <div className="pincode-result fail">
+                                ❌ Sorry, we don't deliver to this pincode yet
+                            </div>
+                        )}
                     </div>
 
                     {/* TRUST BADGES */}

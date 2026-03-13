@@ -1,3 +1,29 @@
+/**
+ * @file         Wishlist.jsx
+ * @description  Personalized wishlist gallery for Duo Designs.
+ *               Allows users to view their saved designs, remove items,
+ *               and quickly add them to the cart.
+ *
+ * @module       pages/Wishlist
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ *   - store/wishlistStore (useWishlistStore)
+ *   - store/cartStore (useCartStore)
+ *   - data/products (DUO_PRODUCTS)
+ *   - react-hot-toast (toast)
+ *   - components/common/EmptyState
+ *
+ * @notes
+ *   - Synchronized with wishlistStore (Zustand) for persistence.
+ *   - Leverages EmptyState for zero-item scenarios.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
@@ -7,6 +33,15 @@ import { DUO_PRODUCTS } from '../data/products';
 import toast from 'react-hot-toast';
 import EmptyState from '../components/common/EmptyState';
 
+/**
+ * @component Wishlist
+ * @description Page component for managing saved product designs.
+ *
+ * @returns {JSX.Element} Gallery of wishlisted items or an empty state
+ *
+ * @example
+ *   <Wishlist />
+ */
 export default function Wishlist() {
     const { items: wishlistIds, toggleItem: toggleWishlist } = useWishlistStore();
     const addItem = useCartStore((state) => state.addItem);

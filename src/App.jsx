@@ -29,26 +29,15 @@ import ScrollToTop from './components/common/ScrollToTop';
 import PageLoader from './components/common/PageLoader';
 import { ROUTES } from './constants/routes';
 
-// Layouts and Wrappers
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import ProtectedRoute from './components/layout/ProtectedRoute';
+// Lazy loaded pages from barrel export
+import { 
+    Home, Category, Categories, CustomDesign, Product, 
+    Cart, Login, Account, Track, Offers, Help, 
+    Wishlist, OrderSuccess, NotFound 
+} from './pages';
 
-// Lazy loaded pages for performance optimization
-const Home = lazy(() => import('./pages/Home'));
-const Category = lazy(() => import('./pages/Category'));
-const Categories = lazy(() => import('./pages/Categories'));
-const CustomDesign = lazy(() => import('./pages/CustomDesign'));
-const Product = lazy(() => import('./pages/Product'));
-const Cart = lazy(() => import('./pages/Cart'));
-const Login = lazy(() => import('./pages/Login'));
-const Account = lazy(() => import('./pages/Account'));
-const Track = lazy(() => import('./pages/Track'));
-const Offers = lazy(() => import('./pages/Offers'));
-const Help = lazy(() => import('./pages/Help'));
-const Wishlist = lazy(() => import('./pages/Wishlist'));
-const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+// Layouts and Wrappers from barrel export
+import { Header, Footer, ProtectedRoute } from './components/layout';
 
 /**
  * @component App

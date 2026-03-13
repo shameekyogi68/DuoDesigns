@@ -1,8 +1,39 @@
+/**
+ * @file         Offers.jsx
+ * @description  Promotions and deals page for Duo Designs.
+ *               Showcases active coupon codes, limited-time offers,
+ *               and a live countdown timer for flash sales.
+ *
+ * @module       pages/Offers
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState, useEffect)
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Features a real-time countdown synchronized via useEffect.
+ *   - Implements clipboard copy functionality for coupon codes.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Offers
+ * @description Page component for displaying active promotions and discounts.
+ *
+ * @returns {JSX.Element} Offers layout with countdown and coupon grid
+ *
+ * @example
+ *   <Offers />
+ */
 export default function Offers() {
     const [timeLeft, setTimeLeft] = useState({ hours: 23, mins: 45, secs: 12 });
 

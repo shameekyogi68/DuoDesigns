@@ -1,5 +1,37 @@
-import React, { useState, useRef } from 'react';
+/**
+ * @file         DesignUpload.jsx
+ * @description  Custom design selection and upload component for Duo Designs.
+ *               Allows users to either upload their own image files or
+ *               select from a gallery of pre-made design icons.
+ *
+ * @module       components/ui/DesignUpload
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState, useRef)
+ *
+ * @notes
+ *   - Enforces file size limits (10MB) and format restrictions (PNG, JPG).
+ *   - Provides real-time selection preview and clearing functionality.
+ */
 
+import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+
+/**
+ * @component DesignUpload
+ * @description Interactive UI for managing custom design inputs on product pages.
+ *
+ * @param {Object} props - Component props
+ * @param {function} props.onDesignSelected - Callback function invoked when a design is chosen or cleared
+ *
+ * @returns {JSX.Element} Collapsible design selection panel
+ *
+ * @example
+ *   <DesignUpload onDesignSelected={(design) => console.log(design)} />
+ */
 export default function DesignUpload({ onDesignSelected }) {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('upload'); // 'upload' | 'premade'
@@ -117,3 +149,7 @@ export default function DesignUpload({ onDesignSelected }) {
         </div>
     );
 }
+
+DesignUpload.propTypes = {
+    onDesignSelected: PropTypes.func.isRequired
+};

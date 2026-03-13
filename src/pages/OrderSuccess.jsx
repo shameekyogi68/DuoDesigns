@@ -1,7 +1,37 @@
+/**
+ * @file         OrderSuccess.jsx
+ * @description  Order confirmation page for Duo Designs.
+ *               Displays order summary, delivery details, and price breakdown 
+ *               after a successful checkout transaction.
+ *
+ * @module       pages/OrderSuccess
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react
+ *   - react-router-dom (Link, useLocation)
+ *   - constants/routes (ROUTES)
+ *
+ * @notes
+ *   - Accesses order detail from navigation state or defaults to mock data.
+ *   - Highlights projected delivery timeline (5-7 business days).
+ */
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * @component OrderSuccess
+ * @description Page component for post-checkout confirmation and summary.
+ *
+ * @returns {JSX.Element} Order confirmation view with detailed transaction summary
+ *
+ * @example
+ *   <OrderSuccess />
+ */
 export default function OrderSuccess() {
     const location = useLocation();
     const order = location.state?.order || {

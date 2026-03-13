@@ -1,7 +1,38 @@
+/**
+ * @file         OTPInput.jsx
+ * @description  Custom numeric input field for handling multi-digit verification codes.
+ *               Supports auto-focus progression and backspace navigation.
+ *
+ * @module       components/ui/OTPInput
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useRef)
+ *
+ * @notes
+ *   - Restricts input to numeric characters only.
+ *   - Synchronized with the parent's state via onChange callback.
+ */
+
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 /**
- * Reusable 6-Box OTP format component matches login.html
+ * @component OTPInput
+ * @description Renders a series of individual digit inputs for OTP verification.
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.length=6] - Number of digit boxes to render
+ * @param {string} props.value - Current combined OTP string
+ * @param {function} props.onChange - Callback fired on every digit change
+ * @param {boolean} [props.disabled=false] - If true, prevents interaction
+ *
+ * @returns {JSX.Element} Flex container of individual digit input fields
+ *
+ * @example
+ *   <OTPInput length={6} value={otp} onChange={setOtp} />
  */
 export default function OTPInput({ length = 6, value, onChange, disabled }) {
     const inputs = useRef([]);
@@ -45,3 +76,10 @@ export default function OTPInput({ length = 6, value, onChange, disabled }) {
         </div>
     );
 }
+
+OTPInput.propTypes = {
+    length: PropTypes.number,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool
+};

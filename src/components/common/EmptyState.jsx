@@ -1,8 +1,45 @@
+/**
+ * @file         EmptyState.jsx
+ * @description  Reusable component for displaying an empty state message.
+ *               Used across Cart, Wishlist, and Order history pages.
+ *
+ * @module       components/common/EmptyState
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { ROUTES } from '../../constants/routes';
 
-const EmptyState = ({ icon, title, subtitle, actionText = 'Start Shopping', actionLink = ROUTES.SHOP }) => {
+/**
+ * @component EmptyState
+ * @description A generic, visually appealing placeholder for empty screens.
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.icon - Emoji or icon character to display
+ * @param {string} props.title - Main heading text
+ * @param {string} props.message - Descriptive sub-text
+ * @param {string} [props.btnText] - Optional button label
+ * @param {string} [props.btnLink] - Optional route for the button link
+ *
+ * @returns {JSX.Element} Centered empty state feedback block
+ *
+ * @example
+ *   <EmptyState
+ *     icon="🛒"
+ *     title="EMPTY CART"
+ *     message="Add something to see it here."
+ *   />
+ */
+const EmptyState = ({ icon, title, message, btnText = 'Start Shopping', btnLink = ROUTES.SHOP }) => {
   return (
     <div className="empty-state reveal">
       <style>{`
@@ -62,12 +99,20 @@ const EmptyState = ({ icon, title, subtitle, actionText = 'Start Shopping', acti
       `}</style>
       <span className="empty-icon">{icon}</span>
       <h2 className="empty-title">{title}</h2>
-      <p className="empty-subtitle">{subtitle}</p>
-      <Link to={actionLink} className="empty-btn">
-        {actionText} →
+      <p className="empty-subtitle">{message}</p>
+      <Link to={btnLink} className="empty-btn">
+        {btnText} →
       </Link>
     </div>
   );
+};
+
+EmptyState.propTypes = {
+  icon: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  btnText: PropTypes.string,
+  btnLink: PropTypes.string
 };
 
 export default EmptyState;

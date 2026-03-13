@@ -1,13 +1,52 @@
+/**
+ * @file         Cart.jsx
+ * @description  Cart and checkout flow for Duo Designs.
+ *               Includes multi-step process: Cart review, Delivery selection,
+ *               Payment processing, and Order confirmation.
+ *
+ * @module       pages/Cart
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link, useNavigate)
+ *   - constants/routes (ROUTES)
+ *   - store/cartStore (useCartStore)
+ *   - store/authStore (useAuthStore)
+ *   - react-hot-toast (toast)
+ *   - components/common/EmptyState
+ *
+ * @notes
+ *   - Implements a 4-step checkout progression.
+ *   - Order summary calculates GST and shipping dynamically via cartStore.
+ *   - Payment is currently a simulated Razorpay flow.
+ */
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
-import EmptyState from '../components/common/EmptyState';
+import { useDocumentTitle, useScrollToTop } from '../hooks';
+import { EmptyCart } from '../components/ui';
 
+/**
+ * @component Cart
+ * @description Page component for managing the shopping cart and checkout process.
+ *
+ * @returns {JSX.Element} Cart and checkout layout with step indicators
+ *
+ * @example
+ *   <Cart />
+ */
 export default function Cart() {
     const navigate = useNavigate();
+    useScrollToTop();
+    useDocumentTitle('Shopping Cart');
+    
     const items = useCartStore(s => s.items);
     const removeItem = useCartStore(s => s.removeItem);
     const updateQty = useCartStore(s => s.updateQty);
@@ -204,11 +243,7 @@ export default function Cart() {
                             <div className="panel-subtitle">{items.length} items · Review before checkout</div>
 
                             {items.length === 0 ? (
-                                <EmptyState 
-                                    icon="🛒"
-                                    title="YOUR CART IS EMPTY"
-                                    subtitle="Looks like you haven't added anything to your cart yet. Explore our best sellers and custom designs to get started!"
-                                />
+                                <EmptyCart />
                             ) : (
                                 <>
                                     {items.map(item => (

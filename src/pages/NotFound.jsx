@@ -1,7 +1,36 @@
+/**
+ * @file         NotFound.jsx
+ * @description  404 error page for Duo Designs.
+ *               Displayed when a user navigates to a non-existent route.
+ *               Provides quick links to return home or browse products.
+ *
+ * @module       pages/NotFound
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ *
+ * @notes
+ *   - Minimalistic design with a large background "404" indicator.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * @component NotFound
+ * @description Page component for handling 404 errors.
+ *
+ * @returns {JSX.Element} 404 error layout with navigation options
+ *
+ * @example
+ *   <NotFound />
+ */
 export default function NotFound() {
     return (
         <div style={{

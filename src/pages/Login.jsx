@@ -1,3 +1,29 @@
+/**
+ * @file         Login.jsx
+ * @description  Authentication page for Duo Designs.
+ *               Handles login and signup using email-based OTP verification.
+ *               Includes form validation and session redirection.
+ *
+ * @module       pages/Login
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link, useNavigate, useLocation)
+ *   - react-hook-form (useForm)
+ *   - constants/routes (ROUTES)
+ *   - store/authStore (useAuthStore)
+ *   - hooks/useOTP (useOTP)
+ *   - components/ui/OTPInput
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Uses a mock OTP logic ('123456') for demonstration.
+ *   - Redirects user back to their intended destination after successful login.
+ */
+
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -7,6 +33,15 @@ import { useOTP } from '../hooks/useOTP';
 import OTPInput from '../components/ui/OTPInput';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Login
+ * @description Page component for user authentication (Login/Signup).
+ *
+ * @returns {JSX.Element} Login and signup forms with OTP functionality
+ *
+ * @example
+ *   <Login />
+ */
 export default function Login() {
     const [activeTab, setActiveTab] = useState('login');
 

@@ -1,13 +1,59 @@
+/**
+ * @file         Account.jsx
+ * @description  User account dashboard for Duo Designs.
+ *               Provides access to order history, profile management,
+ *               saved addresses, and account security settings.
+ *
+ * @module       pages/Account
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (useNavigate)
+ *   - constants/routes (ROUTES)
+ *   - store/authStore (useAuthStore)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Access is restricted to authenticated users via ProtectedRoute.
+ *   - Orders are fetched using a mock dataset for demonstration.
+ */
+
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import toast from 'react-hot-toast';
+import { 
+    useOrders, 
+    useDocumentTitle, 
+    useScrollToTop 
+} from '../hooks';
+import { 
+    OrderCardSkeleton, 
+    NoOrders, 
+    APIError 
+} from '../components/ui';
 
+/**
+ * @component Account
+ * @description Page component for the user dashboard.
+ *
+ * @returns {JSX.Element} Account management view with tabbed sidebar navigation
+ *
+ * @example
+ *   <Account />
+ */
 export default function Account() {
     const { user, logout } = useAuthStore();
     const navigate = useNavigate();
+    useScrollToTop();
+    useDocumentTitle('My Account');
+    
     const [activePanel, setActivePanel] = useState('orders');
+    const { data: orders, isLoading, isError, refetch } = useOrders();
 
     const handleLogout = () => {
         logout();
@@ -136,10 +182,10 @@ export default function Account() {
                         <div className="panel-subtitle">Track, download invoices, and manage your orders</div>
 
                         <div className="stats-row">
-                            <div className="stat-card"><div className="stat-num">4</div><div className="stat-label">Total Orders</div></div>
-                            <div className="stat-card"><div className="stat-num">1</div><div className="stat-label">In Transit</div></div>
-                            <div className="stat-card"><div className="stat-num">2</div><div className="stat-label">Delivered</div></div>
-                            <div className="stat-card"><div className="stat-num">₹2,840</div><div className="stat-label">Total Spent</div></div>
+                            <div className="stat-card"><div className="stat-num">{orders?.length || 0}</div><div className="stat-label">Total Orders</div></div>
+                            <div className="stat-card"><div className="stat-num">{orders?.filter(o => o.status !== 'delivered').length || 0}</div><div className="stat-label">In Transit</div></div>
+                            <div className="stat-card"><div className="stat-num">{orders?.filter(o => o.status === 'delivered').length || 0}</div><div className="stat-label">Delivered</div></div>
+                            <div className="stat-card"><div className="stat-num">₹{orders?.reduce((acc, o) => acc + o.total, 0).toLocaleString() || 0}</div><div className="stat-label">Total Spent</div></div>
                         </div>
 
                         <div className="orders-filter">
@@ -148,160 +194,85 @@ export default function Account() {
                             <button className="filter-btn">Delivered</button>
                         </div>
 
-                        {/* ORDER 1 — DISPATCHED */}
-                        <div className="order-card">
-                            <div className="order-header">
-                                <div>
-                                    <div className="order-id">#DD-2025-0042</div>
-                                    <div className="order-date">Placed on 6 March 2025</div>
-                                </div>
-                                <span className="order-status status-dispatched">🚚 Dispatched</span>
-                            </div>
-                            <div className="order-body">
-                                <div className="order-items">
-                                    <div className="order-item">
-                                        <div className="order-item-img">👕</div>
-                                        <div className="order-item-info">
-                                            <div className="order-item-name">Oversized Drop Tee</div>
-                                            <div className="order-item-meta">Black · Size L · Custom Design Upload · Qty: 1</div>
+                        {isLoading ? (
+                            Array.from({ length: 3 }).map((_, i) => <OrderCardSkeleton key={i} />)
+                        ) : isError ? (
+                            <APIError onRetry={refetch} />
+                        ) : orders && orders.length > 0 ? (
+                            orders.map(order => (
+                                <div className="order-card" key={order.id}>
+                                    <div className="order-header">
+                                        <div>
+                                            <div className="order-id">#{order.id}</div>
+                                            <div className="order-date">Placed on {order.date}</div>
                                         </div>
-                                        <div className="order-item-price">₹699</div>
+                                        <span className={`order-status status-${order.status || 'placed'}`}>
+                                            {order.status === 'delivered' ? '✅' : order.status === 'dispatched' ? '🚚' : '✔'} {order.status}
+                                        </span>
                                     </div>
-                                    <div className="order-item">
-                                        <div className="order-item-img">🔑</div>
-                                        <div className="order-item-info">
-                                            <div className="order-item-name">Keychain — Double Print</div>
-                                            <div className="order-item-meta">Silver · Qty: 2</div>
+                                    <div className="order-body">
+                                        <div className="order-items">
+                                            {order.items.map((item, idx) => (
+                                                <div className="order-item" key={idx}>
+                                                    <div className="order-item-img">{item.image || '👕'}</div>
+                                                    <div className="order-item-info">
+                                                        <div className="order-item-name">{item.name}</div>
+                                                        <div className="order-item-meta">{item.color} · Size {item.size} · Qty: {item.qty}</div>
+                                                    </div>
+                                                    <div className="order-item-price">₹{item.price}</div>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <div className="order-item-price">₹398</div>
-                                    </div>
-                                </div>
 
-                                <div className="tracking-info">
-                                    <span>🚚</span>
-                                    <div>
-                                        <div className="courier">Delhivery</div>
-                                        <div style={{ fontSize: '12px', color: 'var(--gray)' }}>Tracking Number</div>
-                                    </div>
-                                    <div className="tracking-num">DL4892736401</div>
-                                    <a href="#" className="track-link">Track Package →</a>
-                                </div>
+                                        {order.tracking && (
+                                            <div className="tracking-info">
+                                                <span>🚚</span>
+                                                <div>
+                                                    <div className="courier">{order.tracking.courier}</div>
+                                                    <div style={{ fontSize: '12px', color: 'var(--gray)' }}>Tracking Number</div>
+                                                </div>
+                                                <div className="tracking-num">{order.tracking.id}</div>
+                                                <a href="#" className="track-link">Track Package →</a>
+                                            </div>
+                                        )}
 
-                                <div className="order-timeline">
-                                    <div className="timeline">
-                                        <div className="timeline-step">
-                                            <div className="timeline-dot done">✓</div>
-                                            <div className="timeline-label done">Placed</div>
+                                        <div className="order-timeline">
+                                            <div className="timeline">
+                                                <div className="timeline-step">
+                                                    <div className="timeline-dot done">✓</div>
+                                                    <div className="timeline-label done">Placed</div>
+                                                </div>
+                                                <div className="timeline-line done"></div>
+                                                <div className="timeline-step">
+                                                    <div className="timeline-dot done">✓</div>
+                                                    <div className="timeline-label done">Confirmed</div>
+                                                </div>
+                                                <div className="timeline-line done"></div>
+                                                <div className="timeline-step">
+                                                    <div className="timeline-dot current">🚚</div>
+                                                    <div className="timeline-label current">Dispatched</div>
+                                                </div>
+                                                <div className="timeline-line"></div>
+                                                <div className="timeline-step">
+                                                    <div className="timeline-dot">📦</div>
+                                                    <div className="timeline-label">Delivered</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step">
-                                            <div className="timeline-dot done">✓</div>
-                                            <div className="timeline-label done">Confirmed</div>
-                                        </div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step">
-                                            <div className="timeline-dot current">🚚</div>
-                                            <div className="timeline-label current">Dispatched</div>
-                                        </div>
-                                        <div className="timeline-line"></div>
-                                        <div className="timeline-step">
-                                            <div className="timeline-dot">📦</div>
-                                            <div className="timeline-label">Delivered</div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="order-footer">
-                                    <div className="order-total"><span>Total Paid</span>₹1,197</div>
-                                    <div className="order-actions">
-                                        <button className="btn-sm btn-sm-primary">⬇ Download Invoice</button>
-                                        <button className="btn-sm btn-sm-outline">View Details</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* ORDER 2 — DELIVERED */}
-                        <div className="order-card">
-                            <div className="order-header">
-                                <div>
-                                    <div className="order-id">#DD-2025-0031</div>
-                                    <div className="order-date">Placed on 18 February 2025</div>
-                                </div>
-                                <span className="order-status status-delivered">✅ Delivered</span>
-                            </div>
-                            <div className="order-body">
-                                <div className="order-items">
-                                    <div className="order-item">
-                                        <div className="order-item-img">☕</div>
-                                        <div className="order-item-info">
-                                            <div className="order-item-name">Custom Print Mug</div>
-                                            <div className="order-item-meta">White · Custom Design Upload · Qty: 2</div>
+                                        <div className="order-footer">
+                                            <div className="order-total"><span>Total Paid</span>₹{order.total}</div>
+                                            <div className="order-actions">
+                                                <button className="btn-sm btn-sm-primary">⬇ Download Invoice</button>
+                                                <button className="btn-sm btn-sm-outline">View Details</button>
+                                            </div>
                                         </div>
-                                        <div className="order-item-price">₹698</div>
                                     </div>
                                 </div>
-                                <div className="order-timeline">
-                                    <div className="timeline">
-                                        <div className="timeline-step"><div className="timeline-dot done">✓</div><div className="timeline-label done">Placed</div></div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step"><div className="timeline-dot done">✓</div><div className="timeline-label done">Confirmed</div></div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step"><div className="timeline-dot done">✓</div><div className="timeline-label done">Dispatched</div></div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step"><div className="timeline-dot done">✓</div><div className="timeline-label done">Delivered</div></div>
-                                    </div>
-                                </div>
-                                <div className="order-footer">
-                                    <div className="order-total"><span>Total Paid</span>₹778</div>
-                                    <div className="order-actions">
-                                        <button className="btn-sm btn-sm-primary">⬇ Download Invoice</button>
-                                        <button className="btn-sm btn-sm-outline">View Details</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* ORDER 3 — PLACED */}
-                        <div className="order-card">
-                            <div className="order-header">
-                                <div>
-                                    <div className="order-id">#DD-2025-0048</div>
-                                    <div className="order-date">Placed on 8 March 2025</div>
-                                </div>
-                                <span className="order-status status-confirmed">✔ Confirmed</span>
-                            </div>
-                            <div className="order-body">
-                                <div className="order-items">
-                                    <div className="order-item">
-                                        <div className="order-item-img">👕</div>
-                                        <div className="order-item-info">
-                                            <div className="order-item-name">Classic Custom Tee</div>
-                                            <div className="order-item-meta">White · Size M · Pre-made Design · Qty: 1</div>
-                                        </div>
-                                        <div className="order-item-price">₹499</div>
-                                    </div>
-                                </div>
-                                <div className="order-timeline">
-                                    <div className="timeline">
-                                        <div className="timeline-step"><div className="timeline-dot done">✓</div><div className="timeline-label done">Placed</div></div>
-                                        <div className="timeline-line done"></div>
-                                        <div className="timeline-step"><div className="timeline-dot current">✔</div><div className="timeline-label current">Confirmed</div></div>
-                                        <div className="timeline-line"></div>
-                                        <div className="timeline-step"><div className="timeline-dot">🚚</div><div className="timeline-label">Dispatched</div></div>
-                                        <div className="timeline-line"></div>
-                                        <div className="timeline-step"><div className="timeline-dot">📦</div><div className="timeline-label">Delivered</div></div>
-                                    </div>
-                                </div>
-                                <div className="order-footer">
-                                    <div className="order-total"><span>Total Paid</span>₹579</div>
-                                    <div className="order-actions">
-                                        <button className="btn-sm btn-sm-primary">⬇ Download Invoice</button>
-                                        <button className="btn-sm btn-sm-outline">View Details</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            ))
+                        ) : (
+                            <NoOrders />
+                        )}
                     </div>
 
                     {/* ── PROFILE PANEL ── */}

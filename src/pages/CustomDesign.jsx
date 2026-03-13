@@ -1,7 +1,37 @@
+/**
+ * @file         CustomDesign.jsx
+ * @description  Custom Design landing page for Duo Designs.
+ *               Explains the custom printing process, illustrates steps,
+ *               showcases premade designs, and lists printing specifications.
+ *
+ * @module       pages/CustomDesign
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link)
+ *   - constants/routes (ROUTES)
+ *
+ * @notes
+ *   - Focuses on the "Your Design, Our Print" value proposition.
+ *   - Includes technical specifications for printing (DPI, formats, etc.).
+ */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
+/**
+ * @component CustomDesign
+ * @description Page component for custom design education and onboarding.
+ *
+ * @returns {JSX.Element} Landing page with process overview and technical specs
+ *
+ * @example
+ *   <CustomDesign />
+ */
 export default function CustomDesign() {
     const [activeStep, setActiveStep] = useState(0);
 

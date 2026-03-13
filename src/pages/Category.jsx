@@ -1,14 +1,61 @@
+/**
+ * @file         Category.jsx
+ * @description  Product listing page filtered by category.
+ *               Includes sidebar filters for color, size, and price,
+ *               sorting options, and grid/list view toggles.
+ *
+ * @module       pages/Category
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link, useParams, useNavigate)
+ *   - constants/routes (ROUTES)
+ *   - data/products (DUO_PRODUCTS)
+ *   - store/cartStore (useCartStore)
+ *   - store/wishlistStore (useWishlistStore)
+ *   - react-hot-toast (toast)
+ *
+ * @notes
+ *   - Filtering is currently performed on local mock data (DUO_PRODUCTS).
+ *   - Implements sticky header for category tabs.
+ */
+
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import { DUO_PRODUCTS } from '../data/products';
 import { useCartStore } from '../store/cartStore';
 import { useWishlistStore } from '../store/wishlistStore';
 import toast from 'react-hot-toast';
+import {
+    useProducts,
+    useDocumentTitle,
+    useScrollToTop
+} from '../hooks';
+import {
+    ProductCard,
+    ProductCardSkeleton,
+    APIError,
+    ProductNotFound
+} from '../components/ui';
 
+/**
+ * @component Category
+ * @description Page component for displaying products within a specific category.
+ *
+ * @returns {JSX.Element} Category listing layout with filters and sorting
+ *
+ * @example
+ *   <Category />
+ */
 export default function Category() {
     const { category } = useParams();
     const navigate = useNavigate();
+    useScrollToTop();
+    useDocumentTitle(category ? `${category.charAt(0).toUpperCase() + category.slice(1)}` : 'Shop');
+
     const addItem = useCartStore((state) => state.addItem);
     const { items: wishlistItems, toggleItem: toggleWishlist } = useWishlistStore();
 
@@ -16,7 +63,7 @@ export default function Category() {
     const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
     const [filtersOpen, setFiltersOpen] = useState(false);
 
-    const dummyProducts = DUO_PRODUCTS;
+    const { data: products, isLoading, isError, refetch } = useProducts(activeTab === 'all' ? null : activeTab);
 
     const handleTabChange = (cat) => {
         setActiveTab(cat);
@@ -24,9 +71,9 @@ export default function Category() {
         else navigate(`${ROUTES.SHOP}/${cat}`);
     };
 
-    const filteredProducts = activeTab === 'all'
-        ? dummyProducts
-        : dummyProducts.filter(p => p.cat === activeTab);
+    if (isError) return <APIError onRetry={refetch} />;
+
+    const filteredProducts = products || []; // Ensure filteredProducts is an array even if products is null/undefined initially
 
     return (
         <>
@@ -233,66 +280,17 @@ export default function Category() {
 
                     {/* PRODUCT GRID */}
                     <div className={`products-grid ${viewMode === 'list' ? 'list-view' : ''}`}>
-
-                        {filteredProducts.map(p => (
-                            <div className="product-card" key={p.id}>
-                                <Link to={`${ROUTES.PRODUCT.replace(':id', p.id)}`} style={{ textDecoration: 'none', color: 'inherit', display: 'contents' }}>
-                                    <div className="product-img">
-                                        {p.icon}
-                                        {p.badge && (
-                                            <span className={`product-badge ${p.badge === 'HOT' ? 'badge-hot' : p.badge === 'SALE' ? 'badge-sale' : p.badge === 'OUT OF STOCK' ? 'badge-out' : 'badge-new'}`}>
-                                                {p.badge}
-                                            </span>
-                                        )}
-                                        <button 
-                                            className="wishlist-btn" 
-                                            style={{ color: wishlistItems.includes(p.id) ? 'var(--error)' : 'inherit' }}
-                                            onClick={(e) => { 
-                                                e.preventDefault(); 
-                                                toggleWishlist(p.id);
-                                                toast.success(wishlistItems.includes(p.id) ? 'Removed from Wishlist' : 'Added to Wishlist');
-                                            }}
-                                        >
-                                            {wishlistItems.includes(p.id) ? '♥' : '♡'}
-                                        </button>
-                                    </div>
-                                    <div className="product-info">
-                                        <div className="product-cat">{p.cat}</div>
-                                        <div className="product-name">{p.name}</div>
-                                        <div className="product-colors">
-                                            {p.colors.map((c, i) => (
-                                                <div key={i} className="color-dot" style={{ background: c.hex || c, borderColor: (c.hex || c) === '#f5f5f0' || (c.hex || c) === '#e8ff3b' ? '#ccc' : 'transparent' }}></div>
-                                            ))}
-                                        </div>
-                                        <div className="product-price">
-                                            <span className="price">₹{p.price}</span>
-                                            {p.oldPrice && <span className="price-old">₹{p.oldPrice}</span>}
-                                            {p.save && <span className="price-save">{p.save}</span>}
-                                        </div>
-                                        {p.stock && (
-                                            <div className={p.stock === 'out' ? 'stock-out' : 'stock-warn'}>
-                                                {p.stock === 'out' ? 'Currently out of stock' : p.stock}
-                                            </div>
-                                        )}
-                                        <button 
-                                            className="add-cart" 
-                                            disabled={p.stock === 'out'} 
-                                            onClick={(e) => { 
-                                                e.preventDefault(); 
-                                                addItem({
-                                                    product: { id: p.id, name: p.name, price: p.price, image: p.icon },
-                                                    variant: { id: `${p.colors[0]?.id || 'def'}-${p.sizes?.[0]?.id || 'def'}`, color: p.colors[0]?.name || 'Standard', size: p.sizes?.[0]?.name || 'Standard' },
-                                                    qty: 1
-                                                });
-                                                toast.success('Added to Cart');
-                                            }}
-                                        >
-                                            {p.stock === 'out' ? 'Out of Stock' : 'Add to Cart'}
-                                        </button>
-                                    </div>
-                                </Link>
-                            </div>
-                        ))}
+                        {isLoading ? (
+                            Array.from({ length: 8 }).map((_, i) => (
+                                <ProductCardSkeleton key={i} />
+                            ))
+                        ) : filteredProducts.length > 0 ? (
+                            filteredProducts.map(p => (
+                                <ProductCard key={p.id} product={p} viewMode={viewMode} />
+                            ))
+                        ) : (
+                            <ProductNotFound />
+                        )}
                     </div>
 
                     {/* PAGINATION */}

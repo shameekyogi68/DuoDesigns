@@ -1,3 +1,25 @@
+/**
+ * @file         products.js
+ * @description  Static product database for Duo Designs.
+ *               Contains catalogs for t-shirts, oversized tees, mugs,
+ *               keychains, and trackpants with their variants.
+ *
+ * @module       data/products
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @notes
+ *   - Serves as the primary source of truth for the experimental frontend.
+ *   - Each product includes variants (colors, sizes) and pricing attributes.
+ *   - Prices are inclusive of GST as per frontend display logic.
+ */
+
+/**
+ * @constant DUO_PRODUCTS
+ * @description Master array of product objects available in the shop.
+ * @type {Array<Object>}
+ */
 export const DUO_PRODUCTS = [
     { 
         id: '1', 

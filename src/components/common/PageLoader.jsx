@@ -1,5 +1,29 @@
+/**
+ * @file         PageLoader.jsx
+ * @description  Loading placeholder component for Duo Designs.
+ *               Provides a pulsing skeleton animation during view transitions
+ *               or data fetching states.
+ *
+ * @module       components/common/PageLoader
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react
+ */
+
 import React from 'react';
 
+/**
+ * @component PageLoader
+ * @description Visual entry loader with branded pulse and shimmer effects.
+ *
+ * @returns {JSX.Element} Full-height loading view
+ *
+ * @example
+ *   <PageLoader />
+ */
 const PageLoader = () => {
   return (
     <div style={{
