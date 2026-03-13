@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema({
         secret:  { type: String, default: null },
         enabled: { type: Boolean, default: false },
     },
+    loyaltyPoints: { type: Number, default: 0 },
 }, {
     timestamps: true,
 });

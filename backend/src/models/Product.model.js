@@ -54,6 +54,8 @@ const productSchema = new mongoose.Schema({
     icon:              { type: String, default: '👕' },
     rating:            { type: Number, default: 0, min: 0, max: 5 },
     reviewCount:       { type: Number, default: 0 },
+    viewCount:         { type: Number, default: 0 },
+    sellCount:         { type: Number, default: 0 },
     isActive:          { type: Boolean, default: true },
     isFeatured:        { type: Boolean, default: false },
 }, {

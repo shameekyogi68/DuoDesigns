@@ -73,6 +73,11 @@ const orderSchema = new mongoose.Schema({
             default: 'pending',
         },
     },
+    gifting: {
+        isGift:      { type: Boolean, default: false },
+        giftMessage: { type: String, trim: true },
+        giftWrap:    { type: Boolean, default: false },
+    },
     status: {
         type: String,
         enum: ['placed', 'confirmed', 'dispatched', 'delivered', 'cancelled'],

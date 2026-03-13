@@ -10,13 +10,16 @@
 /**
  * Transforms a basic Cloudinary URL into an optimized version
  * @param {string} url - Original Cloudinary URL
- * @param {object} options - { width, height, quality, format, crop }
+ * @param {object} options - { width, height, quality, format, crop, upscale, enhance }
  */
-export const getOptimizedImage = (url, { width, height, quality = 'auto', format = 'auto', crop = 'fill' } = {}) => {
+export const getOptimizedImage = (url, { 
+    width, height, qualityCount, 
+    quality = 'auto', format = 'auto', 
+    crop = 'fill', upscale = false, 
+    enhance = false 
+} = {}) => {
   if (!url || !url.includes('cloudinary.com')) return url;
 
-  // Split URL to inject transformation parameters
-  // Pattern: .../upload/[transformations]/v.../path
   const parts = url.split('/upload/');
   if (parts.length !== 2) return url;
 
@@ -26,9 +29,13 @@ export const getOptimizedImage = (url, { width, height, quality = 'auto', format
   if (quality) transformations.push(`q_${quality}`);
   if (format) transformations.push(`f_${format}`);
   if (crop) transformations.push(`c_${crop}`);
+  
+  // AI Improvements
+  if (upscale) transformations.push('e_upscale');
+  if (enhance) transformations.push('e_enhance');
 
   const transformString = transformations.join(',');
-  return `${parts[0]}/upload/${transformString}/${parts[1]}`;
+  return `${parts[0]}/upload/${transformString ? transformString + '/' : ''}${parts[1]}`;
 };
 
 /**
