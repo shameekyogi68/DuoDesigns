@@ -1,3 +1,27 @@
+/**
+ * @file         Home.jsx
+ * @description  Homepage of Duo Designs customer app.
+ *               Displays hero section with animated counters, category showcase,
+ *               best sellers, how-it-works guide, and customer testimonials.
+ *
+ * @module       pages/Home
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useEffect, useState, useRef)
+ *   - react-router-dom (Link)
+ *   - react-hot-toast (toast)
+ *   - constants/routes (ROUTES)
+ *   - data/products (DUO_PRODUCTS)
+ *   - store/cartStore (useCartStore)
+ *
+ * @notes
+ *   - Uses IntersectionObserver to trigger statistics counters and scroll reveal animations.
+ *   - Best sellers are currently sliced from local DUO_PRODUCTS data.
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
@@ -5,7 +29,18 @@ import { DUO_PRODUCTS } from '../data/products';
 import { useCartStore } from '../store/cartStore';
 import toast from 'react-hot-toast';
 
-// Animated counter hook
+/**
+ * @function useCounter
+ * @description Custom hook that increments a number from 0 to 'end' 
+ *              when the element enters the viewport.
+ *
+ * @param {number} end       - Target number to count up to
+ * @param {number} duration  - Total animation time in ms (default: 2000)
+ *
+ * @returns {Array} [count, ref]
+ * @returns {number} returns[0] - Current animated count
+ * @returns {Object} returns[1] - React ref to attach to the observed element
+ */
 function useCounter(end, duration = 2000) {
     const [count, setCount] = useState(0);
     const ref = useRef(null);
@@ -38,6 +73,11 @@ function useCounter(end, duration = 2000) {
     return [count, ref];
 }
 
+/**
+ * @component Home
+ * @description Main landing page component.
+ * @returns {JSX.Element} Full homepage layout
+ */
 export default function Home() {
     const [customersCount, customersRef] = useCounter(5000, 2000);
     const [designsCount, designsRef] = useCounter(10000, 2500);

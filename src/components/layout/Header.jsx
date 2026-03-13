@@ -1,10 +1,42 @@
+/**
+ * @file         Header.jsx
+ * @description  Main navigation header for Duo Designs.
+ *               Features multi-level navigation, announcement bar, 
+ *               global product search, and state-aware links for 
+ *               Cart, Wishlist, and User Account.
+ *
+ * @module       components/layout/Header
+ * @author       Duo Designs Dev Team
+ * @version      1.0.1
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState, useEffect)
+ *   - react-router-dom (Link, useLocation, useNavigate)
+ *   - store/cartStore (useCartStore)
+ *   - store/authStore (useAuthStore)
+ *   - store/wishlistStore (useWishlistStore)
+ *   - data/products (DUO_PRODUCTS)
+ *
+ * @notes
+ *   - Announcement bar cycles through multiple global offers.
+ *   - Header transparency changes based on scroll position.
+ *   - Search results include real-time product matching.
+ */
+
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { useCartStore } from '../../store/cartStore';
+import { useAuthStore } from '../../store/authStore';
 import { useWishlistStore } from '../../store/wishlistStore';
 import { DUO_PRODUCTS } from '../../data/products';
 
+/**
+ * @component Header
+ * @description Top navigation bar component.
+ * @returns {JSX.Element} The sticky header with navigation and search.
+ */
 export default function Header() {
     const items = useCartStore((state) => state.addItem ? state.items : []); // safety check
     const cartItems = useCartStore((state) => state.items);

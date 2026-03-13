@@ -1,3 +1,27 @@
+/**
+ * @file         App.jsx
+ * @description  Main Application wrapper for Duo Designs.
+ *               Handles global routes, layout wrapping (Header/Footer),
+ *               lazy loading, toast notifications, and scroll reveal logic.
+ *
+ * @module       root/App
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (Suspense, lazy, useEffect)
+ *   - react-router-dom (Routes, Route, useLocation)
+ *   - react-hot-toast (Toaster)
+ *   - components/layout (Header, Footer, ProtectedRoute)
+ *   - components/common (PageLoader, ScrollToTop)
+ *   - constants/routes (ROUTES)
+ *
+ * @notes
+ *   - Implements IntersectionObserver for .reveal animations on scroll.
+ *   - Observer re-scans DOM on route changes to support single-page navigation.
+ */
+
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -10,7 +34,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 
-// Lazy loaded pages
+// Lazy loaded pages for performance optimization
 const Home = lazy(() => import('./pages/Home'));
 const Category = lazy(() => import('./pages/Category'));
 const Categories = lazy(() => import('./pages/Categories'));
@@ -26,9 +50,15 @@ const Wishlist = lazy(() => import('./pages/Wishlist'));
 const OrderSuccess = lazy(() => import('./pages/OrderSuccess'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+/**
+ * @component App
+ * @description Root application component managing layout and global state.
+ * @returns {JSX.Element} The full application layout with routed content.
+ */
 function App() {
     const location = useLocation();
 
+    // Initialize IntersectionObserver for scroll reveal animations
     React.useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -38,18 +68,21 @@ function App() {
             });
         }, { threshold: 0.1 });
 
+        // Scan DOM for all .reveal elements
         const scan = () => {
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         };
 
         scan();
-        const timeout = setTimeout(scan, 1000); // Re-scan after lazy loads
+        
+        // Re-scan after a delay to account for lazy-loaded component mounts
+        const timeout = setTimeout(scan, 1000); 
         
         return () => {
             observer.disconnect();
             clearTimeout(timeout);
         };
-    }, [location.pathname]);
+    }, [location.pathname]); // IMPORTANT: Re-trigger scan on route change
 
     return (
         <>

@@ -1,7 +1,44 @@
+/**
+ * @file         cartStore.js
+ * @description  Global cart state management for Duo Designs.
+ *               Handles items, quantity, coupons, shipping, and total calculations.
+ *
+ * @module       store/cartStore
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - zustand (create)
+ *   - zustand/middleware (persist)
+ *   - utils/gst (calculateGST)
+ */
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { calculateGST } from '../utils/gst';
 
+/**
+ * @store cartStore
+ * @description Global cart state using Zustand.
+ *              Persisted to localStorage as 'duo-cart-storage'.
+ *
+ * @state {Array}   items           - Shopping cart items
+ * @state {Object}  appliedCoupon   - Active coupon object (optional)
+ * @state {number}  shippingCharge  - Flat charge from pincode lookup
+ * @state {string}  customerState   - State name for GST calculation
+ *
+ * @action addItem(newItem)         - Adds item or increments qty if exists
+ * @action removeItem(prodId, varId)- Removes specific variant from cart
+ * @action updateQty(prodId, varId, qty) - Updates quantity (min 1)
+ * @action clearCart()              - Resets current cart state
+ * @action applyCoupon(coupon)      - Sets the active coupon
+ * @action removeCoupon()           - Clears the applied coupon
+ * @action setShippingCharge(val)   - Updates shipping based on pincode
+ * @action setCustomerState(name)   - Updates state for GST calculation
+ *
+ * @computed getSummary()           - Returns full price breakdown (total, gst, disc)
+ */
 export const useCartStore = create(
     persist(
         (set, get) => ({

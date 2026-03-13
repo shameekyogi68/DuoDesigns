@@ -1,8 +1,31 @@
+/**
+ * @file         Footer.jsx
+ * @description  Main footer component for Duo Designs.
+ *               Includes newsletter subscription, quick links,
+ *               social handles, and legal policies.
+ *
+ * @module       components/layout/Footer
+ * @author       Duo Designs Dev Team
+ * @version      1.0.0
+ * @created      2025-03-09
+ *
+ * @dependencies
+ *   - react (useState)
+ *   - react-router-dom (Link)
+ *   - react-hot-toast (toast)
+ *   - constants/routes (ROUTES)
+ */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import toast from 'react-hot-toast';
 
+/**
+ * @component Footer
+ * @description Site-wide footer component.
+ * @returns {JSX.Element} The rendered footer layout.
+ */
 export default function Footer() {
     const [email, setEmail] = useState('');
 
