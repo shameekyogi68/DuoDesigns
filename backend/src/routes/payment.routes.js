@@ -7,7 +7,7 @@
  */
 const router = require('express').Router();
 const ctrl = require('../controllers/payment.controller');
-const auth = require('../middleware/auth.middleware');
+const { protect: auth } = require('../middleware/auth.middleware')
 const admin = require('../middleware/admin.middleware');
 
 router.post('/create-order', auth, ctrl.createPaymentOrder);

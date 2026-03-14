@@ -7,7 +7,7 @@
  */
 const router = require('express').Router();
 const ctrl = require('../controllers/upload.controller');
-const auth = require('../middleware/auth.middleware');
+const { protect: auth } = require('../middleware/auth.middleware')
 const admin = require('../middleware/admin.middleware');
 const { designUpload, productUpload, premadeUpload } = require('../middleware/upload.middleware');
 

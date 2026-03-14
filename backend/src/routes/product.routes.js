@@ -7,7 +7,7 @@
  */
 const router = require('express').Router();
 const ctrl = require('../controllers/product.controller');
-const auth = require('../middleware/auth.middleware');
+const { protect: auth } = require('../middleware/auth.middleware')
 const admin = require('../middleware/admin.middleware');
 const validate = require('../middleware/validate.middleware');
 const { createProductRules, updateProductRules } = require('../validators/product.validator');

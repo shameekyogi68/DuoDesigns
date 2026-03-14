@@ -7,7 +7,7 @@
  */
 const router = require('express').Router();
 const ctrl = require('../controllers/coupon.controller');
-const auth = require('../middleware/auth.middleware');
+const { protect: auth } = require('../middleware/auth.middleware')
 const admin = require('../middleware/admin.middleware');
 const validate = require('../middleware/validate.middleware');
 const { createCouponRules, validateCouponRules } = require('../validators/coupon.validator');

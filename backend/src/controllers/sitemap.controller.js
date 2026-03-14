@@ -8,7 +8,7 @@
  */
 
 const Product = require('../models/Product.model');
-const { SEO_CONFIG } = require('../constants/seo'); // Note: This is a frontend constant, usually we'd share it or duplicate the URL
+
 
 exports.generateSitemap = async (req, res) => {
   try {

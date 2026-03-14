@@ -7,7 +7,7 @@
  */
 const router = require('express').Router();
 const ctrl = require('../controllers/customer.controller');
-const auth = require('../middleware/auth.middleware');
+const { protect: auth } = require('../middleware/auth.middleware')
 const admin = require('../middleware/admin.middleware');
 
 router.use(auth, admin); // All routes admin only

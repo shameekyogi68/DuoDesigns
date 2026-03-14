@@ -8,7 +8,8 @@
 
 const router = require('express').Router();
 const ctrl = require('../controllers/review.controller');
-const { protect, admin } = require('../middleware/auth.middleware');
+const { protect } = require('../middleware/auth.middleware');
+const admin = require('../middleware/admin.middleware');
 
 // Public
 router.get('/:productId', ctrl.getProductReviews);
