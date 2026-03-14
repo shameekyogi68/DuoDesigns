@@ -124,7 +124,7 @@ export default function Header() {
                         DUO<span>DESIGNS</span>
                     </Link>
 
-                    <nav aria-label="Primary Navigation">
+                    <nav aria-label="Primary Navigation" className="hide-mobile">
                         <Link to={ROUTES.SHOP}>Shop</Link>
                         <Link to={ROUTES.CATEGORIES}>Categories</Link>
                         <Link to={ROUTES.CUSTOM_DESIGN}>Custom Design</Link>

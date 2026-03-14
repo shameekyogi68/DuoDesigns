@@ -100,18 +100,9 @@ export default function Footer() {
                     <Link to={ROUTES.HELP}>GST Info</Link>
 
                     {/* Trust badges */}
-                    <div style={{ display: 'flex', gap: '6px', marginTop: '16px', flexWrap: 'wrap' }}>
+                    <div className="trust-badges">
                         {['🔒 SSL', '✅ GST', '🇮🇳 India'].map((badge, i) => (
-                            <span key={i} style={{
-                                background: 'rgba(255,255,255,0.06)',
-                                padding: '4px 10px',
-                                fontSize: '10px',
-                                fontWeight: '700',
-                                letterSpacing: '0.5px',
-                                color: 'rgba(255,255,255,0.5)',
-                                borderRadius: '4px',
-                                fontFamily: '"Inter", sans-serif'
-                            }}>
+                            <span key={i} className="trust-badge">
                                 {badge}
                             </span>
                         ))}

@@ -53,8 +53,10 @@ app.use('/api/webhooks', webhookRoutes);
 
 // ── Global Middleware ──────────────────────────────
 app.use(helmet());
-app.use(mongoSanitize());
-app.use(xss());
+// NOTE: mongoSanitize and xss-clean are currently disabled due to incompatibility with Express 5 
+// ("Cannot set property query of # which has only a getter"). 
+// app.use(mongoSanitize());
+// app.use(xss());
 app.use(hpp());
 
 // Logging

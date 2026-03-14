@@ -27,6 +27,8 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import { DUO_PRODUCTS } from '../data/products';
 import { useCartStore } from '../store/cartStore';
+import { useDocumentTitle } from '../hooks';
+import { ProductCard } from '../components/ui';
 import toast from 'react-hot-toast';
 
 /**
