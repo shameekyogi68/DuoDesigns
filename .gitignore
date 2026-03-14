@@ -1,6 +1,32 @@
-node_modules/
-dist/
+# Dependencies
+**/node_modules/
+**/.npm_cache/
+**/.npm_cache_local/
+**/.local_cache/
+
+# Environment variables (NEVER commit these)
+**/.env
+**/.env.local
+**/.env.production
+!.env.example
+
+# Build outputs
+**/dist/
+**/build/
+**/art_temp/
+
+# Logs
+**/logs/
+**/*.log
+**/*.log.*
+server_log.txt
+
+# OS files
 .DS_Store
+Thumbs.db
+**/.DS_Store
+
+# IDE
+.vscode/
+.idea/
 *.local
-.env
-.env.*

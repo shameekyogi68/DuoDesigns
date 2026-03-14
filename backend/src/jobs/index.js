@@ -13,5 +13,6 @@ const logger = require('../config/logger');
 require('./cleanExpiredOTPs.job');
 require('./lowStockAlert.job');
 require('./dailyReport.job');
+require('./keepAlive.job');
 
 logger.info('Cron Jobs initialized successfully.');

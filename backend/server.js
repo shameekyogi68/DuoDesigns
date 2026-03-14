@@ -25,7 +25,15 @@ const startServer = async () => {
         app.listen(PORT, () => {
             console.log(`\n🚀 Duo Designs API running on port ${PORT}`);
             console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-            console.log(`🔗 http://localhost:${PORT}/api\n`);
+            console.log(`🔗 http://localhost:${PORT}/api`);
+            console.log(`💚 Health: http://localhost:${PORT}/health`);
+            if (process.env.CLIENT_URL) {
+                console.log(`🌐 Client: ${process.env.CLIENT_URL}`);
+            }
+            if (process.env.ADMIN_URL) {
+                console.log(`🔒 Admin:  ${process.env.ADMIN_URL}`);
+            }
+            console.log('');
         });
     } catch (error) {
         console.error('❌ Failed to start server:', error.message);
@@ -34,3 +42,4 @@ const startServer = async () => {
 };
 
 startServer();
+

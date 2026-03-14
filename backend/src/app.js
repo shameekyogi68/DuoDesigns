@@ -64,20 +64,50 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));
 }
 
+// ── CORS — Allow known origins ────────────────────
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    process.env.ADMIN_URL,
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5178',
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (curl, mobile apps, server-to-server)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`Origin ${origin} not allowed by CORS`));
+        }
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// ── Health Check ───────────────────────────────────
+// ── Health Check (used by UptimeRobot + keep-alive) ─
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// ── Sitemap ────────────────────────────────────────
 app.get('/sitemap.xml', require('./controllers/sitemap.controller').generateSitemap);
+
+// ── API Root ───────────────────────────────────────
 app.get('/api', (req, res) => {
     res.json({
         success: true,
         message: 'Duo Designs API is running 🚀',
         version: '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
         timestamp: new Date().toISOString(),
     });
 });
