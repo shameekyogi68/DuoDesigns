@@ -1,60 +1,50 @@
 ---
-title:        Business Rules
-section:      01-project
-last-updated: 2025-03-13
-maintained-by:Project Manager
-status:       Approved
+title: Business Rules
+app: All
+section: 01-project
+last-updated: 2025-03-14
+maintained-by: Project Manager
+status: Current
 ---
 
-# 📜 Duo Designs Business Rules
+# Business Rules
 
-This document outlines the hard-coded business logic that governs our e-commerce platform.
+This document outlines the core business logic rules baked into the Duo Designs platform.
 
-## 💳 Payments & Checkout
-1. **Prepaid Only:** We do NOT offer Cash on Delivery (COD). All orders must be paid upfront.
-2. **Payment Gateway:** Razorpay is the official payment partner. Standard 2% transaction fee applies.
-3. **Refunds:** Refunds are processed within 5-7 working days. Only for damaged products (as confirmed by the Admin).
-4. **Free Shipping:** Any order with a `subtotal` (after coupons) above **₹999** gets free delivery.
-5. **Standard Shipping:** The default shipping charge is **₹80** per order. This can be overridden per `pincode` in the database.
+## 📦 Fulfillment & Logistics
 
-## 🎨 Product Customization
-1. **Design Uploads:** Customers can only upload **PNG** or **JPG** files.
-2. **File Size Limit:** Maximum allowable size is **10MB** per design.
-3. **Oversized Surcharge:** Size XL and XXL carry an additional **₹50** premium over the base price.
-4. **Keychains:** A double-sided print option carries an additional **₹80** surcharge.
+### 1. No Cash on Delivery (COD)
+- **Rule**: All orders must be fully paid upfront via Razorpay.
+- **Implementation**: The checkout flow only proceeds once the `payment.status` is checked as `paid`.
+- **Reason**: Custom-printed items cannot be resold if returned or rejected at the doorstep.
 
-## 💸 Coupons & Discounts
-1. **Coupon Types:**
-   - **Flat Discount:** Deducts a fixed amount (e.g., ₹100 off).
-   - **Percentage Discount:** Deducts a percent (e.g., 10% off).
-2. **Minimum Order:** Coupons can have a `minOrder` requirement (e.g., "Min order ₹500").
-3. **Usage Limit:** Coupons can be limited by number of uses or by an expiry date.
-4. **Stacking:** Users can only apply **one coupon per order**.
+### 2. Pincode Validation
+- **Rule**: Orders are only accepted for pincodes present in the `Pincode` model with `isDeliverable: true`.
+- **Implementation**: The customer app triggers a check against `GET /api/shipping/:pincode` before allowing a user to "Add to Cart".
 
-## 🚚 Shipping & Delivery
-1. **Pincode Verification:** Users MUST enter their pincode to check deliverability.
-2. **Serviceability:** Delivery is ONLY offered to pincodes listed in the `Pincode` collection.
-3. **Tracking:** Each order is assigned a `trackingNumber` and `courierPartner` by the Admin during the **Dispatch** phase.
-4. **Statuses:** All orders move through this exact lifecycle:
-   - `placed` (Paid but not yet seen)
-   - `confirmed` (Admin accepted for production)
-   - `dispatched` (Shipped out, tracking ID added)
-   - `delivered` (Final destination reached)
+## 💸 Pricing & Taxation
 
-## ⚖️ Taxation (GST)
-1. **Seller State:** Duo Designs' registered warehouse is in **Karnataka**.
-2. **Intrastate (Karnataka):** CGST 9% + SGST 9% (Total 18%) is applied to all customers with a Karnataka address.
-3. **Interstate (Non-Karnataka):** IGST 18% is applied to all other states in India.
-4. **HSN Codes:** Every product in the catalogue must have a valid HSN code for tax invoices.
+### 3. GST Breakdown
+- **Rule**: Every order must calculate and record specific GST components based on the customer's state.
+- **Rule**: Intrastate (Karnataka) = 9% CGST + 9% SGST.
+- **Rule**: Interstate (Outside Karnataka) = 18% IGST.
+- **Implementation**: `backend/src/services/gst.service.js` → `calculateGST()`.
 
-## 🤝 Partner Commissions
-1. **Commission Rate:** Every reseller/partner earns exactly **5% commission** on the base sale value.
-2. **Payout:** Commissions are calculated automatically but marked as "paid" manually by the Admin.
-3. **Rounding:** All financial calculations use 2 decimal places.
+### 4. Variant Pricing
+- **Rule**: Larger sizes (XL, XXL) carry a price addon.
+- **Implementation**: `Product` model has `xlAddon` and `xxlAddon` fields (Default: ₹50).
 
-## 📦 Inventory Management
-1. **Stock Rules:** When an item's stock reaches **0**, it is automatically marked as "Out of Stock" on the frontend.
-2. **Low Stock Alert:** When stock falls below **10**, the frontend shows a "Only [X] left!" badge.
+## 🎟️ Discounts & Coupons
+
+### 5. Coupon Validity
+- **Rule**: Coupons have strict expiry dates and maximum usage counts.
+- **Implementation**: `backend/src/validators/coupon.validator.js` checks date and count before applying.
+
+## 📱 User Security
+
+### 6. Passwordless Login (OTP)
+- **Rule**: Customers do not have passwords. They login using 6-digit OTPs sent to their email.
+- **Implementation**: `backend/src/controllers/auth.controller.js` → `sendOTP()`.
 
 ---
-[Related: 01-project/user-roles.md](./user-roles.md) | [Home](../README.md)
+[Related: Pricing Rules](./pricing-rules.md) | [Related: API Overview](../04-api-reference/overview.md)

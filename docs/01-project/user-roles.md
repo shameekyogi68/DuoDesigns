@@ -1,88 +1,35 @@
 ---
-title:        User Roles & Permissions
-section:      01-project
-last-updated: 2025-03-13
-maintained-by:Project Manager
-status:       Approved
+title: User Roles
+app: All
+section: 01-project
+last-updated: 2025-03-14
+maintained-by: Project Manager
+status: Current
 ---
 
-# 👥 User Roles & Permissions
+# User Roles
 
-Duo Designs uses role-based access control (RBAC) to ensure security and clean workflow between customers and platform managers.
+The system recognizes four primary tiers of users.
 
-## 1. 🛍️ Customer
-The primary user of the platform.
+## 1. Guest (Anonymous)
+- **Scope**: Customer App.
+- **Access**: Browse products, view categories, check shipping availability, add items to cart.
+- **Restriction**: Cannot checkout or view order history.
 
-### Registration & Login
-- **Method:** Passwordless OTP-based email login.
-- **Verification:** User must verify a 6-digit OTP to create a session.
-- **Data Stored:** Name, email, phone, multiple addresses, and order history.
+## 2. Customer (Authenticated)
+- **Scope**: Customer App.
+- **Login**: Email + OTP.
+- **Access**: All Guest features + Checkout, Save Design, View Orders, Request Returns, Profile management.
 
-### Permissions (Can Do)
-- ✅ Browse product catalogue.
-- ✅ Search for products.
-- ✅ Upload custom designs (PNG/JPG < 10MB).
-- ✅ Add items to cart and check pincode serviceability.
-- ✅ Apply coupons.
-- ✅ Place orders via Razorpay.
-- ✅ Track order status using an Order ID.
-- ✅ Download PDF invoices.
-- ✅ Manage delivery addresses.
+## 3. Admin (Internal User)
+- **Scope**: Admin Panel.
+- **Login**: Username + Password (Securely stored in DB).
+- **Access**: Product management, Order fulfillment, Inventory tracking, GST Reporting, Coupon generation.
 
-### Restrictions (Cannot Do)
-- ❌ Access the Admin Dashboard.
-- ❌ Modify product stock or pricing.
-- ❌ Dispatch or cancel their own order after confirmation.
-- ❌ View orders of other users.
+## 4. Agency (Partner)
+- **Scope**: Agency Revenue Tracker.
+- **Login**: Local authentication (defined in environment).
+- **Access**: View sales performance across Duo Designs, generate commission reports, verify monthly payments.
 
 ---
-
-## 2. ⚡ Admin (Owner)
-The root user responsible for platform operations.
-
-### Access
-- **Method:** Separate Login page (often hidden or separate host).
-- **Identifier:** Users with the `role: 'admin'` in the database.
-
-### Permissions (Can Do)
-- ✅ View overall revenue and order analytics.
-- ✅ Manage the Product Catalogue (Create, Edit, Delete).
-- ✅ Update real-time stock levels.
-- ✅ Change Order Status (Placed → Confirmed → Dispatched → Delivered).
-- ✅ Add Courier Tracking details to orders.
-- ✅ Manage service area pincodes and shipping charges.
-- ✅ Create and manage discount coupons.
-- ✅ View and export Customer lists.
-- ✅ Log Partner sales and mark commissions as "Paid".
-- ✅ Update Global Site Settings (Contact, Banner text, free shipping threshold).
-
----
-
-## 3. 🤝 Partner (Reseller)
-Partners are external entities that drive sales to Duo Designs. They do not have a separate dashboard in the current MVP, but their data is managed by the Admin.
-
-### Profile
-- **Identifier:** Company Name / Point of Contact.
-- **Workflow:** Admin logs sales attributable to a partner manually.
-- **Incentive:** Exactly **5% commission** on the sale amount.
-
-### Data Logged
-- `saleAmount` (Excluding taxes).
-- `commission` (Calculated automatic).
-- `status` (`pending` | `paid`).
-
----
-
-## 🔐 Access Summary Table
-
-| Feature | Customer | Admin | Partner |
-| :--- | :---: | :---: | :---: |
-| Product Discovery | ✅ | ✅ | ✅ |
-| Upload Design | ✅ | ✅ | ❌ |
-| Manage Orders | ❌ | ✅ | ❌ |
-| Manage Coupons | ❌ | ✅ | ❌ |
-| View Analytics | ❌ | ✅ | ❌ |
-| Payout Commissions | ❌ | ✅ | ❌ |
-
----
-[Related: 01-project/product-catalogue.md](./product-catalogue.md) | [Home](../README.md)
+[Related: Authentication](../03-backend/authentication.md) | [Related: Security](../13-security/overview.md)

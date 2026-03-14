@@ -1,54 +1,49 @@
 ---
-title:        Environment Variables
-section:      02-architecture
-last-updated: 2025-03-13
-maintained-by:DevOps Engineer
-status:       Approved
+title: Environment Variables
+app: All
+section: 02-architecture
+last-updated: 2025-03-14
+maintained-by: DevOps Engineer
+status: Current
 ---
 
-# 🔑 Environment Variables
+# Environment Variables
 
-To keep the application secure, sensitive keys and dynamic configurations are stored in `.env` files. **Never commit `.env` files to Git.**
+Each application in the monorepo requires its own `.env` file for local development. In production, these variables are configured in the Vercel or Render dashboard.
 
-## 1. ⚙️ Backend API (.env)
+## ⚙️ Backend (`/backend/.env`)
 
-| Variable | Description | Example Value | Required? |
-| :--- | :--- | :--- | :---: |
-| `NODE_ENV` | Run mode | `development`, `production` | ✅ |
-| `PORT` | Listening port | `5000` | ✅ |
-| `CLIENT_URL` | Frontend URL for CORS | `http://localhost:5173` | ✅ |
-| `MONGODB_URI` | Mongo Connection String | `mongodb+srv://...` | ✅ |
-| `JWT_SECRET` | Secret for Access Token | `your_secret_key` | ✅ |
-| `SMTP_EMAIL` | Gmail account for notifications | `hi@gmail.com` | ✅ |
-| `SMTP_PASSWORD` | Gmail App Password (not login) | `xxxx xxxx xxxx xxxx` | ✅ |
-| `RAZORPAY_KEY_ID` | Public Key from Dashboard | `rzp_test_xxxxxx` | ✅ |
-| `RAZORPAY_KEY_SECRET` | Secret Key from Dashboard | `xxxxxxxxxxxxxxxx` | ✅ |
-| `RAZORPAY_WEBHOOK_SECRET` | Secret for hook verification | `xxxxxxxxxxxxxxxx` | ✅ |
-| `CLOUDINARY_CLOUD_NAME` | Cloud Name from Console | `duo-designs` | ✅ |
-| `CLOUDINARY_API_KEY` | Key from Console | `123456789` | ✅ |
-| `CLOUDINARY_API_SECRET` | Secret from Console | `xxxxxxxxxxxxxxxx` | ✅ |
+| Variable | Description | Example | Required |
+|----------|-------------|---------|----------|
+| `PORT` | Server port | 5000 | Yes |
+| `MONGODB_URI` | MongoDB Connection string | `mongodb+srv://...` | Yes |
+| `JWT_SECRET` | Secret for signing tokens | `random_64_char` | Yes |
+| `RAZORPAY_KEY_ID` | Razorpay API Key | `rzp_test_...` | Yes |
+| `RAZORPAY_KEY_SECRET` | Razorpay Secret | `secret_...` | Yes |
+| `CLOUDINARY_URL` | Cloudinary credentials | `cloudinary://...` | Yes |
+| `GMAIL_USER` | Email for SMTP | `abc@gmail.com` | Yes |
+| `GMAIL_PASS` | Google App Password | `xxxx xxxx...` | Yes |
 
----
+## 👕 Customer App (`/duo-designs-customer/.env`)
 
-## 2. 🌐 Customer/Admin Frontend (.env)
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_URL` | Full URL of Backend API | `http://localhost:5000/api` |
+| `VITE_RAZORPAY_KEY` | Public Razorpay Key | `rzp_test_...` |
 
-| Variable | Description | Example Value | Required? |
-| :--- | :--- | :--- | :---: |
-| `VITE_API_URL` | Base path for API calls | `http://localhost:5000/api` | ✅ |
-| `VITE_RAZORPAY_KEY` | Public key for UI payment | `rzp_test_xxxxxx` | ✅ |
-| `VITE_CLOUDINARY_UPLOAD_PRESET` | Preset for unsigned uploads | `duo_preset` | 💡 Optional |
+## 🔒 Admin Panel (`/duo-designs-admin/.env`)
 
----
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_URL` | Full URL of Backend API | `http://localhost:5000/api` |
+| `VITE_ADMIN_USER` | Initial fallback user | `admin` |
 
-## 🔐 Security Best Practices
+## 📊 Revenue Tracker (`/agency-revenue-tracker/.env`)
 
-1. **Naming:** All frontend variables must be prefixed with `VITE_` to be exposed to the browser.
-2. **Rotation:** Rotate `JWT_SECRET` and `RAZORPAY_KEY_SECRET` every 6 months or in case of a leak.
-3. **Staging vs Prod:** Always use separate Razorpay Test vs Live keys for staging and production environments.
-4. **CI/CD:** On Vercel or Render, add these variables in the **Environment Variables** section of the dashboard, not in the code.
-
-## ⚠️ Warning
-If `RAZORPAY_WEBHOOK_SECRET` is missing, order payments will not be verified automatic in the background, leading to "Paid" orders showing as "Pending" in the database.
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_URL` | Duo Designs Live API | `https://api.duodesigns.in/api` |
+| `VITE_PARTNER_CREDENTIALS` | Bcrypt hash for tracker login | `$2y$10$...` |
 
 ---
-[Related: 08-deployment/overview.md](../08-deployment/overview.md) | [Home](../README.md)
+[Related: Deployment Prerequisites](../09-deployment/prerequisites.md) | [Related: Security Overview](../13-security/overview.md)

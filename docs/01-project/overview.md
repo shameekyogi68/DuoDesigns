@@ -1,55 +1,35 @@
 ---
-title:        Project Overview
-section:      01-project
-last-updated: 2025-03-13
-maintained-by:Project Manager
-status:       Approved
+title: Project Overview
+app: All
+section: 01-project
+last-updated: 2025-03-14
+maintained-by: Project Manager
+status: Current
 ---
 
-# 📖 Duo Designs Project Overview
+# Project Overview
 
-## 🔍 What is Duo Designs?
-**Duo Designs** is a modern e-commerce platform that brings a premium, street-wear aesthetic to custom-printed products in India. We specialize in T-shirts (regular and oversized), mugs, trackpants, and keychains—offering both curator-designed artworks and a complete **"Upload Your Own"** customization engine.
+Duo Designs is a premium street-wear and custom-print e-commerce platform Tailored for the Indian market. It allows customers to browse high-quality apparel and lifestyle products, with the unique ability to upload their own designs for custom printing.
 
-## 🎯 Target Audience
-- **Geography:** 100% focused on India (pincode-based delivery).
-- **Demographic:** Young adults (18-35), creators, and small brands looking for high-quality, zero-border-radius design aesthetics.
-- **Pain Point:** Traditional custom-print sites are cluttered and feel cheap. Duo Designs provides a premium, high-contrast, bold design experience.
+## 4-App Ecosystem
 
-## 💼 Business Model
-- **D2C (Direct to Consumer):** No marketplace middleman.
-- **Prepaid Only:** We do NOT offer Cash on Delivery (COD). This ensures zero RTO (Return to Origin) for custom-printed items which cannot be resold.
-- **Production:** Print on Demand (POD).
-- **Taxation:** GST-compliant taxes splitting between CGST/SGST (Intrastate - Karnataka) and IGST (Interstate).
+The platform consists of four distinct applications working in harmony:
 
-## 🚀 The Product Range
-1. **Regular T-Shirts:** Classic fit, 180 GSM cotton.
-2. **Oversized T-Shirts:** Heavyweight, wide-shoulder street-wear fit.
-3. **Trackpants:** Zero-border minimalist branding.
-4. **Mugs:** Ceramic 11oz, sublimation print.
-5. **Keychains:** Metal or Acrylic, custom engraved/printed.
+1.  **Customer Website**: The public storefront where users shop, upload designs, and place orders.
+2.  **Admin Panel**: The internal operations hub for fulfilling orders, managing products, and tracking inventory.
+3.  **Agency Revenue Tracker**: A B2B portal for the agency to track commissions and sales performance.
+4.  **Backend API**: The central engine that handles authentication, payments, data storage, and business logic.
 
-## 🛠️ The Three Apps
-The platform consists of three distinct repositories/services:
+## Key Market Focus
 
-1. **Customer App (`duodesigns.in`):**
-   - Built with React + Vite.
-   - Purpose: Discovery, Custom Design Upload, Checkout, and Tracking.
-   
-2. **Admin App (`admin.duodesigns.in`):**
-   - Built with React + Vite.
-   - Purpose: Order lifecycle management, Stock updates, Revenue analytics, and Partner commissions.
+- **India Only**: Tax logic, shipping partners, and payment gateways are optimized specifically for India.
+- **Prepaid Only**: To reduce the high RTO (Return to Origin) risks associated with custom-printed goods, the platform does not support Cash on Delivery (COD).
+- **GST Compliant**: Built-in logic for CGST/SGST/IGST breakdown and tax invoice generation.
 
-3. **Backend API (`api.duodesigns.in`):**
-   - Built with Node.js + Express.
-   - Purpose: Unified API service for both apps, payment verification, GST engine, and PDF invoice generator.
-
-## 🛤️ The Customer Journey
-1. **Land:** User visits homepage and sees highlighted best-sellers.
-2. **Customize:** User selects a product class and enters the **Design Studio** to upload a 10MB PNG/JPG.
-3. **Checkout:** User adds to cart, enters pincode for delivery check, and applies a coupon.
-4. **Pay:** Razorpay integrated checkout securely handles the UPI/Card transaction.
-5. **Track:** User receives email confirmation and can track the order status manually via the site header.
+## Relationships
+- **Built By**: The Agency (Service Provider).
+- **Owned By**: Client (Business Owner).
+- **Revenue Model**: Agency takes a 5% commission on every successful sale through the portal.
 
 ---
-[Related: 01-project/business-rules.md](./business-rules.md) | [Home](../README.md)
+[Related: Business Rules](./business-rules.md) | [Related: Tech Stack](../02-architecture/tech-stack.md)
