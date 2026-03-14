@@ -1,959 +1,899 @@
-Here's the complete IDE prompt:
+Perfect! Here's the complete IDE prompt:
+
+---
 
 ```
-You are a senior full-stack developer and technical architect.
+You are a senior full-stack developer.
 
-Analyze the ENTIRE existing Duo Designs website codebase 
-and generate a single comprehensive markdown file called:
+Build a completely separate, private web application
+called the "Agency Revenue Tracker" for the development
+agency that built and manages the Duo Designs website.
 
-admin-panel-requirements.md
+This app is COMPLETELY SEPARATE from Duo Designs codebase.
+Duo Designs cannot see this. Only the agency can access it.
 
-This file must contain EVERYTHING needed to build the 
-Admin Panel from scratch — so complete that any developer 
-can read it and start building immediately without asking 
-any questions.
-
-═══════════════════════════════════════════════
-STEP 1 — SCAN THE ENTIRE CODEBASE FIRST
-═══════════════════════════════════════════════
-
-Before writing a single line of the markdown file,
-you must scan and read these locations:
-
-FRONTEND (Customer App):
-□ Read every file in src/pages/
-□ Read every file in src/components/
-□ Read every file in src/store/
-□ Read every file in src/api/
-□ Read every file in src/hooks/
-□ Read every file in src/utils/
-□ Read every file in src/constants/
-□ Read src/App.jsx and src/main.jsx
-
-BACKEND:
-□ Read every file in src/models/
-□ Read every file in src/controllers/
-□ Read every file in src/routes/
-□ Read every file in src/middleware/
-□ Read every file in src/services/
-□ Read every file in src/utils/
-□ Read every file in src/config/
-□ Read every validator in src/validators/
-□ Read server.js and app.js
-
-EXISTING ADMIN DESIGN:
-□ Read admin.html (the existing HTML design)
-□ Note every section, panel, table, form, and 
-  button that already exists in the design
-
-DOCUMENTATION:
-□ Read docs/06-api/ (all API reference files)
-□ Read docs/07-database/schemas.md
-□ Read docs/01-project/business-rules.md
-□ Read docs/01-project/user-roles.md
-
-Only after reading ALL of the above,
-generate the markdown file.
+This app auto-pulls every order from the Duo Designs
+backend in real time, calculates 5% commission on every
+sale, and generates monthly reports showing exactly
+what Duo Designs owes the agency.
 
 ═══════════════════════════════════════════════
-STEP 2 — GENERATE admin-panel-requirements.md
+WHAT THIS APP DOES
 ═══════════════════════════════════════════════
 
-The markdown file must contain these exact sections
-in this exact order:
+1. Connects to Duo Designs backend API using a
+   special read-only admin token
+2. Pulls every paid order automatically
+3. Calculates 5% of every order's total value
+4. Shows running totals by month
+5. Generates a professional monthly PDF report
+6. Keeps full history of all payments received
+7. Shows unpaid vs paid commission at a glance
 
-────────────────────────────────────────────────
-SECTION 1: PROJECT CONTEXT
-────────────────────────────────────────────────
+This is the agency's PROOF OF WORK and INVOICE SYSTEM.
+If Duo Designs disputes any amount, this app has the
+complete order-by-order breakdown as evidence.
 
-1.1 What the Admin Panel Is
-    - Purpose and scope
-    - Who uses it (only the owner/admin)
-    - How it connects to the backend
-    - How it differs from the customer app
-    - URL: admin.duodesigns.in
+═══════════════════════════════════════════════
+PROJECT SETUP
+═══════════════════════════════════════════════
 
-1.2 Relationship to Existing Codebase
-    - List every backend API endpoint that the 
-      admin panel will consume (found by reading routes/)
-    - List every MongoDB model the admin panel 
-      reads or writes to (found by reading models/)
-    - List every middleware the admin panel 
-      requests must pass through
-    - Identify the JWT admin role check 
-      (found in middleware/admin.middleware.js)
+Folder name: agency-revenue-tracker/
 
-1.3 Existing Admin HTML Design Reference
-    - List every section found in admin.html
-    - List every data table found in admin.html
-    - List every form found in admin.html
-    - List every modal found in admin.html
-    - List every chart/graph found in admin.html
-    - Note the exact color scheme used
-    - Note the exact fonts used
+npm create vite@latest agency-revenue-tracker -- --template react
+cd agency-revenue-tracker
+npm install react-router-dom axios @tanstack/react-query
+npm install zustand react-hook-form @hookform/resolvers zod
+npm install recharts react-hot-toast date-fns
+npm install reportlab jspdf jspdf-autotable
+npm install lucide-react
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 
-────────────────────────────────────────────────
-SECTION 2: TECH STACK
-────────────────────────────────────────────────
+═══════════════════════════════════════════════
+DESIGN SYSTEM
+═══════════════════════════════════════════════
 
-2.1 Framework & Core
-    - React 18 + Vite
-    - React Router v6 (all admin routes)
-    - Separate project from customer app
-    - Deployed to admin.duodesigns.in
+This is a PRIVATE internal tool — clean, professional,
+minimal. Not the Duo Designs brand.
 
-2.2 State Management
-    - Zustand stores needed (list every store 
-      with its state shape and actions)
+Colors:
+--bg-primary:    #0F1117   (dark navy background)
+--bg-card:       #1A1D27   (card background)
+--bg-input:      #252836   (input background)
+--border:        #2E3347   (borders)
+--text-primary:  #FFFFFF   (headings)
+--text-secondary:#9CA3AF   (labels, secondary)
+--accent:        #6366F1   (indigo — CTAs, active)
+--accent-light:  #818CF8   (hover states)
+--success:       #10B981   (paid, positive)
+--warning:       #F59E0B   (pending, warning)
+--danger:        #EF4444   (overdue, negative)
+--chart-1:       #6366F1
+--chart-2:       #10B981
+--chart-3:       #F59E0B
+--chart-4:       #EF4444
 
-2.3 Data Fetching
-    - Axios instance setup for admin
-      (base URL, JWT interceptor, 401 handler)
-    - React Query for all GET requests
-      (list every query key needed)
-    - Which endpoints need polling 
-      (e.g. new orders — check every 30 seconds)
+Font: Inter (Google Fonts)
+Border radius: 8px for cards, 4px for inputs
+No sharp edges — this is internal, not branded
 
-2.4 UI & Styling
-    - Exact CSS variables from admin.html
-    - Exact fonts from admin.html
-    - Tailwind CSS utility classes to add
-    - Dark theme implementation
-    - Recharts for all charts/graphs
+═══════════════════════════════════════════════
+COMPLETE FOLDER STRUCTURE
+═══════════════════════════════════════════════
 
-2.5 Forms
-    - React Hook Form for all forms
-    - Zod schema validation for each form
-    - List every form in the admin panel 
-      with its fields and validation rules
-
-2.6 Additional Packages
-    - List every npm package needed
-    - State the exact version to install
-    - State the exact purpose of each package
-
-────────────────────────────────────────────────
-SECTION 3: COMPLETE FOLDER STRUCTURE
-────────────────────────────────────────────────
-
-Generate the COMPLETE folder and file tree for 
-the admin app. Include EVERY file:
-
-duo-designs-admin/
+agency-revenue-tracker/
 ├── src/
 │   ├── pages/
-│   │   ├── (every page — derived from admin.html sections)
+│   │   ├── Login.jsx               ← agency private login
+│   │   ├── Dashboard.jsx           ← overview + stats
+│   │   ├── Orders.jsx              ← all orders table
+│   │   ├── Monthly.jsx             ← month by month view
+│   │   ├── Reports.jsx             ← generate + download PDFs
+│   │   └── Settings.jsx            ← API connection settings
+│   │
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── (Sidebar, Topbar, etc.)
-│   │   ├── ui/
-│   │   │   ├── (every reusable component)
+│   │   │   ├── AppLayout.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── Topbar.jsx
 │   │   ├── charts/
-│   │   │   ├── (every chart component)
+│   │   │   ├── MonthlyRevenueChart.jsx
+│   │   │   ├── CommissionChart.jsx
+│   │   │   └── PaymentStatusChart.jsx
 │   │   ├── tables/
-│   │   │   ├── (every data table component)
-│   │   ├── forms/
-│   │   │   ├── (every form component)
-│   │   └── modals/
-│   │       ├── (every modal component)
+│   │   │   ├── OrdersTable.jsx
+│   │   │   └── MonthlyTable.jsx
+│   │   └── ui/
+│   │       ├── StatCard.jsx
+│   │       ├── StatusBadge.jsx
+│   │       ├── MonthPicker.jsx
+│   │       ├── PageLoader.jsx
+│   │       └── EmptyState.jsx
+│   │
 │   ├── store/
+│   │   ├── authStore.js
+│   │   └── ordersStore.js
+│   │
 │   ├── api/
+│   │   ├── axios.js
+│   │   └── orders.api.js
+│   │
 │   ├── hooks/
+│   │   ├── useOrders.js
+│   │   ├── useMonthlyStats.js
+│   │   └── useAutoSync.js
+│   │
 │   ├── utils/
+│   │   ├── commission.js           ← all 5% calculations
+│   │   ├── formatters.js
+│   │   ├── pdfGenerator.js         ← monthly report PDF
+│   │   └── reportData.js           ← shape data for reports
+│   │
 │   ├── constants/
-│   └── styles/
+│   │   └── app.js
+│   │
+│   ├── styles/
+│   │   ├── globals.css
+│   │   └── variables.css
+│   │
+│   ├── App.jsx
+│   └── main.jsx
+│
 ├── .env.example
 ├── .gitignore
 ├── vite.config.js
-├── jsconfig.json
 └── package.json
 
-For every single file listed, write a one-line 
-description of exactly what it does.
+═══════════════════════════════════════════════
+ENVIRONMENT VARIABLES
+═══════════════════════════════════════════════
 
-────────────────────────────────────────────────
-SECTION 4: ALL PAGES — COMPLETE SPECIFICATION
-────────────────────────────────────────────────
+.env.example:
 
-For EVERY page in the admin panel, document:
+# Duo Designs Backend API
+VITE_DUO_API_URL=https://api.duodesigns.in/api
 
-PAGE NAME
-Route:           /admin/page-name
-Component file:  src/pages/PageName.jsx
-Description:     What this page does
+# Agency Private Login (hardcoded credentials
+# stored as env vars — no database needed for auth)
+VITE_AGENCY_EMAIL=agency@yourdomain.com
+VITE_AGENCY_PASSWORD_HASH=bcrypt_hash_here
 
-DATA NEEDED:
-  - List every API endpoint called on this page
-  - List the exact request method + URL
-  - List what data is displayed from the response
-  - List what React Query key to use
-  - List refresh interval if real-time needed
+# Commission Rate
+VITE_COMMISSION_RATE=0.05
 
-UI ELEMENTS:
-  - List every stat card with its data source
-  - List every table with its columns
-  - List every form with its fields
-  - List every button with its action
-  - List every modal triggered from this page
-  - List every chart with its data source
+# Auto-sync interval in milliseconds (default 5 mins)
+VITE_SYNC_INTERVAL=300000
 
-STATE:
-  - List every useState needed on this page
-  - List every useEffect needed
-  - List every Zustand store used
+# App
+VITE_APP_NAME=Revenue Tracker
+VITE_APP_VERSION=1.0.0
 
-PERMISSIONS:
-  - Who can access (admin only / super-admin only)
-  - What happens if non-admin tries to access
+═══════════════════════════════════════════════
+AUTHENTICATION
+═══════════════════════════════════════════════
 
----
+This app has NO backend of its own.
+Authentication is purely frontend:
 
-Do this for ALL these pages (derived from admin.html):
+- Single hardcoded email + password (from .env)
+- Password stored as bcrypt hash in .env
+- On login: compare input with hash using bcryptjs
+- On success: set isLoggedIn=true in authStore
+  + store session in localStorage
+- Session expires after 7 days
+- No OTP, no database, no API call for auth
 
-4.1  Dashboard (/)
-4.2  Orders (/orders)
-4.3  Order Detail (/orders/:id)
-4.4  Products (/products)
-4.5  Add Product (/products/new)
-4.6  Edit Product (/products/:id/edit)
-4.7  Stock Management (/stock)
-4.8  Customers (/customers)
-4.9  Customer Detail (/customers/:id)
-4.10 Coupons & Offers (/coupons)
-4.11 Shipping Zones (/shipping)
-4.12 Payments (/payments)
-4.13 Partnership Tracker (/partners)
-4.14 Settings (/settings)
+This keeps it completely private and self-contained.
 
-────────────────────────────────────────────────
-SECTION 5: ALL COMPONENTS — COMPLETE SPECIFICATION
-────────────────────────────────────────────────
+Login page:
+- Clean centered card
+- Email + password inputs
+- "Login" button
+- Wrong credentials → shake animation + error message
+- No "forgot password" — agency owns the credentials
 
-For EVERY reusable component, document:
+npm install bcryptjs
 
-COMPONENT NAME
-File:        src/components/path/ComponentName.jsx
-Description: What it does in one line
+src/store/authStore.js:
+State:
+- isLoggedIn: boolean
+- loginTime: timestamp
 
-PROPS:
-  propName   Type       Required?   Default    Description
+Actions:
+- login(email, password)
+  → compare with VITE_AGENCY_EMAIL
+  → bcrypt.compare(password, VITE_AGENCY_PASSWORD_HASH)
+  → if match: set isLoggedIn + loginTime
+  → if not: set error
+- logout()
+  → clear state + localStorage
+- initializeAuth()
+  → check localStorage
+  → verify session not older than 7 days
+  → called on app start
 
-INTERNAL STATE:
-  List any useState inside the component
+ProtectedRoute:
+- Reads isLoggedIn from authStore
+- If false → redirect to /login
+- Shows PageLoader while initializing
 
-API CALLS:
-  List any direct API calls (rare — prefer passing data)
+═══════════════════════════════════════════════
+HOW IT CONNECTS TO DUO DESIGNS BACKEND
+═══════════════════════════════════════════════
 
-EVENTS EMITTED:
-  List every callback prop (onSave, onDelete, etc.)
+This app calls the Duo Designs backend API using
+the admin JWT token stored in .env or Settings page.
 
-USED ON PAGES:
-  List every page that uses this component
+src/api/axios.js:
+- baseURL: VITE_DUO_API_URL
+- Request interceptor:
+  → Attach admin token from settings store
+  → Headers: { Authorization: Bearer {adminToken} }
+- Response interceptor:
+  → On 401: show "API token expired" warning
+  → On network error: show "Cannot reach Duo Designs API"
 
-EXAMPLE USAGE:
-  <ComponentName prop1="value" prop2={data} />
+The admin token is the same JWT used by the admin panel.
+Store it in the Settings page of this app.
+It is saved in localStorage (not hardcoded).
 
----
+src/api/orders.api.js:
+export const ordersApi = {
 
-Document ALL these components:
+  // Get ALL paid orders (paginated)
+  getAllPaidOrders: (params) →
+    GET /orders?status=Delivered&page=X&limit=100
 
-LAYOUT:
-5.1  Sidebar
-5.2  Topbar
-5.3  PageHeader
-5.4  ProtectedRoute (admin role check)
-5.5  ErrorBoundary
+  // Get orders for a specific month
+  getOrdersByMonth: (month, year) →
+    GET /orders?month=X&year=Y&status=Delivered
 
-CHARTS:
-5.6  RevenueChart (bar chart — last 7 days)
-5.7  OrdersChart (bar chart — last 7 days)
-5.8  CategoryPieChart (orders by product type)
-5.9  StockStatusChart
+  // Get single order detail
+  getOrderById: (id) →
+    GET /orders/:id
 
-TABLES:
-5.10 OrdersTable
-5.11 ProductsTable
-5.12 CustomersTable
-5.13 PaymentsTable
-5.14 PartnersTable
-5.15 PincodesTable
-5.16 CouponsTable
+  // Get dashboard stats
+  getDashboardStats: () →
+    GET /admin/dashboard
+}
 
-FORMS:
-5.17 ProductForm (add + edit — same form)
-5.18 CouponForm
-5.19 PincodeForm
-5.20 DispatchForm
-5.21 PartnerSaleForm
-5.22 SettingsForm
+═══════════════════════════════════════════════
+COMMISSION CALCULATION — CORE LOGIC
+═══════════════════════════════════════════════
 
-MODALS:
-5.23 DispatchModal
-5.24 ConfirmDeleteModal
-5.25 OrderDetailModal
-5.26 CustomerDetailModal
-5.27 StockUpdateModal
+src/utils/commission.js
 
-UI PRIMITIVES:
-5.28 StatCard
-5.29 StatusBadge
-5.30 ActionButton
-5.31 SearchBar
-5.32 FilterChips
-5.33 DataTable (base component)
-5.34 ImageUploader (product images)
-5.35 DesignUploader (pre-made designs)
-5.36 ColorVariantBuilder
-5.37 StockInput
-5.38 Toast (notifications)
-5.39 PageLoader
-5.40 EmptyState
+All commission calculations live here.
+5% of the ORDER TOTAL (after GST, after discount).
 
-────────────────────────────────────────────────
-SECTION 6: ALL API CALLS — COMPLETE REFERENCE
-────────────────────────────────────────────────
+Export these functions:
 
-Read every file in the backend routes/ folder.
-Read every file in the backend controllers/ folder.
+calculateCommission(orderTotal)
+→ returns orderTotal × 0.05
+→ rounded to 2 decimal places
 
-For EVERY admin API endpoint, document:
-
-ENDPOINT NAME
-Method:       GET / POST / PUT / DELETE
-URL:          /api/endpoint
-Auth:         Bearer Token + Admin Role Required
-Used On Page: (which admin page calls this)
-
-REQUEST:
-  Headers:    { Authorization: Bearer {token} }
-  Body:       { field: type — required/optional }
-  Params:     { param: description }
-  Query:      { param: description }
-
-SUCCESS RESPONSE (200/201):
-  {
-    success: true,
-    data: { exact shape of response object }
+calculateMonthlyCommission(orders)
+→ takes array of orders
+→ returns {
+    totalRevenue: sum of all order totals,
+    totalCommission: totalRevenue × 0.05,
+    orderCount: orders.length,
+    avgOrderValue: totalRevenue / orderCount,
+    paidCommission: sum where paymentStatus=paid,
+    pendingCommission: sum where paymentStatus=pending
   }
 
-ERROR RESPONSES:
-  400 — validation error (when this happens)
-  401 — unauthorized (when this happens)
-  403 — forbidden (when this happens)
-  404 — not found (when this happens)
-  500 — server error (when this happens)
-
-FRONTEND USAGE:
-  // Exact code to call this endpoint
-  const { data } = useQuery(['queryKey'], () => 
-    adminApi.get('/endpoint'))
-
----
-
-Cover ALL these endpoint groups:
-6.1  Dashboard stats
-6.2  Orders (list, detail, confirm, dispatch, deliver)
-6.3  Products (list, create, update, delete, stock)
-6.4  Customers (list, detail, orders)
-6.5  Coupons (list, create, delete)
-6.6  Shipping zones (list, create, update, delete, bulk import)
-6.7  Payments (list, export)
-6.8  Partners (list, create, mark paid, summary)
-6.9  Upload (product images, pre-made designs)
-6.10 Settings (get, update)
-6.11 Search
-6.12 GST report export
-6.13 Auth (admin login, refresh token, logout)
-
-────────────────────────────────────────────────
-SECTION 7: ZUSTAND STORES — COMPLETE SPECIFICATION
-────────────────────────────────────────────────
-
-For EVERY Zustand store in the admin app, document:
-
-STORE NAME: adminAuthStore
-File: src/store/adminAuthStore.js
-
-STATE SHAPE:
-  {
-    admin: null | { id, name, email, role },
-    token: null | string,
-    refreshToken: null | string,
-    isLoggedIn: boolean,
-    isLoading: boolean,
+calculateAllTimeStats(allOrders)
+→ returns {
+    totalRevenue,
+    totalCommission,
+    totalOrders,
+    monthlyBreakdown: [
+      {
+        month: "January 2025",
+        monthKey: "2025-01",
+        revenue: number,
+        commission: number,
+        orderCount: number,
+        status: "paid" | "pending"
+      }
+    ]
   }
 
-ACTIONS:
-  login(email)     → calls POST /api/auth/send-otp
-  verifyOTP(otp)   → calls POST /api/auth/verify-otp
-  logout()         → calls POST /api/auth/logout
-  refreshToken()   → calls POST /api/auth/refresh-token
-  setAdmin(admin)  → sets admin in state
+groupOrdersByMonth(orders)
+→ groups orders array by month
+→ returns object keyed by "YYYY-MM"
 
-PERSISTENCE:
-  What gets stored in localStorage
-  What gets cleared on logout
+getMonthLabel(monthKey)
+→ "2025-01" → "January 2025"
+
+formatCommission(amount)
+→ "₹6,497.50"
+
+═══════════════════════════════════════════════
+ZUSTAND STORES
+═══════════════════════════════════════════════
+
+src/store/authStore.js (documented above)
+
+src/store/ordersStore.js
+State:
+- orders: []                    ← all synced orders
+- lastSyncedAt: null | Date     ← when last pulled
+- isSyncing: boolean
+- syncError: null | string
+- monthlyStats: {}              ← keyed by "YYYY-MM"
+- allTimeStats: null
+- adminToken: null | string     ← Duo Designs API token
+- commissionRate: 0.05
+
+Actions:
+- syncOrders()
+  → calls ordersApi.getAllPaidOrders
+  → stores in state + localStorage cache
+  → updates lastSyncedAt
+  → recalculates all stats
+
+- setAdminToken(token)
+  → stores in state + localStorage
+
+- setCommissionRate(rate)
+  → stores in state + localStorage
+
+- getOrdersForMonth(month, year)
+  → filters orders array by month/year
+  → returns filtered array
+
+- markMonthAsPaid(monthKey)
+  → sets monthlyStats[monthKey].status = "paid"
+  → saves to localStorage
+
+- markMonthAsUnpaid(monthKey)
+  → sets monthlyStats[monthKey].status = "pending"
+
+Note: Payment tracking is LOCAL ONLY (localStorage).
+The Duo Designs backend has no idea about this tracking.
+This is purely for the agency's own records.
+
+═══════════════════════════════════════════════
+AUTO SYNC HOOK
+═══════════════════════════════════════════════
+
+src/hooks/useAutoSync.js
+
+- Calls syncOrders() on app mount
+- Sets up interval to sync every 5 minutes
+  (configurable via VITE_SYNC_INTERVAL)
+- Shows "Last synced: 2 minutes ago" in topbar
+- Shows "Syncing..." spinner while syncing
+- Shows error toast if sync fails
+- Manual "Sync Now" button in topbar triggers this
+- On first load if no orders in state: show full
+  page loader with "Connecting to Duo Designs..."
+
+═══════════════════════════════════════════════
+PAGES — COMPLETE SPECIFICATION
+═══════════════════════════════════════════════
+
+────────────────────────────────────────────────
+PAGE 1 — DASHBOARD (/)
+────────────────────────────────────────────────
+
+The main overview page. Shows everything at a glance.
+
+TOP ROW — 4 STAT CARDS:
+Card 1: Total Revenue (All Time)
+  - Value: sum of ALL delivered orders
+  - Format: ₹12,45,890
+  - Sub: "Across {orderCount} orders"
+  - Color accent: indigo
+
+Card 2: Total Commission Earned (All Time)
+  - Value: totalRevenue × 5%
+  - Format: ₹62,294.50
+  - Sub: "@ 5% commission rate"
+  - Color accent: green
+
+Card 3: This Month's Revenue
+  - Value: current month order totals
+  - Format: ₹1,89,420
+  - Sub: "{orderCount} orders this month"
+  - Color accent: indigo
+
+Card 4: This Month's Commission
+  - Value: current month commission
+  - Format: ₹9,471
+  - Sub: "Due on 1st of next month"
+  - Color accent: green (if paid) / orange (if pending)
+
+MIDDLE ROW — 2 CHARTS:
+Left (60%): MonthlyRevenueChart
+  - Bar chart
+  - Last 12 months revenue bars
+  - X axis: month labels
+  - Y axis: ₹ revenue
+  - Hover: "₹X revenue | ₹Y commission"
+
+Right (40%): PaymentStatusChart
+  - Pie/donut chart
+  - Paid commission vs Pending commission
+  - Center label: total commission
+  - Legend: Paid (green) / Pending (orange)
+
+BOTTOM ROW — 2 TABLES:
+Left (60%): Recent Orders
+  - Last 10 orders synced from Duo Designs
+  - Columns: Order ID, Date, Amount, Commission (5%)
+  - "View All Orders" link at bottom
+
+Right (40%): Monthly Summary (last 6 months)
+  - Month | Revenue | Commission | Status
+  - Status: Paid (green badge) / Pending (orange badge)
+  - "Mark Paid" / "Mark Unpaid" toggle button per row
+  - "Download PDF" button per row
+
+TOPBAR ADDITIONS:
+  - "Last synced: X minutes ago" text
+  - "Sync Now" button with spinner
+
+────────────────────────────────────────────────
+PAGE 2 — ORDERS (/orders)
+────────────────────────────────────────────────
+
+Complete table of every order synced from Duo Designs.
+
+TOP BAR:
+- SearchBar (search by order ID or amount)
+- Month/Year filter picker
+- "Sync Now" button
+- Total orders count + total revenue for filtered view
+
+TABLE (OrdersTable):
+Columns:
+- Order ID (e.g. DD-2025-0049)
+- Order Date (formatted)
+- Customer State (Karnataka = CGST+SGST, else IGST)
+- Products (item names + count)
+- Order Subtotal (₹)
+- GST Amount (₹)
+- Shipping (₹)
+- Order Total (₹) ← THIS is what 5% is calculated on
+- Our Commission (₹) = Total × 0.05
+  → Highlighted in green
+- Month Status (Paid/Pending badge)
+  → Based on whether that month is marked paid
+
+FOOTER ROW (sticky):
+- Total: | | | | ₹X | ₹X | ₹X | ₹X | ₹X |
+  (sum of each column for filtered view)
+
+EXPORT BUTTON:
+- "Export CSV" → downloads current filtered view as CSV
+
+────────────────────────────────────────────────
+PAGE 3 — MONTHLY (/monthly)
+────────────────────────────────────────────────
+
+Month-by-month breakdown. The most important page
+for tracking what is owed.
+
+MONTH SELECTOR:
+- Grid of all months that have orders
+- Each month shown as a card:
+  ┌─────────────────┐
+  │ January 2025    │
+  │                 │
+  │ ₹1,89,420       │ ← total revenue
+  │ 47 orders       │
+  │                 │
+  │ Commission:     │
+  │ ₹9,471          │ ← in large green text
+  │                 │
+  │ [PAID ✓]        │ ← green if paid
+  │ or [PENDING]    │ ← orange if pending
+  └─────────────────┘
+
+Clicking a month card → expands to show:
+- Full orders table for that month
+- Same columns as Orders page
+- Monthly totals row at bottom
+- "Download PDF Report" button for this month
+- "Mark as Paid" / "Mark as Unpaid" toggle
+
+────────────────────────────────────────────────
+PAGE 4 — REPORTS (/reports)
+────────────────────────────────────────────────
+
+Generate and download professional PDF reports
+to send to Duo Designs as invoices.
+
+REPORT GENERATOR:
+- Month picker (select month + year)
+- "Generate Report" button
+- Preview of what the PDF will look like
+- "Download PDF" button
+
+PDF REPORT CONTENT (generate with jspdf):
+The PDF must look like a professional invoice.
+
+Page 1 — Cover:
+┌────────────────────────────────────┐
+│  [AGENCY NAME]                     │
+│  Digital Services Invoice          │
+│                                    │
+│  Invoice #: INV-2025-01            │
+│  Period: January 2025              │
+│  Date Issued: 1 February 2025      │
+│                                    │
+│  Billed To:                        │
+│  Duo Designs                       │
+│  [their address]                   │
+│                                    │
+│  From:                             │
+│  [Agency Name]                     │
+│  [Agency Address]                  │
+│  [Agency Email]                    │
+└────────────────────────────────────┘
+
+Page 2 — Summary:
+┌────────────────────────────────────┐
+│  SERVICE SUMMARY                   │
+│                                    │
+│  Website Development & Hosting  ✓  │
+│  Digital Marketing              ✓  │
+│  Maintenance & Support          ✓  │
+│                                    │
+│  REVENUE SUMMARY — January 2025    │
+│  ┌──────────────────────────────┐  │
+│  │ Total Orders This Month: 47  │  │
+│  │ Gross Revenue Generated:     │  │
+│  │ ₹1,89,420                    │  │
+│  │                              │  │
+│  │ Commission Rate: 5%          │  │
+│  │ Commission Due:              │  │
+│  │ ₹9,471                       │  │
+│  └──────────────────────────────┘  │
+│                                    │
+│  AMOUNT DUE: ₹9,471                │
+│  Due Date: 15 February 2025        │
+└────────────────────────────────────┘
+
+Page 3 — Order Breakdown (full table):
+Every order that month:
+Order ID | Date | Amount | 5% Commission
+DD-2025-0001 | 1 Jan | ₹1,299 | ₹64.95
+DD-2025-0002 | 1 Jan | ₹2,199 | ₹109.95
+... all orders ...
+─────────────────────────────────────
+TOTAL       | 47 orders | ₹1,89,420 | ₹9,471
+
+Page 4 — Terms:
+- Payment terms
+- Bank details (agency's bank — from Settings)
+- Signature line
+- "Generated by Agency Revenue Tracker"
+
+REPORT HISTORY TABLE:
+Shows all previously generated reports:
+- Month
+- Generated Date
+- Revenue
+- Commission
+- Download button (re-download any past report)
+- Status (Paid/Pending)
+
+────────────────────────────────────────────────
+PAGE 5 — SETTINGS (/settings)
+────────────────────────────────────────────────
+
+All configuration for the app.
+
+SECTION 1 — API CONNECTION:
+- Duo Designs API URL (text, default from .env)
+- Admin JWT Token (password input, paste token here)
+  → "Test Connection" button
+  → Shows: "✅ Connected — Duo Designs API reachable"
+  → Shows: "❌ Failed — Check token or URL"
+- "Sync Now" button
+
+SECTION 2 — COMMISSION SETTINGS:
+- Commission Rate (number, default 5%)
+  → Shows live: "You earn ₹X per ₹1000 in sales"
+- Commission calculation basis:
+  → Radio: Order Total (after GST) ← default
+  → Radio: Order Subtotal (before GST)
+  → Radio: Order Subtotal (before GST + Shipping)
+  Note: Changes recalculate all historical data
+
+SECTION 3 — AGENCY DETAILS (for PDF invoices):
+- Agency Name (text)
+- Agency Address (textarea)
+- Agency Email (email)
+- Agency Phone (tel)
+- Agency GST Number (optional)
+- Bank Name (text)
+- Account Number (text)
+- IFSC Code (text)
+- Account Holder Name (text)
+
+SECTION 4 — CLIENT DETAILS (for PDF invoices):
+- Client Name (default: Duo Designs)
+- Client Address (textarea)
+- Client Email (email)
+- Client GST Number (optional)
+- Payment Due Days (number, default 15)
+  → Used to calculate due date on invoices
+
+SECTION 5 — CHANGE LOGIN PASSWORD:
+- Current Password
+- New Password
+- Confirm New Password
+- Note: Updates the hash in localStorage
+  (user must manually update .env for persistence)
+
+All settings saved to localStorage immediately on change.
+
+═══════════════════════════════════════════════
+PDF GENERATOR — COMPLETE SPEC
+═══════════════════════════════════════════════
+
+src/utils/pdfGenerator.js
+
+Use jspdf + jspdf-autotable.
+
+Export:
+generateMonthlyReport(month, year, orders, settings)
+
+Parameters:
+- month: number (1-12)
+- year: number
+- orders: array of orders for that month
+- settings: agency + client details from Settings page
+
+The function:
+1. Creates new jsPDF document (A4)
+2. Renders cover page with agency branding
+3. Renders summary page with commission breakdown
+4. Renders full order table using autoTable
+5. Renders payment terms + bank details page
+6. Auto-downloads as:
+   "DuoDesigns_Invoice_January_2025.pdf"
+
+Invoice number format: INV-YYYY-MM
+(e.g. INV-2025-01 for January 2025)
+
+Due date: invoice date + settings.paymentDueDays
+
+═══════════════════════════════════════════════
+CHARTS — COMPLETE SPEC
+═══════════════════════════════════════════════
+
+All using Recharts. Dark theme.
+
+MonthlyRevenueChart.jsx:
+- ComposedChart
+- Bar: monthly revenue (indigo)
+- Line: monthly commission (green)
+- Dual Y axis (revenue left, commission right)
+- X axis: "Jan", "Feb", "Mar"...
+- Tooltip shows both values
+- Last 12 months of data
+
+CommissionChart.jsx:
+- BarChart
+- Single bar per month
+- Commission amount
+- Color: green if paid, orange if pending
+- Last 12 months
+
+PaymentStatusChart.jsx:
+- PieChart / Donut
+- Paid commission (green)
+- Pending commission (orange)
+- Center text: total commission
+- Click slice → filters orders table
+
+═══════════════════════════════════════════════
+DATA PERSISTENCE STRATEGY
+═══════════════════════════════════════════════
+
+Since this app has NO backend of its own,
+everything is stored in localStorage.
+
+localStorage keys:
+- art_auth          → { isLoggedIn, loginTime }
+- art_orders        → { orders[], lastSyncedAt }
+- art_monthly_status→ { "2025-01": "paid", ... }
+- art_settings      → { all settings page values }
+- art_admin_token   → Duo Designs JWT token
+- art_reports       → { generated report metadata[] }
+
+On every app start:
+1. Load auth → check session expiry
+2. Load settings → restore all config
+3. Load orders from cache → show immediately
+4. Trigger background sync → update from API
+5. Update stats with fresh data
+
+Cache strategy:
+- Show cached data immediately (no loading flash)
+- Sync in background
+- Show "Last synced X mins ago" always
+- If cache is older than 1 hour → show warning
+
+═══════════════════════════════════════════════
+BUILD ORDER
+═══════════════════════════════════════════════
+
+Follow this exact order:
+
+Step 1:  Config files (vite, tailwind, jsconfig)
+Step 2:  CSS variables + globals.css
+Step 3:  constants/app.js
+Step 4:  utils/formatters.js
+Step 5:  utils/commission.js ← build + test this first
+Step 6:  utils/pdfGenerator.js
+Step 7:  utils/reportData.js
+Step 8:  api/axios.js
+Step 9:  api/orders.api.js
+Step 10: store/authStore.js
+Step 11: store/ordersStore.js
+Step 12: hooks/useAutoSync.js
+Step 13: hooks/useOrders.js
+Step 14: hooks/useMonthlyStats.js
+Step 15: Layout components (Sidebar, Topbar, AppLayout)
+Step 16: UI primitives (StatCard, StatusBadge, etc.)
+Step 17: Charts (all 3)
+Step 18: Tables (OrdersTable, MonthlyTable)
+Step 19: Login page + auth
+Step 20: Dashboard page
+Step 21: Orders page
+Step 22: Monthly page
+Step 23: Reports page
+Step 24: Settings page
+Step 25: App.jsx routing
+Step 26: vercel.json deployment config
+
+═══════════════════════════════════════════════
+ROUTING
+═══════════════════════════════════════════════
+
+App.jsx:
+<Routes>
+  <Route path="/login" element={<Login />} />
+  <Route element={<ProtectedRoute />}>
+    <Route element={<AppLayout />}>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/orders" element={<Orders />} />
+      <Route path="/monthly" element={<Monthly />} />
+      <Route path="/reports" element={<Reports />} />
+      <Route path="/settings" element={<Settings />} />
+    </Route>
+  </Route>
+  <Route path="*" element={<Navigate to="/" />} />
+</Routes>
+
+═══════════════════════════════════════════════
+DEPLOYMENT
+═══════════════════════════════════════════════
+
+Deploy to Vercel on YOUR agency domain.
+NOT on duodesigns.in — on your own domain.
+
+Example: tracker.youragency.com
+
+vercel.json:
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
+
+Environment variables to set in Vercel:
+VITE_DUO_API_URL
+VITE_AGENCY_EMAIL
+VITE_AGENCY_PASSWORD_HASH
+VITE_COMMISSION_RATE
+VITE_SYNC_INTERVAL
+
+To generate password hash for .env:
+node -e "const b=require('bcryptjs');
+console.log(b.hashSync('yourpassword',10))"
+
+═══════════════════════════════════════════════
+SECURITY NOTES
+═══════════════════════════════════════════════
+
+1. This app is on YOUR domain — Duo Designs
+   has no idea it exists
+
+2. The admin token gives READ access to orders
+   Keep it secret — rotate if compromised
+
+3. Password hash in .env — never commit .env
+   to any repository
+
+4. All data in localStorage — only accessible
+   on your device/browser
+
+5. Deploy on Vercel with password protection
+   (Vercel Pro has built-in password protection)
+   OR rely on the login page
+
+6. Do NOT share the URL with anyone outside
+   your agency
+
+═══════════════════════════════════════════════
+QUALITY CHECKLIST
+═══════════════════════════════════════════════
+
+□ Login works with correct credentials
+□ Wrong password shows error + shake animation
+□ Session persists across browser refresh
+□ Session expires after 7 days
+□ App connects to Duo Designs API with token
+□ Orders sync automatically on load
+□ Manual sync works from topbar button
+□ "Last synced X minutes ago" updates correctly
+□ Dashboard stat cards show correct totals
+□ All 3 charts render with real data
+□ Orders table shows all orders with 5% column
+□ Search and month filter work on orders table
+□ Monthly page shows all months as cards
+□ Clicking month card expands order list
+□ Mark as Paid / Unpaid toggles correctly
+□ Mark as Paid persists after page refresh
+□ PDF report generates correctly for any month
+□ PDF contains full order breakdown table
+□ PDF invoice number is sequential
+□ PDF downloads automatically with correct filename
+□ Settings saves all fields to localStorage
+□ API connection test works in Settings
+□ Commission rate change recalculates everything
+□ Agency details appear correctly in PDF
+□ CSV export downloads from Orders page
+□ App works offline with cached data
+□ No console errors
+□ Fully responsive on laptop screen
+```
 
 ---
 
-Document ALL these stores:
-7.1  adminAuthStore
-7.2  adminUIStore (sidebar open/close, active page, toasts)
-7.3  adminOrdersStore (filters, selected order)
-7.4  adminProductsStore (filters, editing product)
-
-────────────────────────────────────────────────
-SECTION 8: ROUTING — COMPLETE SPECIFICATION
-────────────────────────────────────────────────
-
-8.1 Route Table
-    List every route with:
-    - Path
-    - Component
-    - Auth required
-    - Admin role required
-    - Page title
-
-8.2 Route Guards
-    - How AdminProtectedRoute works
-    - What happens when token expires mid-session
-    - What happens when non-admin tries to access
-
-8.3 React Router Setup
-    - Complete App.jsx code with all routes
-    - Nested routes structure
-    - Redirect rules
-
-8.4 Navigation Structure
-    - Sidebar navigation items (derived from admin.html)
-    - Which routes are nested
-    - Active state detection
-
-────────────────────────────────────────────────
-SECTION 9: AUTHENTICATION FLOW
-────────────────────────────────────────────────
-
-9.1 Admin Login Flow (step by step)
-    Step 1: Admin goes to admin.duodesigns.in
-    Step 2: Redirected to /login (not logged in)
-    Step 3: Enter email
-    Step 4: OTP sent to email
-    Step 5: Enter OTP
-    Step 6: JWT + refresh token returned
-    Step 7: Token stored in adminAuthStore
-    Step 8: Redirected to /dashboard
-    
-    Document the exact API calls, state 
-    changes, and redirects at each step.
-
-9.2 Token Management
-    - Where access token is stored
-    - Where refresh token is stored
-    - Axios interceptor code for auto-attaching token
-    - Axios interceptor code for auto-refreshing on 401
-    - What happens on refresh token expiry
-
-9.3 Admin Role Verification
-    - How backend verifies admin role
-      (read admin.middleware.js and document exactly)
-    - What JWT payload contains for admin
-    - How frontend checks admin role
-
-9.4 Logout
-    - What gets cleared from state
-    - What gets cleared from localStorage
-    - API call to invalidate refresh token
-    - Redirect after logout
-
-────────────────────────────────────────────────
-SECTION 10: REAL-TIME FEATURES
-────────────────────────────────────────────────
-
-10.1 New Order Notifications
-     - How admin gets notified of new orders
-     - Polling interval (every X seconds)
-     - Sound/visual notification on new order
-     - Badge count on Orders nav item
-     - Which React Query refetch strategy to use
-
-10.2 Low Stock Alerts
-     - When triggered (stock < 10)
-     - Where shown (dashboard + notification bell)
-     - How to dismiss
-
-10.3 Dashboard Auto-Refresh
-     - Which dashboard stats refresh automatically
-     - What interval
-     - How to implement with React Query
-
-────────────────────────────────────────────────
-SECTION 11: FORMS — COMPLETE SPECIFICATION
-────────────────────────────────────────────────
-
-For EVERY form in the admin panel, document:
-
-FORM NAME: ProductForm
-File: src/components/forms/ProductForm.jsx
-
-FIELDS:
-  Field Name    | Type     | Required | Validation Rule
-  name          | text     | yes      | min 3 chars, max 100
-  category      | select   | yes      | must be valid category
-  basePrice     | number   | yes      | min 1, max 99999
-  ... (every field)
-
-ZOD SCHEMA:
-  Write the complete Zod validation schema
-
-DEFAULT VALUES:
-  For edit mode — what gets pre-filled
-
-SUBMIT HANDLER:
-  - What API endpoint is called
-  - What happens on success (toast + redirect)
-  - What happens on error (error message shown)
-
-SPECIAL BEHAVIOURS:
-  - List any conditional fields
-    (e.g. doubleSideAddon only shows for keychains)
-  - List any dynamic fields
-    (e.g. variant rows can be added/removed)
-  - List any file uploads in this form
-
----
-
-Document ALL forms:
-11.1  ProductForm
-11.2  CouponForm
-11.3  PincodeForm
-11.4  DispatchForm
-11.5  PartnerSaleForm
-11.6  SettingsForm
-11.7  AdminLoginForm
-
-────────────────────────────────────────────────
-SECTION 12: DASHBOARD — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-12.1 Stat Cards (all 4)
-     For each card:
-     - Label text
-     - Data source (exact API field)
-     - Format (currency/number/percentage)
-     - Secondary info (change vs last month)
-     - Color/icon
-
-12.2 Revenue Chart
-     - Chart type: Bar chart (Recharts)
-     - X axis: Last 7 days (Mon–Sun)
-     - Y axis: Revenue in ₹
-     - Data source: GET /api/admin/dashboard
-     - Hover tooltip format
-     - Exact Recharts component code
-
-12.3 Orders Chart
-     - Chart type: Bar chart (Recharts)
-     - X axis: Last 7 days
-     - Y axis: Order count
-     - Data source: GET /api/admin/dashboard
-     - Exact Recharts component code
-
-12.4 Recent Orders Table
-     - Columns: Order ID, Customer, Items, Amount, Status, Date, Action
-     - Rows: Last 5 orders
-     - Status badge colours (match admin.html)
-     - Action: "Dispatch" button (opens DispatchModal)
-     - Clicking order ID → /orders/:id
-
-12.5 Low Stock Alert Table
-     - Columns: Product, Variant, Stock, Status, Action
-     - "Update Stock" button → opens StockUpdateModal
-     - Only shows products where any variant stock < 10
-
-────────────────────────────────────────────────
-SECTION 13: ORDERS MANAGEMENT — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-13.1 Orders List Page
-     - Filter chips: All / Placed / Confirmed / Dispatched / Delivered
-     - Search: by order ID or customer name/email
-     - Table columns (all derived from Order model in codebase)
-     - Pagination: 20 orders per page
-     - Sort: newest first by default
-
-13.2 Order Status Flow
-     - Placed → Confirmed: admin clicks Confirm button
-     - Confirmed → Dispatched: admin clicks Dispatch 
-       (opens DispatchModal — enters courier + tracking)
-     - Dispatched → Delivered: admin clicks Mark Delivered
-     - Each transition calls which exact API endpoint
-     - Each transition triggers which email
-
-13.3 Dispatch Modal — Complete Spec
-     - Fields: Courier Name (text), Tracking Number (text)
-     - Validation: both fields required
-     - On submit: PUT /api/orders/:id/dispatch
-     - On success: order status updates, email sent, modal closes
-     - Shows order summary inside modal
-
-13.4 Order Detail Page (/orders/:id)
-     - All order data shown (derived from Order model)
-     - Full pricing breakdown (subtotal, shipping, GST, total)
-     - Customer design image shown (if uploaded)
-     - Address shown
-     - Payment details (Razorpay ID, status)
-     - Status timeline
-     - Invoice download button
-     - Action buttons based on current status
-
-────────────────────────────────────────────────
-SECTION 14: PRODUCTS MANAGEMENT — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-14.1 Products List
-     - Search by name
-     - Filter by category, status (active/inactive)
-     - Stock bar indicator per product
-     - Edit and Delete actions
-     - "Add Product" button → /products/new
-
-14.2 Add/Edit Product Form — Every Field
-     Derive EVERY field from the Product model 
-     found in src/models/Product.model.js
-     Document type, validation, and UI component for each.
-
-14.3 Color Variant Builder
-     - Add multiple colour variants dynamically
-     - Each variant: colour name, hex code, stock per size
-     - Size options: S, M, L, XL, XXL
-     - Remove variant button
-     - Colour picker or hex input
-
-14.4 Image Upload
-     - Upload to Cloudinary via POST /api/upload/product
-     - Multiple images allowed
-     - Preview thumbnails
-     - Drag and drop support
-     - Remove individual images
-
-14.5 Pre-made Design Upload
-     - Upload to Cloudinary via POST /api/upload/premade
-     - These are shown to customers on product page
-     - Multiple designs allowed
-     - Preview grid
-
-14.6 Category-Specific Fields
-     - Document which fields show/hide based on category
-     - Keychains: show doubleSideAddon field
-     - Apparel: show size chart fields
-     - Mugs: hide size fields
-
-────────────────────────────────────────────────
-SECTION 15: STOCK MANAGEMENT — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-15.1 Stock Table
-     - One row per product-colour-size combination
-     - Inline editable stock number inputs
-     - Highlight cells where stock < 10 in red
-     - Highlight cells where stock = 0 in dark red
-     - "Save" button per row (calls PUT /api/products/:id/stock)
-     - Filter: All / Low Stock / Out of Stock / In Stock
-
-15.2 Bulk Save
-     - "Save All Changes" button
-     - Calls PUT /api/products/stock/bulk
-     - Shows count of items updated
-
-15.3 Auto Out-of-Stock Logic
-     - Explain how backend handles stock = 0
-     - What the admin sees when a variant hits 0
-     - How to re-enable an out-of-stock variant
-
-────────────────────────────────────────────────
-SECTION 16: GST & PAYMENTS — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-16.1 Payments Table
-     - All columns derived from Payment model
-     - Show CGST, SGST, IGST separately per order
-     - Razorpay payment ID per row
-     - Filter by date range
-
-16.2 Revenue Stats
-     - Total revenue
-     - Razorpay fees (2%)
-     - GST collected (CGST + SGST + IGST totals)
-     - Net revenue after fees and GST
-
-16.3 GST Export
-     - "Export GST Report" button
-     - Date range picker (month + year)
-     - Calls GET /api/admin/gst-report?month=X&year=Y
-     - Downloads Excel file via exceljs
-     - Format of the Excel file columns
-
-────────────────────────────────────────────────
-SECTION 17: PARTNERSHIP TRACKER — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-17.1 Summary Cards
-     - Total partner sales tracked (all time)
-     - Total 5% commission earned (all time)
-     - Pending commission (not yet paid)
-
-17.2 Log Sale Form
-     - Fields: Company Name, Sale Amount, Sale Date, Notes
-     - Commission auto-calculated: saleAmount × 0.05
-     - Shown live as user types sale amount
-     - On submit: POST /api/partners
-
-17.3 Commission Table
-     - Columns: Date, Company, Sale Amount, 5% Commission, Status, Actions
-     - "Mark Paid" button → PUT /api/partners/:id/paid
-     - "Delete" button → DELETE /api/partners/:id
-     - Status badge: Pending (orange) / Paid (green)
-
-17.4 Monthly Summary
-     - Filter by month + year
-     - Shows totals for selected month
-     - Calls GET /api/partners/summary?month=X&year=Y
-
-────────────────────────────────────────────────
-SECTION 18: SETTINGS PAGE — DEEP SPECIFICATION
-────────────────────────────────────────────────
-
-18.1 Business Settings
-     - Derive from Settings model in codebase
-     - Free shipping threshold (₹)
-     - GST rate (currently 12%)
-     - Seller state (currently Karnataka)
-     - Company GSTIN (for invoices)
-     - Company name and address (for invoices)
-
-18.2 Notification Settings
-     - Low stock alert threshold (currently 10)
-     - Email notifications on/off
-     - WhatsApp notifications on/off
-
-18.3 Payment Settings
-     - Razorpay live/test mode toggle
-     - Webhook URL display (read-only)
-     - Connection test button
-
-────────────────────────────────────────────────
-SECTION 19: DESIGN SYSTEM
-────────────────────────────────────────────────
-
-19.1 Colors (derive EXACTLY from admin.html CSS variables)
-     List every --variable: #hex value
-
-19.2 Typography (derive from admin.html)
-     - Font families
-     - Font sizes used
-     - Font weights used
-
-19.3 Component Styles
-     - Table row hover state
-     - Status badge variants (all colours)
-     - Button variants (primary, outline, danger, success)
-     - Card style
-     - Modal style
-     - Form input style
-     - Sidebar active state style
-     
-     For each: write the exact CSS or Tailwind classes
-
-19.4 Dark Theme Implementation
-     - How dark theme is applied globally
-     - CSS variables for dark mode
-     - Background colours for each element type
-
-19.5 Breakpoints
-     - Admin panel is primarily desktop
-     - Document tablet behaviour (sidebar collapses)
-     - Document mobile behaviour (if supported)
-
-────────────────────────────────────────────────
-SECTION 20: COMPLETE BUILD INSTRUCTIONS
-────────────────────────────────────────────────
-
-20.1 Project Setup Commands
-     - Exact commands from zero to running dev server
-
-20.2 Environment Variables
-     - Every .env variable needed
-     - Where to find the value for each
-     - Which are different from the customer app
-
-20.3 Build Order
-     List the EXACT order to build every file:
-     Step 1:  Set up Vite project
-     Step 2:  Install packages (list exact npm command)
-     Step 3:  Create folder structure
-     Step 4:  Create constants and config files
-     Step 5:  Create Axios instance (api/axios.js)
-     Step 6:  Create Zustand stores
-     Step 7:  Create layout components (Sidebar, Topbar)
-     Step 8:  Create AdminProtectedRoute
-     Step 9:  Set up App.jsx with all routes
-     Step 10: Build Dashboard page first
-     Step 11: Build Orders pages
-     Step 12: Build Products pages
-     Step 13: Build remaining pages
-     Step 14: Build all reusable components
-     Step 15: Connect all API calls
-     Step 16: Add real-time polling
-     Step 17: Test all flows
-     Step 18: Deploy to Vercel
-
-20.4 Deployment
-     - Vercel deployment steps
-     - Environment variables to set in Vercel
-     - Custom domain setup (admin.duodesigns.in)
-     - CORS update needed on backend
-
-20.5 Backend Changes Required
-     List every change needed in the existing backend
-     to support the admin panel:
-     - New endpoints to add (if any)
-     - Existing endpoints to modify (if any)
-     - CORS whitelist update
-     - Any new middleware needed
-
-────────────────────────────────────────────────
-SECTION 21: TESTING CHECKLIST
-────────────────────────────────────────────────
-
-21.1 Manual Test Cases
-     For EVERY admin feature, write test cases:
-     
-     Format:
-     TEST ID:   ADMIN-001
-     FEATURE:   Admin Login
-     STEPS:     1. Go to admin.duodesigns.in
-                2. Enter admin email
-                3. Receive OTP
-                4. Enter OTP
-                5. Click Verify
-     EXPECTED:  Redirected to dashboard
-     TEST DATA: admin@duodesigns.in
-
-     Cover:
-     □ Login flow (success + wrong OTP + expired OTP)
-     □ Dashboard stats load correctly
-     □ View orders list + filter by status
-     □ Dispatch an order (enter courier + tracking)
-     □ Add new product with variants
-     □ Upload product images
-     □ Update stock
-     □ Create coupon
-     □ Add pincode
-     □ Log partner sale
-     □ Export GST report
-     □ Update settings
-     □ Logout
-
-21.2 API Test Cases
-     For every admin endpoint, document:
-     - Happy path test
-     - Auth failure test (no token)
-     - Role failure test (customer token)
-     - Validation failure test
-
-────────────────────────────────────────────────
-SECTION 22: KNOWN DEPENDENCIES & WARNINGS
-────────────────────────────────────────────────
-
-22.1 Backend Dependencies
-     List everything the admin panel needs 
-     from the backend to be working first:
-     - Which endpoints must exist
-     - Which models must be seeded with data
-
-22.2 Third-Party Dependencies
-     List every external service the admin needs:
-     - Razorpay (for payment data)
-     - Cloudinary (for image uploads)
-     - Gmail SMTP (for email triggers)
-
-22.3 Common Pitfalls
-     Document known issues to watch out for:
-     - CORS headers must include admin domain
-     - File upload size limits
-     - Razorpay webhook must be configured
-     - JWT secret must match between apps
-
-═══════════════════════════════════════════════
-FORMATTING RULES FOR THE MARKDOWN FILE
-═══════════════════════════════════════════════
-
-1. Every section must have a clear H1 or H2 heading
-2. Every subsection must have a H3 heading
-3. All API endpoints in code blocks with method label
-4. All code examples in fenced code blocks with language
-5. All field lists in markdown tables
-6. All step-by-step instructions in numbered lists
-7. All checklists use - [ ] markdown checkboxes
-8. Use ⚠️ for warnings
-9. Use 💡 for tips
-10. Use ✅ for completed items
-11. Every section must have a TL;DR summary 
-    at the top (max 2 sentences)
-12. Cross-reference other sections with links
-
-═══════════════════════════════════════════════
-OUTPUT
-═══════════════════════════════════════════════
-
-Output location: /docs/admin-panel-requirements.md
-
-This must be ONE single file.
-It must be complete enough that a developer 
-who has never seen this codebase before can 
-read it and build the entire admin panel 
-without asking a single question.
-
-Minimum length: 1500 lines of markdown.
-No placeholders. No "add more here" comments.
-Every section must be fully filled in based 
-on the actual codebase you scanned.
+## 🎯 What This Gives You
+
+```
+WHAT IT DOES
+├── Auto-syncs every Duo Designs paid order
+├── Calculates your 5% on every single order
+├── Tracks paid vs pending month by month
+├── Generates professional PDF invoices
+│   └── Full order breakdown as proof
+├── Exports CSV for your records
+└── Lives on YOUR domain, fully private
+
+YOUR PROTECTION
+├── Every order recorded with ID + amount
+├── Month-by-month commission history
+├── PDF invoice = legal document
+├── If they dispute → show order breakdown
+└── If they don't pay → you have the receipts
 ```
 
 ---
 
-## What This Prompt Does
+## 🚀 After Building This
 
 ```
-STEP 1 — Scans your entire codebase
-         (reads every model, route, controller,
-          component, store, and the admin.html)
-
-STEP 2 — Generates ONE complete markdown file
-         with 22 sections covering everything
-         from tech stack to test cases
-
-OUTPUT — /docs/admin-panel-requirements.md
-         Ready for any developer to build from
+1. Deploy to tracker.youragency.com
+2. Go to Settings → paste Duo Designs admin token
+3. Click Sync Now → all orders load
+4. On 1st of every month:
+   → Go to Reports
+   → Select previous month
+   → Generate PDF
+   → Send to Duo Designs as invoice
+5. When they pay → mark month as Paid ✅
 ```
 
----
-
-## After Running This Prompt
-
-You will have a single `admin-panel-requirements.md` file that contains:
-
-```
-✅ Every page fully specced
-✅ Every component documented
-✅ Every API call listed
-✅ Every form field + validation
-✅ Complete folder structure
-✅ Build order step by step
-✅ Test cases for everything
-✅ Design system extracted from admin.html
-✅ Auth flow documented
-✅ Deployment instructions
-```
-
-Then paste THAT file into a new conversation and say **"Build the admin panel from this requirements document"** — and it will build it perfectly. 🚀
+Paste into Cursor and build it! 🚀
